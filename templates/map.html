@@ -10,7 +10,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <link rel="manifest" href="/manifest.json">
-    <title>Post</title>
+    <title>Report Incident</title>
+    <script>
+        if (location.hostname === 'gangpayee.herokuapp.com' && location.protocol !== 'https:') {
+            location.href = location.href.replace('http:','https:')
+        }
+    </script>
     <style>
         html {
             scroll-behavior: smooth;
