@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="manifest" href="/manifest.json">
+    <title>Update Info</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+        }
+
+        #scroll-top {
+            position: fixed;
+            bottom: 80px;
+            right: 15px;
+            z-index: 99;
+            font-size: 110%;
+            border: none;
+            outline: none;
+            background-color: rgba(0, 0, 255, 0.424);
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+        }
+
+        .preloader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background-image: url('/pwa_logo/loading.gif');
+            background-repeat: no-repeat;
+            background-color: none;
+            background-position: center;
+        }
+
+        #navbar {
+            background-color: white;
+            height: 50px;
+            box-shadow: 0px 2px 5px 0px slategray;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            /*background-image: linear-gradient(to right,rgba(0, 15, 149, 0.5),rgb(173, 209, 230),white,rgb(173, 209, 230),rgba(0, 15, 149, 0.5));*/
+        }
+
+        #title {
+            font-size: large;
+            font-weight: 500;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            padding-top: 12px;
+            color: rgb(0, 0, 255);
+        }
+
+        .avatar {
+            vertical-align: middle;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 5%;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            text-align: center;
+            box-shadow: 0px 1px 10px 1px slategray;
+            background-color: white;
+        }
+
+        #menubar {
+            margin-top: 6%;
+        }
+
+        #shopname,
+        select {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            height: 40px;
+            width: 95%;
+        }
+
+        #owner,
+        select {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            height: 40px;
+            width: 95%;
+        }
+
+        #email,
+        select {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            height: 40px;
+            width: 95%;
+        }
+
+        #address,
+        select {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            height: 40px;
+            width: 95%;
+        }
+
+        #password,
+        select {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            height: 40px;
+            width: 95%;
+        }
+
+        input[type=file] {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            width: 75%;
+            margin-top: 5%;
+        }
+
+        #submit-btn {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            background-color: rgba(0, 0, 255, 0.493);
+            color: white;
+            font-weight: bold;
+            height: 40px;
+            width: 90%;
+        }
+
+        #reset-btn {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            background-color: rgba(255, 0, 0, 0.493);
+            color: white;
+            font-weight: bold;
+            height: 40px;
+            width: 90%;
+        }
+        .input-icons i { 
+            position: absolute; 
+        } 
+          
+        .input-icons { 
+            width: 100%; 
+            margin-bottom: 10px; 
+        } 
+          
+        .icon { 
+            padding: 10px; 
+            min-width: 40px; 
+        } 
+    </style>
+    <script>
+        $(document).ready(function () {
+            $(window).ready(function () {
+                $(".preloader").fadeOut(500);
+            });
+            $("#scroll-top").hide();
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 0) {
+                    $('#scroll-top').fadeIn();
+                } else {
+                    $('#scroll-top').fadeOut();
+                }
+            });
+            $("#hide").hide();
+            $("#view").click(function(){
+                $("#view").hide();
+                $("#hide").show();
+                $("#password").attr('type','');
+            });
+            $("#hide").click(function(){
+                $("#hide").hide();
+                $("#view").show();
+                $("#password").attr('type','password');
+            });
+        });
+    </script>
+</head>
+
+<body align="center">
+    <div id="to-top"></div>
+    <p style="margin: 4px;"></p>
+    <div class="preloader"></div>
+    <nav id="navbar">
+        <div id="title" class="container">
+            <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;">
+                    GangPayee</i></a>
+        </div>
+    </nav>
+
+    <div class="container" id="maindiv">
+        <h3 style="color: black;">Update Personal Details</h3><br>
+        <div id="login-details" align="center">
+            <form action="/account/updateDetails" method="post" enctype="multipart/form-data">
+                <h4 style="color: rgba(0, 0, 0, 0.829);">Firstname</h4>
+                <input type="text" name="firstname" id="shopname" placeholder="first name" required="true" value="{{ firstname }}"><br><br><br>
+                <h4 style="color: rgba(0, 0, 0, 0.829);">Lastname</h4>
+                <input type="text" name="lastname" id="owner" placeholder="last name" required="true" value="{{ lastname }}"><br><br><br>
+                <h4 style="color: rgba(0, 0, 0, 0.829);">Registered Email</h4>
+                <p style="color: rgba(255, 0, 0, 0.76);">*( email can't be modified )</p>
+                <input type="email" name="email" id="email" placeholder="valid email" required="true" value="{{ email }}" disabled><br><br><br>
+                <h4 style="color: rgba(0, 0, 0, 0.829);">Registered Phone Number</h4>
+                <input type="text" name="phone" id="address" placeholder="valid phone number"
+                    required="true" value="{{ phone }}"><br><br><br>
+                <h4 style="color: rgba(0, 0, 0, 0.829);">Password</h4>
+                <div class="input-icons">
+                    <i class="fas fa-eye icon" style="margin-left: 75%; margin-top: 1.5%;" id="view"></i>
+                    <i class="fas fa-eye-slash icon" style="margin-left: 75%; margin-top: 1.5%;" id="hide"></i>
+                    <input type="password" name="password" id="password" placeholder="password" required="true" value="{{ password }}"><br><br>
+                </div>
+                <h4 id="desc" style="color: rgba(0, 0, 0, 0.829);">Change Profile Image</h4>
+                <img class="avatar" src="/images/profilePics/{{ image }}" alt="dp" align="left">
+                <input id="file-picker" type="file" name="file" accept="image/*"><br><br>
+                <input type="submit" value="Save Changes" id="submit-btn"><br><br>
+                <a href="/account"><input type="button" value="Go back" id="reset-btn"></a>
+            </form>
+        </div>
+    </div>
+    <br><br><br><br>
+
+    <button id="scroll-top"><a href="#to-top"><i class="fas fa-arrow-up"
+                style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
+    <script src="/app.js"></script>
+</body>
+
+</html>

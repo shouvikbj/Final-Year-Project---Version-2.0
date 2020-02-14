@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="manifest" href="/manifest.json">
+    <title>New User Registration</title>
+    <!--<script>
+        if (location.hostname === 'shoptracker.herokuapp.com' && location.protocol !== 'https:') {
+            location.href = location.href.replace('http:','https:')
+        }
+    </script>-->
+    <style>
+        #heading-text {
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            font-weight: bold;
+            color: rgba(0, 0, 255, 0.664);
+            font-size: 200%;
+        }
+
+        #shopname,
+        select {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            height: 40px;
+            width: 95%;
+        }
+
+        #owner,
+        select {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            height: 40px;
+            width: 95%;
+        }
+
+        #email,
+        select {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            height: 40px;
+            width: 95%;
+        }
+
+        #address,
+        select {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            height: 40px;
+            width: 95%;
+        }
+
+        #password,
+        select {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            height: 40px;
+            width: 95%;
+        }
+
+        input[type=file] {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            width: 95%;
+        }
+
+        #submit-btn {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            background-color: rgba(0, 0, 255, 0.493);
+            color: white;
+            font-weight: bold;
+            height: 40px;
+            width: 90%;
+        }
+
+        #reset-btn {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            background-color: rgba(255, 0, 0, 0.493);
+            color: white;
+            font-weight: bold;
+            height: 40px;
+            width: 90%;
+        }
+    </style>
+
+</head>
+
+<body align="center">
+    <div class="container">
+        <br><br>
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                <span>{{ message }}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+        <div class="row">
+
+            <div class="col-lg-4 col-md-4 col-sm-4"><br></div>
+            <div class="col-lg-4 col-md-4 col-sm-4" id="form-content">
+                <div id="heading">
+                    <h4 id="heading-text"><i class="fas fa-user-plus"></i> Sign Up</h4>
+                    <br>
+                </div>
+                <div id="login-details" align="center">
+                    <form action="/register" method="post" enctype="multipart/form-data">
+                        <input type="text" name="firstname" id="shopname" placeholder="first name"
+                            required="true"><br><br><br>
+                        <input type="text" name="lastname" id="owner" placeholder="last name"
+                            required="true"><br><br><br>
+                        <input type="email" name="email" id="email" placeholder="valid email"
+                            required="true"><br><br><br>
+                        <input type="text" name="phone" id="address" placeholder="valid phone number"
+                            required="true"><br><br><br>
+                        <input type="password" name="password" id="password" placeholder="password"
+                            required="true"><br><br>
+                        <h5 id="desc" style="color: rgba(105, 90, 205, 0.842);">Profile Image</h5>
+                        <p style="color: rgba(0, 128, 0, 0.781);">( optional )</p>
+                        <input id="file-picker" type="file" name="img" accept="image/*"><br><br>
+                        <input type="submit" value="Register" id="submit-btn"><br><br>
+                        <input type="reset" value="Reset" id="reset-btn">
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4"></div>
+
+        </div>
+        <br>
+        <h5>already have an account? <a href="/login">Login</a></h5>
+        <br><br>
+    </div>
+    <div class="container">
+        <h5 style="color: rgba(0, 0, 0, 0.63);">Developed by</h5>
+        <h5><a href="/about">Team GangPayee</a></h5>
+    </div>
+    <br><br>
+
+    <script src="/app.js"></script>
+</body>
+
+</html>

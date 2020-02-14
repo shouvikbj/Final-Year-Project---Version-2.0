@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="manifest" href="/manifest.json">
+    <title>About Us</title>
+    <style>
+        #home{
+            background-color: blueviolet;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            height: 40px;
+        }
+        #heading{
+            margin: 5%;
+            padding-top: 2px;
+            padding-bottom: 1%;
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            padding-right: 2%;
+            padding-left: 2%;
+            display: inline-block;
+            align-content: center;
+            /*text-shadow: 1.5px 1px slategrey;
+            font-family: "Comic Sans MS", cursive, sans-serif;*/
+        }
+        #dev{
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            font-weight: bold;
+            color: #2600ffb2;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: white;
+        }
+        .flip-card {
+            background-color: transparent;
+            width: 300px;
+            height: 300px;
+            perspective: 1000px;
+            align-content: center;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 2px 4px 8px 2px slategray;
+            align-content: center;
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            align-content: center;
+        }
+        .flip-card-front {
+            background-color: #bbb;
+            color: black;
+            align-content: center;
+        }
+        .flip-card-back {
+            background-color: #2980b9;
+            color: white;
+            transform: rotateY(180deg);
+            font-weight: bold;
+            align-content: center;
+        }
+        #profiles{
+            font-weight: bold;
+            text-shadow: 0.5px 0.5px blue;
+            color: yellowgreen;
+            align-content: center;
+        }
+        .preloader{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background-image: url('/pwa_logo/loading.gif');
+            background-repeat: no-repeat; 
+            background-color: none;
+            background-position: center;
+        }
+        #navbar{
+            background-color: white;
+            height: 50px;
+            box-shadow: 0px 2px 5px 0px slategray;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            /*background-image: linear-gradient(to right,rgba(0, 15, 149, 0.5),rgb(173, 209, 230),white,rgb(173, 209, 230),rgba(0, 15, 149, 0.5));*/
+        }
+        #title{
+            font-size: large;
+            font-weight: 500;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            padding-top: 12px;
+            color: rgb(0, 0, 255);
+        }
+    </style>
+    <script>
+        $(document).ready(function(){
+            $(window).ready(function(){
+                $(".preloader").fadeOut(1500);
+            });
+        });
+    </script>
+</head>
+<body align="center">
+    <div class="preloader"></div>
+    <nav id="navbar">
+        <div id="title">
+            <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664);"> GangPayee</i></a>
+        </div>
+    </nav>
+    
+    <div class="container" id="maindiv">
+        <div class="row">
+            <div class="col-lg-3 col-md-3"></div>
+            <div class="col-lg-6 col-md-6">
+                <div id="heading">
+                    <!--<h3>User Login</h3>-->
+                    <!--<img src="/images/dev.gif" alt="Developers">-->
+                    <h2 id="dev">Developers</h2>
+                </div>
+                <div><br></div>
+                <div class="row" align="center">
+                    <div class="col-lg-5 col-md-5 col-sm-5">
+                        <div class="flip-card">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <img align="center" src="/images/lk.png" alt="Abhigyan Ganguly" style="width:300px;height:300px;align-content: center;">
+                                </div>
+                                <div class="flip-card-back">
+                                    <br><h2><strong>Abhigyan Ganguly</strong></h2><br>
+                                    <p>Computer Science and Engineering</p>
+                                    <p>Final Year</p>
+                                    <p>G.C.E.T.T.S.</p>
+                                    <p>Full Stack Web Developer</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <p id="profiles"> <a href="https://github.com/abhigyan98">GitHub</a> || <a href="https://www.facebook.com/abhigyan.ganguly.1">Facebook</a> </p>
+                        <br>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2"></div>
+                    <div class="col-lg-5 col-md-5 col-sm-5">
+                        <div class="flip-card" align="center">
+                            <div class="flip-card-inner" align="center">
+                                <div class="flip-card-front" align="center">
+                                    <img align="center" src="/images/lk.png" alt="Shouvik Bajpayee" style="width:300px;height:300px;align-content: center;">
+                                </div>
+                                <div class="flip-card-back">
+                                    <br><h2><strong>Shouvik Bajpayee</strong></h2><br>
+                                    <p>Computer Science and Engineering</p>
+                                    <p>Final Year</p>
+                                    <p>G.C.E.T.T.S.</p>
+                                    <p>Full Stack Web Developer</p>
+                                    <p>Android App Developer</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <p id="profiles" align="center"> <a href="https://github.com/shouvikbj">GitHub</a> || <a href="https://www.facebook.com/shouvikbj">Facebook</a> </p>
+                        <br>
+                    </div>
+                <br><br>
+            </div>
+            <div class="col-lg-3 col-md-3"></div>
+            </div> 
+        
+        </div>
+    </div>
+
+
+
+
+    <script src="/app.js"></script>
+</body>
+</html>

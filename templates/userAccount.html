@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="manifest" href="/manifest.json">
+    <title>{{ firstname }} {{ lastname }}</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+        }
+
+        #scroll-top {
+            position: fixed;
+            bottom: 80px;
+            right: 15px;
+            z-index: 99;
+            font-size: 110%;
+            border: none;
+            outline: none;
+            background-color: rgba(0, 0, 255, 0.424);
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+        }
+
+        .preloader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background-image: url('/pwa_logo/loading.gif');
+            background-repeat: no-repeat;
+            background-color: none;
+            background-position: center;
+        }
+
+        #navbar {
+            background-color: white;
+            height: 50px;
+            box-shadow: 0px 2px 5px 0px slategray;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            /*background-image: linear-gradient(to right,rgba(0, 15, 149, 0.5),rgb(173, 209, 230),white,rgb(173, 209, 230),rgba(0, 15, 149, 0.5));*/
+        }
+
+        #title {
+            font-size: large;
+            font-weight: 500;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            padding-top: 12px;
+            color: rgb(0, 0, 255);
+        }
+
+        .avatar {
+            vertical-align: middle;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            text-align: center;
+            box-shadow: 0px 1px 10px 1px slategray;
+            background-color: white;
+        }
+
+        #menubar {
+            margin-top: 6%;
+        }
+
+        #postDp {
+            vertical-align: middle;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        #postContainer {
+            border-radius: 10px;
+            padding-top: 6px;
+            box-shadow: 1px 1px 5px 0px slategray;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $(window).ready(function () {
+                $(".preloader").fadeOut(500);
+            });
+            $("#scroll-top").hide();
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 0) {
+                    $('#scroll-top').fadeIn();
+                } else {
+                    $('#scroll-top').fadeOut();
+                }
+            });
+        });
+    </script>
+</head>
+
+<body align="center">
+    <div id="to-top"></div>
+    <p style="margin: 4px;"></p>
+    <div class="preloader"></div>
+    <nav id="navbar">
+        <div id="title" class="container">
+            <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;">
+                    GangPayee</i></a>
+        </div>
+    </nav>
+
+    <div class="container" id="maindiv">
+        <div>
+            <br>
+            <img src="/images/profilePics/{{ image }}" alt="dp" class="avatar">
+            <br>
+            <h2 style="color: black;">{{ firstname }} {{ lastname }}</h2>
+            <h4 style="color: rgba(0, 0, 0, 0.8);">( {{ username }} )</h4>
+            <h5 style="color: rgba(0, 0, 0, 0.8);;">{{ email }}</h5>
+            <h5 style="color: rgba(0, 0, 0, 0.8);;">{{ phone }}</h5>
+            <hr>
+        </div>
+        <div>
+            {% for i in range(userPost|length) | reverse %}
+            <div class="container" id="postContainer">
+
+                <div style="color: black;">
+                    <img src="/images/profilePics/{{ userPost[i][0] }}" alt="dp" id="postDp" align="left"
+                        style="margin-top: -2%; margin-right: -12%;">
+                    <h4 style="margin-top: 5%;">{{ userPost[i][1] }} {{ userPost[i][2] }}</h4>
+                    <p style="margin: -2%;">( {{ userPost[i][3] }} )</p>
+                </div>
+
+                <hr>
+                <a href="/post/{{ userPost[i][6] }}">
+                    <div>
+                        {% if userPost[i][4]|length %}
+                        <p style="font-size: 120%; color: black;" align="left">{{ userPost[i][4] }}</p>
+                        {% endif %}
+                        {% if userPost[i][5]|length %}
+                        {% if ((".mp4" in userPost[i][5]) or (".ogg" in userPost[i][5])) %}
+                        <video id="video" class="border" controls height="100%" width="100%"
+                            style="border-radius: 10px;">
+                            <source src="/posts/postMedia/{{ userPost[i][5] }}" type="video/mp4" preload="auto">
+                        </video>
+                        {% else %}
+                        <img src="/posts/postMedia/{{ userPost[i][5] }}" alt="media" width="100%" height="100%"
+                            style="border-radius: 10px;">
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                </a>
+                <hr>
+                <div class="container row">
+                    <div class="col-sm-6 col-xs-6 container">
+                        <i class="far fa-thumbs-up"> Like</i>
+                    </div>
+                    <div class="col-sm-6 col-xs-6 container">
+                        <i class="far fa-comments"> Comment</i>
+                    </div>
+                </div>
+                <hr>
+
+            </div>
+            <br>
+            {% endfor %}
+            <br>
+            <p style="color: gray;">no more posts available</p>
+        </div>
+        <br><br><br><br>
+    </div>
+
+
+    <button id="scroll-top"><a href="#to-top"><i class="fas fa-arrow-up"
+                style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
+    <script src="/app.js"></script>
+</body>
+
+</html>

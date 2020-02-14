@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="manifest" href="/manifest.json">
+    <title>Search User</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        #scroll-top{
+            position: fixed;
+            bottom: 80px;
+            right: 15px;
+            z-index: 99;
+            font-size: 110%;
+            border: none;
+            outline: none;
+            background-color: rgba(0, 0, 255, 0.424);
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+        }
+        .preloader{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background-image: url('/pwa_logo/loading.gif');
+            background-repeat: no-repeat; 
+            background-color: none;
+            background-position: center;
+        }
+        #navbar{
+            background-color: white;
+            height: 50px;
+            box-shadow: 0px 2px 5px 0px slategray;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            /*background-image: linear-gradient(to right,rgba(0, 15, 149, 0.5),rgb(173, 209, 230),white,rgb(173, 209, 230),rgba(0, 15, 149, 0.5));*/
+        }
+        #title{
+            font-size: large;
+            font-weight: 500;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            padding-top: 12px;
+            color: rgb(0, 0, 255);
+        }
+        #avatar {
+            vertical-align: middle;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            /*position: absolute;*/
+            /*margin-left: 40%;*/
+            margin-top: -3.5%;
+            align-content: left;
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            text-align: center;
+            box-shadow: 0px 1px 10px 1px slategray;
+        }
+        #menubar{
+            margin-top: 6%;
+        }
+        #livesearch{
+            width: 100%;
+            height: 35px;
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: 1px solid rgba(105, 90, 205, 0.37);
+            text-align: center;
+        }
+        .input-icons i { 
+            position: absolute; 
+        } 
+          
+        .input-icons { 
+            width: 100%; 
+            margin-bottom: 10px; 
+        } 
+          
+        .icon { 
+            padding: 10px; 
+            min-width: 40px; 
+            color: rgba(105, 90, 205, 0.719);
+            margin-left: 80%;
+        } 
+        #userlist{
+            padding: 5%;
+            font-size: 120%;
+            /*box-shadow: 0px 0px 4px 0px slategray;*/
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+        }
+    </style>
+    <script>
+        $(document).ready(function(){
+            $(window).ready(function(){
+                $(".preloader").fadeOut(500);
+            });
+            $("#scroll-top").hide();
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 0) {
+                    $('#scroll-top').fadeIn();
+                } else {
+                    $('#scroll-top').fadeOut();
+                }
+            });
+        });
+    </script>
+</head>
+<body align="center">
+    <div id="to-top"></div>
+    <p style="margin: 4px;"></p>
+    <!--<div class="preloader"></div>-->
+    <nav id="navbar">
+        <div id="title" class="container">
+            <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;"> GangPayee</i></a>
+            <!--<a href="/account"><img src="/images/profilePics/{{ image }}" alt="Avatar" class="avatar"></a>-->
+        </div>
+    </nav>
+    
+    <div class="container" id="maindiv">
+        <br>
+        <div class="input-icons">
+            <i class="fas fa-search icon"></i>
+            <input type="text" name="searchbox" id="livesearch" class="input-field" placeholder="Search" autofocus>
+            <br><br>
+            <p id="userlist"></p>
+        </div>
+    </div>
+
+    <!--<button id="scroll-top"><a href="#to-top"><i class="fas fa-arrow-up" style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>-->
+    <script src="/app.js"></script>
+</body>
+
+<script>
+    $(document).ready(function(){
+        $("#livesearch").on("input",function(e){
+            //textinsearchbox = $("#livesearch").val();
+            $("#userlist").empty();
+            $.ajax({
+                method:"post",
+                url:"/livesearch",
+                data:{text:$("#livesearch").val()},
+                success:function(res){
+                    var data = "<ul>";
+                    $.each(res,function(index,value){
+                        data += "<a href=\"/account/"+value[0]+"\">"+"<li><img align=\"left\" id=\"avatar\" src=\"/images/profilePics/"+value[3]+"\">"+value[1] +" "+ value[2]+/*" "+"( "+value[0]+" )"+*/"</li>"+"</a>"+"<hr>"
+                    });
+                    data += "</ul>";
+                    $("#userlist").html(data);
+                    //$("#userlist").empty();
+                    if($("#livesearch").val() == ""){
+                        $("#userlist").empty();
+                    }
+                }
+            })
+        });
+    })
+</script>
+
+</html>

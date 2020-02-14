@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="manifest" href="/manifest.json">
+    <title>Blog Posts</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+        }
+
+        #scroll-top {
+            position: fixed;
+            bottom: 125px;
+            right: 15px;
+            z-index: 99;
+            font-size: 110%;
+            border: none;
+            outline: none;
+            background-color: rgba(0, 0, 255, 0.424);
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+        }
+
+        #addPost {
+            position: fixed;
+            bottom: 72px;
+            right: 10px;
+            z-index: 99;
+            font-size: 300%;
+            color: rgb(0, 0, 255);
+        }
+
+        #closeModal {
+            position: fixed;
+            bottom: 72px;
+            right: 10px;
+            z-index: 99;
+            font-size: 300%;
+            color: rgba(255, 0, 0, 0.897);
+        }
+
+        .preloader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background-image: url('/pwa_logo/loading.gif');
+            background-repeat: no-repeat;
+            background-color: none;
+            background-position: center;
+        }
+
+        #navbar {
+            background-color: white;
+            height: 50px;
+            box-shadow: 0px 2px 5px 0px slategray;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            /*background-image: linear-gradient(to right,rgba(0, 15, 149, 0.5),rgb(173, 209, 230),white,rgb(173, 209, 230),rgba(0, 15, 149, 0.5));*/
+        }
+
+        #title {
+            font-size: large;
+            font-weight: 500;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            padding-top: 12px;
+            color: rgb(0, 0, 255);
+        }
+
+        .avatar {
+            vertical-align: middle;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            position: absolute;
+            margin-left: 40%;
+            margin-top: -2%;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            text-align: center;
+            box-shadow: 0px 1px 10px 1px slategray;
+            background-color: white;
+        }
+
+        #menubar {
+            margin-top: 6%;
+            background-color: white;
+        }
+
+        #write-cmnt {
+            position: fixed;
+            bottom: 65px;
+            right: 65px;
+            z-index: 99;
+            /*font-size: 110%;*/
+            border: none;
+            outline: none;
+            background-color: rgb(255, 255, 255);
+            cursor: pointer;
+            padding: 5px;
+            text-decoration: none;
+            -moz-border-radius: 15px;
+            -webkit-border-radius: 15px;
+            border-radius: 15px;
+            width: 78%;
+            border: 0px solid rgb(0, 0, 0);
+            box-shadow: 0px 0px 10px 2px rgba(105, 90, 205, 0.692);
+        }
+
+        textarea {
+            text-align: center;
+            text-decoration: none;
+            -moz-border-radius: 15px;
+            -webkit-border-radius: 15px;
+            border-radius: 15px;
+            border: 1px solid rgba(112, 128, 144, 0.602);
+            height: 120px;
+            width: 100%;
+            color: rgba(0, 0, 0, 0.815);
+            font-size: 130%;
+        }
+
+        #file-picker {
+            width: 100%;
+            border: 1px solid rgba(112, 128, 144, 0.602);
+            text-decoration: none;
+            -moz-border-radius: 15px;
+            -webkit-border-radius: 15px;
+            border-radius: 15px;
+            height: 30px;
+            padding: 1.1%;
+        }
+
+        #send-btn {
+            border: none;
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            color: white;
+            background-color: rgba(0, 0, 255, 0.52);
+            width: 100%;
+            height: 40px;
+            font-weight: bold;
+        }
+
+        #reset-btn {
+            border: none;
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            color: white;
+            background-color: rgba(255, 0, 0, 0.52);
+            width: 100%;
+            height: 40px;
+            font-weight: bold;
+        }
+
+        #postDp {
+            vertical-align: middle;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        #postContainer {
+            border-radius: 10px;
+            padding-top: 6px;
+            box-shadow: 1px 1px 5px 0px slategray;
+        }
+        #livesearch{
+            width: 100%;
+            height: 35px;
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: 1px solid rgba(105, 90, 205, 0.37);
+            text-align: center;
+            background-color: white;
+        }
+        .input-icons i { 
+            position: absolute; 
+        } 
+          
+        .input-icons { 
+            width: 100%; 
+            margin-bottom: 10px; 
+        } 
+          
+        .icon { 
+            padding: 10px; 
+            min-width: 40px; 
+            color: rgba(105, 90, 205, 0.719);
+            margin-left: 80%;
+        } 
+    </style>
+    <script>
+        $(document).ready(function () {
+            $(window).ready(function () {
+                $(".preloader").fadeOut(500);
+            });
+            $("#scroll-top").hide();
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 0) {
+                    $('#scroll-top').fadeIn();
+                } else {
+                    $('#scroll-top').fadeOut();
+                }
+            });
+            $("#write-cmnt").hide();
+            $("#closeModal").hide();
+            $("#addPost").click(function () {
+                $(this).hide();
+                $("#write-cmnt").show();
+                $("#closeModal").show();
+            });
+            $("#closeModal").click(function () {
+                $(this).hide();
+                $("#write-cmnt").hide();
+                $("#addPost").show();
+            });
+        });
+    </script>
+</head>
+
+<body align="center">
+    <div id="to-top"></div>
+    <p style="margin: 4px;"></p>
+    <div class="preloader"></div>
+    <nav id="navbar">
+        <div id="title" class="container">
+            <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;">
+                    GangPayee</i></a>
+        </div>
+    </nav>
+    <br>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+            <span>{{ message }}</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="container" id="maindiv">
+        <!--<div class="input-icons">
+            <i class="fas fa-search icon"></i>
+            <a href="/searchUser"><input type="text" name="searchbox" id="livesearch" class="input-field" placeholder="Search" disabled></a>
+            <p id="userlist"></p>
+        </div>-->
+        <div>
+            <h3 style="font-family: sans-serif;">Share Your Thoughts</h3>
+        </div>
+        <br>
+        <div>
+            {% for i in range(post|length) | reverse %}
+            <div class="container" id="postContainer">
+                <a href="/account/{{ post[i][3] }}">
+                    <div>
+                        <img src="/images/profilePics/{{ post[i][0] }}" alt="dp" id="postDp" align="left"
+                            style="margin-top: -2%; margin-right: -12%;">
+                        <h4 style="margin-top: 5%;">{{ post[i][1] }} {{ post[i][2] }}</h4>
+                        <p style="margin: -2%;">( {{ post[i][3] }} )</p>
+                    </div>
+                </a>
+                <hr>
+                <a href="/blog/{{ post[i][5] }}">
+                    <div>
+                        {% if post[i][4]|length %}
+                        <p style="font-size: 120%; color: black;" align="left">{{ post[i][4] }}</p>
+                        {% endif %}
+                    </div>
+                </a>
+                <hr>
+                <div class="container row">
+                    <div class="col-sm-6 col-xs-6 container">
+                        <i class="far fa-thumbs-up" style="color: blueviolet;"> Like</i>
+                    </div>
+                    <div class="col-sm-6 col-xs-6 container">
+                        <a href="/blog/{{ post[i][5] }}"><i class="far fa-comments" style="color: blueviolet;"> Comment</i></a>
+                    </div>
+                </div>
+                <hr>
+
+            </div>
+            <br>
+            {% endfor %}
+        </div>
+        <br><br><br><br>
+
+        <div id="write-cmnt" class="container">
+            <form action="/postBlog" method="post">
+                <h4 style="color: rgb(9, 121, 111);">Create Blog</h4>
+                <textarea name="desc" id="desc" placeholder="What do you want to share?"></textarea><br><br>
+                <input type="submit" value="Post" id="send-btn"><br><br>
+                <input type="reset" value="Reset" id="reset-btn">
+                <br><br>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="footer container">
+        <div class="row" id="menubar">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/"><i class="fas fa-home"></i></a></div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/blog"><i class="fas fa-atlas" style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></a></div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/map"><i class="fas fa-street-view"></i></a></div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/msg"><i class="fab fa-facebook-messenger"></i></a></div>
+            <!--<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><i class="fas fa-home"></i></div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><i class="fas fa-home"></i></div>-->
+        </div>
+    </div>
+
+    <button id="scroll-top"><a href="#to-top"><i class="fas fa-arrow-up"
+                style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
+    <i class="fas fa-plus-circle" id="addPost"></i>
+    <i class="fas fa-times-circle" id="closeModal"></i>
+    <script src="/app.js"></script>
+</body>
+
+<!--<script>
+    $(document).ready(function(){
+        $("#livesearch").on("input",function(e){
+            //textinsearchbox = $("#livesearch").val();
+            $("#userlist").empty();
+            $.ajax({
+                method:"post",
+                url:"/livesearch",
+                data:{text:$("#livesearch").val()},
+                success:function(res){
+                    var data = "<ul>";
+                    $.each(res,function(index,value){
+                        data += "<a href=\"/account\">"+"<li>"+value[1] +" "+ value[2]+"</li>"+"</a>"
+                    });
+                    data += "</ul>";
+                    $("#userlist").html(data);
+                    //$("#userlist").empty();
+                }
+            })
+        });
+    })
+</script>-->
+
+</html>

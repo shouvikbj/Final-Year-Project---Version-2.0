@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viewing Media</title>
+</head>
+<style>
+    body {
+        background-color: rgba(0, 0, 0, 0.932);
+    }
+
+    #postmedia {
+        margin-top: 25%;
+        vertical-align: middle;
+        position: relative;
+    }
+
+    #mediaHolder {
+        position: fixed;
+        bottom: 25%;
+        right: 0%;
+        z-index: 99;
+    }
+</style>
+
+<body align="center">
+    <div class="container" id="mediaHolder">
+        <img src="/posts/postMedia/{{ media }}" alt="post media" width="80%" height="80%" id="postmedia">
+        <br><br>
+        <hr>
+        <p style="color: white;">-- Image --</p>
+        <p style="color: blanchedalmond;">{{ media }}</p>
+        <hr>
+    </div>
+</body>
+
+</html>
