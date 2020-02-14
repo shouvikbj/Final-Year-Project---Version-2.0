@@ -1,7 +1,7 @@
 from flask import Flask,render_template,redirect,request,url_for,session,flash,jsonify
 import csv
 #import delete as dlt
-import loginDB,postDB,blogDB
+import loginDB,postDB,blogDB,msgDB
 import smtplib
 import os
 
@@ -372,12 +372,20 @@ def searchUserforMsg():
 def msgHome():
     if 'username' in session:
         user = session['username']
-        allUsers = loginDB.getAllUsers()
-        return render_template("msgHome.html",user=user,allUsers=allUsers)
+        msgs = msgDB.getMsgs()
+        return render_template("msgHome.html",user=user,msgs=msgs)
     else:
         return redirect(url_for('login'))
 
-
+@app.route("/sendMsg", methods=["POST","GET"])
+def sendMsg():
+    if 'username' in session:
+        user = session['username']
+        msg = request.form.get("msg")
+        msgDB.msgEntry(user,msg)
+        return redirect(url_for('msgHome'))
+    else:
+        return redirect(url_for('login'))
 
 
 #@app.route("/customsearch")

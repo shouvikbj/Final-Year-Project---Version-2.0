@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,16 +13,13 @@
     <title>Chat Room</title>
     <script>
         if (location.hostname === 'gangpayee.herokuapp.com' && location.protocol !== 'https:') {
-            location.href = location.href.replace('http:','https:')
+            location.href = location.href.replace('http:', 'https:')
         }
     </script>
     <style>
-        html {
-            scroll-behavior: smooth;
-        }
-        #scroll-top{
+        #scroll-top {
             position: fixed;
-            bottom: 80px;
+            bottom: 135px;
             right: 15px;
             z-index: 99;
             font-size: 110%;
@@ -37,7 +35,8 @@
             -webkit-border-radius: 30px;
             border-radius: 30px;
         }
-        .preloader{
+
+        .preloader {
             position: absolute;
             top: 0;
             left: 0;
@@ -45,11 +44,12 @@
             height: 100%;
             z-index: 9999;
             background-image: url('/pwa_logo/loading.gif');
-            background-repeat: no-repeat; 
+            background-repeat: no-repeat;
             background-color: none;
             background-position: center;
         }
-        #navbar{
+
+        #navbar {
             background-color: white;
             height: 50px;
             box-shadow: 0px 2px 5px 0px slategray;
@@ -59,19 +59,22 @@
             border-radius: 20px;
             /*background-image: linear-gradient(to right,rgba(0, 15, 149, 0.5),rgb(173, 209, 230),white,rgb(173, 209, 230),rgba(0, 15, 149, 0.5));*/
         }
-        #title{
+
+        #title {
             font-size: large;
             font-weight: 500;
             font-family: "Comic Sans MS", cursive, sans-serif;
             padding-top: 12px;
             color: rgb(0, 0, 255);
         }
+
         .avatar {
             vertical-align: middle;
-            width: 60px;
-            height: 60px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
         }
+
         .footer {
             position: fixed;
             left: 0;
@@ -82,10 +85,12 @@
             box-shadow: 0px 1px 10px 1px slategray;
             background-color: white;
         }
-        #menubar{
+
+        #menubar {
             margin-top: 6%;
         }
-        #livesearch{
+
+        #livesearch {
             width: 100%;
             height: 35px;
             text-decoration: none;
@@ -96,51 +101,117 @@
             text-align: center;
             background-color: white;
         }
-        .input-icons i { 
-            position: absolute; 
-        } 
-          
-        .input-icons { 
-            width: 100%; 
-            margin-bottom: 10px; 
-        } 
-          
-        .icon { 
-            padding: 10px; 
-            min-width: 40px; 
+
+        .input-icons i {
+            position: absolute;
+        }
+
+        .input-icons {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .icon {
+            padding: 10px;
+            min-width: 40px;
             color: rgba(105, 90, 205, 0.719);
             margin-left: 80%;
-        } 
+        }
 
+        div.sticky {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            background-color: white;
+            padding-top: 1%;
+            /*padding: 2%;            
+            padding-bottom: -2%;*/
+            color: rgb(4, 0, 255);
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            width: 100%;
+        }
+
+        #sendMsgContainer {
+            position: fixed;
+            left: 0;
+            bottom: 7.5%;
+            width: 100%;
+            height: 60px;
+            background-color: white;
+        }
+
+        #msg {
+            height: 40px;
+            align-content: left;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            margin-right: 5px;
+            padding: 2%;
+            width: 85%;
+            border: 1px solid orchid;
+            margin-top: 4px;
+        }
+        #oneMsg{
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            padding: 5%;
+            /*border: 1px solid black;*/
+            margin: 2%;
+            width: 80%;
+            float: right;
+            background-color: rgba(0, 100, 182, 0.075);
+        }
+        #twoMsg{
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            padding: 5%;
+            /*border: 1px solid black;*/
+            margin: 2%;
+            width: 80%;
+            float: left;
+            background-color: rgba(153, 205, 50, 0.158);
+        }
     </style>
     <script>
-        $(document).ready(function(){
-            $(window).ready(function(){
+        $(document).ready(function () {
+            $(window).ready(function () {
                 $(".preloader").fadeOut(500);
             });
             $("#scroll-top").hide();
-            $(window).scroll(function() {
+            /*$(window).scroll(function () {
                 if ($(this).scrollTop() > 0) {
                     $('#scroll-top').fadeIn();
                 } else {
                     $('#scroll-top').fadeOut();
                 }
-            });
+            });*/
+            $(document).scrollTop($(document).height());
+            /*setInterval(function(){
+                $("#allMsgs").load(location.href+" #allMsgs>*","");
+            },100);*/
         });
     </script>
 </head>
+
 <body align="center">
     <div id="to-top"></div>
     <p style="margin: 4px;"></p>
     <div class="preloader"></div>
     <nav id="navbar">
         <div id="title" class="container">
-            <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;"> GangPayee</i></a>
+            <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;">
+                    GangPayee</i></a>
         </div>
     </nav>
     <br>
     <div class="container" id="maindiv">
-        <div class="input-icons">
+        <!--<div class="input-icons">
             <i class="fas fa-search icon"></i>
             <a href="/searchUserforMsg"><input type="text" name="searchbox" id="livesearch" class="input-field" placeholder="Search" disabled></a>
             <p id="userlist"></p>
@@ -158,22 +229,60 @@
                 </a>
                 {% endif %}
             {% endfor %}
+        </div>-->
+
+        <div id="header" class="sticky">
+            <h2>Chat Room</h2>
+            <hr>
+        </div>
+
+        <div id="allMsgs">
+            {% for i in range(msgs|length) %}
+            {% if (user == msgs[i][0]) %}
+                <div class="container" id="oneMsg">
+                    <img src="/images/profilePics/{{ msgs[i][3] }}" alt="dp" class="avatar" align="left">
+                    <h4 align="left" style="padding-left: 20%; padding-top: 0%;">{{ msgs[i][1] }} {{ msgs[i][2] }}</h4><br>
+                    <p align="left" style="padding-left: 10%;">{{ msgs[i][4] }}</p>
+                </div>
+            {% else %}
+                <div class="container" id="twoMsg">
+                    <img src="/images/profilePics/{{ msgs[i][3] }}" alt="dp" class="avatar" align="left">
+                    <h4 align="left" style="padding-left: 20%; padding-top: 0%;">{{ msgs[i][1] }} {{ msgs[i][2] }}</h4><br>
+                    <p align="left" style="padding-left: 10%;">{{ msgs[i][4] }}</p>
+                </div>
+            {% endif %}
+            {% endfor %}
+            
+        </div>
+
+    </div>
+    <br><br><br><br><br><br>
+
+
+    <div class="footer container">
+        <div>
+            <div class="container" id="sendMsgContainer">
+                <form action="/sendMsg" method="post">
+                    <input type="text" name="msg" id="msg" placeholder="write here" align="left" required>
+                    <button type="submit" style="background-color: white;border: none;"><i type="submit" class="fas fa-paper-plane" style="color: rgb(24, 145, 0);"></i></button>
+                </form>
+            </div>
+            <div class="row" id="menubar">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/"><button style="background-color: white; border: none;"><i class="fas fa-home"></i></button></a></div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/blog"><button style="background-color: white; border: none;"><i class="fas fa-atlas"></i></button></a></div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/map"><button style="background-color: white; border: none;"><i class="fas fa-street-view"></i></button></a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/msg"><button style="background-color: white; border: none;"><i class="fab fa-facebook-messenger"
+                            style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></button></a></div>
+                <!--<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><i class="fas fa-home"></i></div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><i class="fas fa-home"></i></div>-->
+            </div>
         </div>
     </div>
 
-
-    <div class="footer container-fluid">
-        <div class="row" id="menubar">
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/"><i class="fas fa-home"></i></a></div>
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/blog"><i class="fas fa-atlas"></i></a></div>
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/map"><i class="fas fa-street-view"></i></a></div>
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/msg"><i class="fab fa-facebook-messenger" style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></a></div>
-            <!--<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><i class="fas fa-home"></i></div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><i class="fas fa-home"></i></div>-->
-        </div>
-    </div>
-
-    <button id="scroll-top"><a href="#to-top"><i class="fas fa-arrow-up" style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
+    <button id="scroll-top"><a href="#to-top"><i class="fas fa-arrow-up"
+                style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
     <script src="/app.js"></script>
 </body>
+
 </html>
