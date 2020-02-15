@@ -117,7 +117,11 @@
             color: black;
             float: right;
         }
-        #locationLat, #locationLng, #category, #desc {
+
+        #locationLat,
+        #locationLng,
+        #category,
+        #desc {
             width: 100%;
             height: 40px;
             text-align: center;
@@ -127,7 +131,8 @@
             border-radius: 20px;
             border: 1px solid slateblue;
         }
-        #media{
+
+        #media {
             width: 100%;
             height: 40px;
             text-align: center;
@@ -137,6 +142,30 @@
             border-radius: 20px;
             border: 1px solid slateblue;
             padding-top: 2.5%;
+        }
+
+        #report {
+            width: 100%;
+            height: 40px;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            background-color: rgba(0, 0, 255, 0.5);
+            color: white;
+            border: none;
+        }
+
+        #reset {
+            width: 100%;
+            height: 40px;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            background-color: rgba(255, 0, 0, 0.5);
+            color: white;
+            border: none;
         }
     </style>
     <script>
@@ -166,8 +195,21 @@
                     GangPayee</i></a>
         </div>
     </nav>
-
     <br>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+            <span>{{ message }}</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
 
     <div class="container" id="maindiv">
         <div id="map"></div>
@@ -175,15 +217,22 @@
             <button id="findLocation"><i class="fas fa-map-pin"> </i> Get Location</button>
         </div>
         <div class="container">
-            <h3>Report an Incident</h3><br>
-            <form action="#" method="POST" enctype="multipart/form-data">
-                <input type="text" name="locationLat" id="locationLat" required placeholder="Latitude (click Get Location)" disabled><br><br>
-                <input type="text" name="locationLng" id="locationLng" required placeholder="Longitude (click Get Location)" disabled><br><br>
-                <input type="text" name="category" id="category" required placeholder="category of the incident"><br><br>
-                <input type="text" name="desc" id="desc" required placeholder="write about the incident"><br><br>
-                <h4>Image/Video</h4>
-                <input type="file" name="media" id="media" required>
+            <h3>Report an Incident</h3>
+            <p style="color: rgba(255, 0, 0, 0.678);">(* marked fields are required)</p><br>
+            <form action="/report" id="upload-details" method="POST" enctype="multipart/form-data">
+                <input type="text" name="locationLat" id="locationLat" required
+                    placeholder="Latitude (click Get Location) *"><br><br>
+                <input type="text" name="locationLng" id="locationLng" required
+                    placeholder="Longitude (click Get Location) *"><br><br>
+                <input type="text" name="category" id="category" required
+                    placeholder="category of the incident *"><br><br>
+                <input type="text" name="desc" id="desc" required placeholder="write about the incident *"><br><br>
+                <h4>Image/Video *</h4>
+                <input type="file" name="media" id="media" accept="image/video/*" required><br><br>
+                <input type="submit" value="Report Incident" id="report"><br><br>
+                <input type="reset" value="Reset" id="reset">
             </form>
+
         </div>
     </div>
     <br><br><br><br><br>
@@ -217,7 +266,7 @@
             var pku = { lat: 22.3973, lng: 87.7386 };
             // The map, centered at pku
             var map = new google.maps.Map(
-                document.getElementById('map'), { zoom: 16, center: pku, mapTypeId : google.maps.MapTypeId.ROADMAP });
+                document.getElementById('map'), { zoom: 16, center: pku, mapTypeId: google.maps.MapTypeId.ROADMAP });
 
             var iconBase =
                 'https://developers.google.com/maps/documentation/javascript/examples/full/images/';
@@ -264,9 +313,6 @@
                 }
             });
         }
-
-        
-
 
     </script>
     <script async defer

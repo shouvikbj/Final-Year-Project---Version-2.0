@@ -1,7 +1,7 @@
 from flask import Flask,render_template,redirect,request,url_for,session,flash,jsonify
 import csv
 #import delete as dlt
-import loginDB,postDB,blogDB,msgDB
+import loginDB,postDB,blogDB,msgDB,mapDB
 import smtplib
 import os
 
@@ -358,6 +358,39 @@ def map():
         return render_template("map.html")
     else:
         return redirect(url_for('login'))
+
+@app.route("/report", methods=["GET","POST"])
+def report():
+    if 'username' in session:
+        target = APP_ROOT + '/static/posts/postMedia'
+
+        username = session['username']
+        lat = request.form.get("locationLat")
+        lng = request.form.get("locationLng")
+        category = request.form.get("category")
+        desc = request.form.get("desc")
+        media = request.files.get("media")
+
+        if (lat == "") or (lng == ""):
+            flash('Locations can\'t be empty !',"warning")
+            return redirect(url_for('map'))
+
+        media_filename = ""
+
+        if(media):
+            media_filename = media.filename
+            destination = "/".join([target,media_filename])
+            media.save(destination)
+
+        mapDB.createPost(username,lat,lng,category,desc,media_filename)
+        flash('Incident reported successfully !',"success")
+        return redirect(url_for('map'))
+
+    else:
+        return redirect(url_for('login'))
+
+
+
 
 
 @app.route("/searchUserforMsg")
