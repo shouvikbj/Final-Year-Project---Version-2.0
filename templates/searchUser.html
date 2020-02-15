@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,14 +13,15 @@
     <title>Search User</title>
     <script>
         if (location.hostname === 'gangpayee.herokuapp.com' && location.protocol !== 'https:') {
-            location.href = location.href.replace('http:','https:')
+            location.href = location.href.replace('http:', 'https:')
         }
     </script>
     <style>
         html {
             scroll-behavior: smooth;
         }
-        #scroll-top{
+
+        #scroll-top {
             position: fixed;
             bottom: 80px;
             right: 15px;
@@ -37,7 +39,8 @@
             -webkit-border-radius: 30px;
             border-radius: 30px;
         }
-        .preloader{
+
+        .preloader {
             position: absolute;
             top: 0;
             left: 0;
@@ -45,11 +48,12 @@
             height: 100%;
             z-index: 9999;
             background-image: url('/pwa_logo/loading.gif');
-            background-repeat: no-repeat; 
+            background-repeat: no-repeat;
             background-color: none;
             background-position: center;
         }
-        #navbar{
+
+        #navbar {
             background-color: white;
             height: 50px;
             box-shadow: 0px 2px 5px 0px slategray;
@@ -59,13 +63,15 @@
             border-radius: 20px;
             /*background-image: linear-gradient(to right,rgba(0, 15, 149, 0.5),rgb(173, 209, 230),white,rgb(173, 209, 230),rgba(0, 15, 149, 0.5));*/
         }
-        #title{
+
+        #title {
             font-size: large;
             font-weight: 500;
             font-family: "Comic Sans MS", cursive, sans-serif;
             padding-top: 12px;
             color: rgb(0, 0, 255);
         }
+
         #avatar {
             vertical-align: middle;
             width: 40px;
@@ -76,6 +82,7 @@
             margin-top: -3.5%;
             align-content: left;
         }
+
         .footer {
             position: fixed;
             left: 0;
@@ -85,10 +92,12 @@
             text-align: center;
             box-shadow: 0px 1px 10px 1px slategray;
         }
-        #menubar{
+
+        #menubar {
             margin-top: 6%;
         }
-        #livesearch{
+
+        #livesearch {
             width: 100%;
             height: 35px;
             text-decoration: none;
@@ -98,22 +107,24 @@
             border: 1px solid rgba(105, 90, 205, 0.37);
             text-align: center;
         }
-        .input-icons i { 
-            position: absolute; 
-        } 
-          
-        .input-icons { 
-            width: 100%; 
-            margin-bottom: 10px; 
-        } 
-          
-        .icon { 
-            padding: 10px; 
-            min-width: 40px; 
+
+        .input-icons i {
+            position: absolute;
+        }
+
+        .input-icons {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .icon {
+            padding: 10px;
+            min-width: 40px;
             color: rgba(105, 90, 205, 0.719);
             margin-left: 80%;
-        } 
-        #userlist{
+        }
+
+        #userlist {
             padding: 5%;
             font-size: 120%;
             /*box-shadow: 0px 0px 4px 0px slategray;*/
@@ -124,12 +135,12 @@
         }
     </style>
     <script>
-        $(document).ready(function(){
-            $(window).ready(function(){
+        $(document).ready(function () {
+            $(window).ready(function () {
                 $(".preloader").fadeOut(500);
             });
             $("#scroll-top").hide();
-            $(window).scroll(function() {
+            $(window).scroll(function () {
                 if ($(this).scrollTop() > 0) {
                     $('#scroll-top').fadeIn();
                 } else {
@@ -139,17 +150,19 @@
         });
     </script>
 </head>
+
 <body align="center">
     <div id="to-top"></div>
     <p style="margin: 4px;"></p>
     <!--<div class="preloader"></div>-->
     <nav id="navbar">
         <div id="title" class="container">
-            <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;"> GangPayee</i></a>
+            <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;">
+                    GangPayee</i></a>
             <!--<a href="/account"><img src="/images/profilePics/{{ image }}" alt="Avatar" class="avatar"></a>-->
         </div>
     </nav>
-    
+
     <div class="container" id="maindiv">
         <br>
         <div class="input-icons">
@@ -165,23 +178,23 @@
 </body>
 
 <script>
-    $(document).ready(function(){
-        $("#livesearch").on("input",function(e){
+    $(document).ready(function () {
+        $("#livesearch").on("input", function (e) {
             //textinsearchbox = $("#livesearch").val();
             $("#userlist").empty();
             $.ajax({
-                method:"post",
-                url:"/livesearch",
-                data:{text:$("#livesearch").val()},
-                success:function(res){
+                method: "post",
+                url: "/livesearch",
+                data: { text: $("#livesearch").val() },
+                success: function (res) {
                     var data = "<ul>";
-                    $.each(res,function(index,value){
-                        data += "<a href=\"/account/"+value[0]+"\">"+"<li><img align=\"left\" id=\"avatar\" src=\"/images/profilePics/"+value[3]+"\">"+value[1] +" "+ value[2]+/*" "+"( "+value[0]+" )"+*/"</li>"+"</a>"+"<hr>"
+                    $.each(res, function (index, value) {
+                        data += "<a href=\"/account/" + value[0] + "\">" + "<li><img align=\"left\" id=\"avatar\" src=\"/images/profilePics/" + value[3] + "\">" + value[1] + " " + value[2] +/*" "+"( "+value[0]+" )"+*/"</li>" + "</a>" + "<hr>"
                     });
                     data += "</ul>";
                     $("#userlist").html(data);
                     //$("#userlist").empty();
-                    if($("#livesearch").val() == ""){
+                    if ($("#livesearch").val() == "") {
                         $("#userlist").empty();
                     }
                 }

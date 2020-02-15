@@ -13,7 +13,7 @@
     <title>Report Incident</title>
     <script>
         if (location.hostname === 'gangpayee.herokuapp.com' && location.protocol !== 'https:') {
-            location.href = location.href.replace('http:','https:')
+            location.href = location.href.replace('http:', 'https:')
         }
     </script>
     <style>
@@ -101,6 +101,42 @@
             height: 500px;
             width: 100%;
             background-color: grey;
+
+        }
+
+        #findLocation {
+            margin: 10px;
+            height: 50px;
+            width: 30%;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            border: none;
+            background-color: rgba(0, 0, 255, 0.336);
+            color: black;
+            float: right;
+        }
+        #location, #category, #desc {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            border: 1px solid slateblue;
+        }
+        #media{
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            border: 1px solid slateblue;
+            padding-top: 2.5%;
         }
     </style>
     <script>
@@ -131,19 +167,39 @@
         </div>
     </nav>
 
+    <br>
 
-    <div class="" id="maindiv">
+    <div class="container" id="maindiv">
         <div id="map"></div>
+        <div class="container">
+            <button id="findLocation"><i class="fas fa-map-pin"> </i> Get Location</button>
+        </div>
+        <div class="container">
+            <h3>About the Incident</h3><br>
+            <form action="#" method="POST" enctype="multipart/form-data">
+                <input type="text" name="location" id="location" required placeholder="your location (click get location)" disabled><br><br>
+                <input type="text" name="category" id="category" required placeholder="category of the incident"><br><br>
+                <input type="text" name="desc" id="desc" required placeholder="write about the incident"><br><br>
+                <h4>Image/Video</h4>
+                <input type="file" name="media" id="media" required>
+            </form>
+        </div>
     </div>
+    <br><br><br><br><br>
 
 
     <div class="footer container-fluid">
         <div class="row" id="menubar">
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/"><button style="background-color: white; border: none;"><i class="fas fa-home"></i></button></a></div>
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/blog"><button style="background-color: white; border: none;"><i class="fas fa-atlas"></i></button></a></div>
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/map"><button style="background-color: white; border: none;"><i class="fas fa-street-view"
-                        style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></button></a></div>
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/msg"><button style="background-color: white; border: none;"><i class="fab fa-facebook-messenger"></i></button></a>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/"><button
+                        style="background-color: white; border: none;"><i class="fas fa-home"></i></button></a></div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/blog"><button
+                        style="background-color: white; border: none;"><i class="fas fa-atlas"></i></button></a></div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/map"><button
+                        style="background-color: white; border: none;"><i class="fas fa-street-view"
+                            style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></button></a></div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/msg"><button
+                        style="background-color: white; border: none;"><i
+                            class="fab fa-facebook-messenger"></i></button></a>
             </div>
             <!--<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><i class="fas fa-home"></i></div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><i class="fas fa-home"></i></div>-->
@@ -160,18 +216,61 @@
             var pku = { lat: 22.3973, lng: 87.7386 };
             // The map, centered at pku
             var map = new google.maps.Map(
-                document.getElementById('map'), { zoom: 16, center: pku });
+                document.getElementById('map'), { zoom: 16, center: pku, mapTypeId : google.maps.MapTypeId.ROADMAP });
+
+            var iconBase =
+                'https://developers.google.com/maps/documentation/javascript/examples/full/images/';
             // The marker, positioned at pku
-            var marker = new google.maps.Marker({
+            /*var marker = new google.maps.Marker({
                 position: pku,
                 map: map
+            });*/
+            var infoWindow = new google.maps.InfoWindow({
+                content: '<a href="#"><p>view details</p></a>'
+            });
+            $("#findLocation").click(function () {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        var latitude = pos.lat;
+                        var longitude = pos.lng;
+                        var location = latitude +' , '+ longitude;
+                        $("#location").val(location);
+                        infoWindow.setPosition(pos);
+                        //infoWindow.setContent('You are here !');
+                        var marker = new google.maps.Marker({
+                            position: pos,
+                            map: map
+                        });
+                        infoWindow.open(map, marker);
+                        map.setCenter(pos);
+                    }, function () {
+                        handleLocationError(true, infoWindow, map.getCenter());
+                    });
+                } else {
+                    // Browser doesn't support Geolocation
+                    handleLocationError(false, infoWindow, map.getCenter());
+                }
+                function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent(browserHasGeolocation ?
+                        'Error: The Geolocation service failed.' :
+                        'Error: Your browser doesn\'t support geolocation.');
+                    infoWindow.open(map);
+                }
             });
         }
+
+        
+
+
     </script>
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBufpbswCC54SJFCOzGT3Aerg_rAF2h-2U&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgaGcRcdBLE0y1c4Uga2nJxLro7kJXXbs&callback=initMap">
         </script>
-
 
     <script src="/app.js"></script>
 </body>
