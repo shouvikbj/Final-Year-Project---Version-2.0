@@ -399,8 +399,19 @@ def report():
 @app.route("/report/<int:pid>")
 def viewReport(pid):
     if 'username' in session:
+        user = session['username']
         post = mapDB.getPost(pid)
-        return render_template("viewReport.html",post=post)
+        return render_template("viewReport.html",post=post,user=user)
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route("/report/<int:pid>/delete", methods=["POST","GET"])
+def deleteReport(pid):
+    if 'username' in session:
+        mapDB.deleteReport(pid)
+        flash('Incident Report deleted !',"success")
+        return redirect(url_for('map'))
     else:
         return redirect(url_for('login'))
 

@@ -104,7 +104,7 @@
             border-radius: 10px;
         }
 
-        #direction{
+        #direction {
             height: 40px;
             color: white;
             background-color: blue;
@@ -146,6 +146,12 @@
     <div class="container" id="maindiv">
         <div class="container" id="postContainer">
             {% for i in range(post|length) %}
+            {% if (user == post[i][4]) %}
+            <div>
+                <a href="/report/{{ post[i][3] }}/delete"><i id="delete" class="fas fa-trash"
+                        style="color: rgba(255, 0, 0, 0.863); margin-left: 80%; margin-top: 5%;"></i></a>
+            </div>
+            {% endif %}
             <p style="float: left; font-weight: bold; margin-top: 2%;">Reported by :</p><br><br>
             <a href="/account/{{ post[i][4] }}">
                 <div class="container">
@@ -165,12 +171,13 @@
             </video>
             {% else %}
             <a href="/media/{{ post[i][9] }}">
-            <img src="/posts/postMedia/{{ post[i][9] }}" alt="media" width="100%" height="100%"
-                style="border-radius: 10px;"></a>
+                <img src="/posts/postMedia/{{ post[i][9] }}" alt="media" width="100%" height="100%"
+                    style="border-radius: 10px;"></a>
             {% endif %}
             {% endif %}
             <hr>
-            <a href="https://www.google.com/maps/dir/?api=1&destination={{ post[i][5] }},{{ post[i][6] }}"><button id="direction"><i class="fas fa-directions"> Directions to Incident Place</i></button></a>
+            <a href="https://www.google.com/maps/dir/?api=1&destination={{ post[i][5] }},{{ post[i][6] }}"><button
+                    id="direction"><i class="fas fa-directions"> Directions to Incident Place</i></button></a>
             {% endfor %}
             <br>
             <br>
