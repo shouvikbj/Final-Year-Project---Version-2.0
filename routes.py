@@ -1,7 +1,7 @@
 from flask import Flask,render_template,redirect,request,url_for,session,flash,jsonify
 import csv
 #import delete as dlt
-import loginDB,postDB,blogDB,msgDB,mapDB
+import loginDB,postDB,blogDB,msgDB,mapDB,commentDB
 import smtplib
 import os
 
@@ -289,14 +289,29 @@ def postQuestion():
 def post(pid):
     if 'username' in session:
         post = postDB.getPost(pid)
+        comments = commentDB.getComments(pid)
+        #print(comments)
+        user = session['username']
+        postid = post[0][6]
         firstname = post[0][1]
         lastname = post[0][2]
-        return render_template("post.html", post=post, firstname=firstname, lastname=lastname)
+        return render_template("post.html", post=post, user=user, firstname=firstname, lastname=lastname, postid=postid, comments=comments)
     else:
         post = postDB.getPost(pid)
         firstname = post[0][1]
         lastname = post[0][2]
         return render_template("post2.html", post=post, firstname=firstname, lastname=lastname)
+
+@app.route("/post/<int:pid>/comment",methods=["POST","GET"])
+def comment(pid):
+    if 'username' in session:
+        username = session['username']
+        comment = request.form.get("commentBox")
+        commentDB.addComment(pid,username,comment)
+        redirectUrl = '/post/' + str(pid)
+        return redirect(redirectUrl)
+    else:
+        return redirect(url_for('login'))
 
 @app.route("/post/<int:pid>/delete", methods=["GET","POST"])
 def deletePost(pid):
