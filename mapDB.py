@@ -31,7 +31,7 @@ def getAllPosts():
 
 def getPost(pid):
     db.execute("""
-        SELECT u.image,u.firstname,u.lastname,m.id,m.username,m.lat,m.lng,m.category,m.desc,p.media FROM users AS u INNER JOIN map AS m ON (m.username=u.username) WHERE m.id=(?)
+        SELECT u.image,u.firstname,u.lastname,m.id,m.username,m.lat,m.lng,m.category,m.desc,m.media FROM users AS u INNER JOIN map AS m ON (m.username=u.username) WHERE m.id=(?)
     """,(pid,))
     post = db.fetchall()
     return post

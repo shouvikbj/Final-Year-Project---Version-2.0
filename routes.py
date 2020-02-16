@@ -396,6 +396,13 @@ def report():
         return redirect(url_for('login'))
 
 
+@app.route("/report/<int:pid>")
+def viewReport(pid):
+    if 'username' in session:
+        post = mapDB.getPost(pid)
+        return render_template("viewReport.html",post=post)
+    else:
+        return redirect(url_for('login'))
 
 
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,17 +10,18 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <link rel="manifest" href="/manifest.json">
-    <title>Post by {{ firstname }} {{ lastname }}</title>
+    <title>Post</title>
     <script>
         if (location.hostname === 'gangpayee.herokuapp.com' && location.protocol !== 'https:') {
-            location.href = location.href.replace('http:','https:')
+            location.href = location.href.replace('http:', 'https:')
         }
     </script>
     <style>
         html {
             scroll-behavior: smooth;
         }
-        #scroll-top{
+
+        #scroll-top {
             position: fixed;
             bottom: 80px;
             right: 15px;
@@ -37,7 +39,8 @@
             -webkit-border-radius: 30px;
             border-radius: 30px;
         }
-        .preloader{
+
+        .preloader {
             position: absolute;
             top: 0;
             left: 0;
@@ -45,11 +48,12 @@
             height: 100%;
             z-index: 9999;
             background-image: url('/pwa_logo/loading.gif');
-            background-repeat: no-repeat; 
+            background-repeat: no-repeat;
             background-color: none;
             background-position: center;
         }
-        #navbar{
+
+        #navbar {
             background-color: white;
             height: 50px;
             box-shadow: 0px 2px 5px 0px slategray;
@@ -59,22 +63,24 @@
             border-radius: 20px;
             /*background-image: linear-gradient(to right,rgba(0, 15, 149, 0.5),rgb(173, 209, 230),white,rgb(173, 209, 230),rgba(0, 15, 149, 0.5));*/
         }
-        #title{
+
+        #title {
             font-size: large;
             font-weight: 500;
             font-family: "Comic Sans MS", cursive, sans-serif;
             padding-top: 12px;
             color: rgb(0, 0, 255);
         }
+
         .avatar {
             vertical-align: middle;
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            position: absolute;
-            margin-left: 40%;
-            margin-top: -2%;
+            float: left;
+            margin-left: 5%;
         }
+
         .footer {
             position: fixed;
             left: 0;
@@ -85,29 +91,37 @@
             box-shadow: 0px 1px 10px 1px slategray;
             background-color: white;
         }
-        #menubar{
+
+        #menubar {
             margin-top: 6%;
-        }
-        #postDp {
-            vertical-align: middle;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
         }
 
         #postContainer {
+            box-shadow: 0px 1px 5px 0px slateblue;
+            text-decoration: none;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
             border-radius: 10px;
-            padding-top: 6px;
-            /*box-shadow: 1px 1px 5px 0px slategray;*/
+        }
+
+        #direction{
+            height: 40px;
+            color: white;
+            background-color: blue;
+            border: none;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
         }
     </style>
     <script>
-        $(document).ready(function(){
-            $(window).ready(function(){
+        $(document).ready(function () {
+            $(window).ready(function () {
                 $(".preloader").fadeOut(500);
             });
             $("#scroll-top").hide();
-            $(window).scroll(function() {
+            $(window).scroll(function () {
                 if ($(this).scrollTop() > 0) {
                     $('#scroll-top').fadeIn();
                 } else {
@@ -117,69 +131,57 @@
         });
     </script>
 </head>
+
 <body align="center">
     <div id="to-top"></div>
     <p style="margin: 4px;"></p>
     <div class="preloader"></div>
     <nav id="navbar">
         <div id="title" class="container">
-            <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;"> GangPayee</i></a>
+            <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;">
+                    GangPayee</i></a>
         </div>
     </nav>
-    
+    <br>
     <div class="container" id="maindiv">
-        <br>
-        <div>
+        <div class="container" id="postContainer">
             {% for i in range(post|length) %}
-            <div class="container" id="postContainer">
-                <a href="/account/{{ post[i][3] }}">
-                    <div>
-                        <img src="/images/profilePics/{{ post[i][0] }}" alt="dp" id="postDp" align="left"
-                            style="margin-top: -2%; margin-right: -12%;">
-                        <h4 style="margin-top: 5%;">{{ post[i][1] }} {{ post[i][2] }}</h4>
-                        <p style="margin: -2%;">( {{ post[i][3] }} )</p>
-                    </div>
-                </a>
-                <hr>
-                {% if post[i][4]|length %}
-                <p style="font-size: 120%;" align="left">{{ post[i][4] }}</p>
-                {% endif %}
-                {% if post[i][5]|length %}
-                {% if ((".mp4" in post[i][5]) or (".ogg" in post[i][5])) %}
-                <video id="video" class="border" controls height="100%" width="100%" style="border-radius: 10px;">
-                    <source src="/posts/postMedia/{{ post[i][5] }}" type="video/mp4" preload="auto">
-                </video>
-                {% else %}
-                <a href="/media/{{ post[i][5] }}">
-                    <img src="/posts/postMedia/{{ post[i][5] }}" alt="media" width="100%" height="100%"
-                        style="border-radius: 10px;">
-                </a>
-                {% endif %}
-                {% endif %}
-                <hr>
-                <div class="container row">
-                    <div class="col-sm-6 col-xs-6 container">
-                        <i class="far fa-thumbs-up"> Like</i>
-                    </div>
-                    <div class="col-sm-6 col-xs-6 container">
-                        <i class="far fa-comments"> Comment</i>
-                    </div>
+            <p style="float: left; font-weight: bold; margin-top: 2%;">Reported by :</p><br><br>
+            <a href="/account/{{ post[i][4] }}">
+                <div class="container">
+                    <img src="/images/profilePics/{{ post[i][0] }}" alt="dp" class="avatar">
+                    <h4>{{ post[i][1] }} {{ post[i][2] }}</h4>
                 </div>
-                <hr>
-                <div class="container" id="commentSection">
-                    Comments will go here !
-                </div>
-                <br>
+            </a>
+            <hr>
+            <div class="container">
+                <h4>Category : {{ post[i][7] }}</h4>
             </div>
+            <p>{{ post[i][8] }}</p><br>
+            {% if post[i][9]|length %}
+            {% if ((".mp4" in post[i][9]) or (".ogg" in post[i][9])) %}
+            <video id="video" class="border" controls height="100%" width="100%" style="border-radius: 10px;">
+                <source src="/posts/postMedia/{{ post[i][9] }}" type="video/mp4" preload="auto">
+            </video>
+            {% else %}
+            <a href="/media/{{ post[i][9] }}">
+            <img src="/posts/postMedia/{{ post[i][9] }}" alt="media" width="100%" height="100%"
+                style="border-radius: 10px;"></a>
+            {% endif %}
+            {% endif %}
+            <hr>
+            <a href="https://www.google.com/maps/dir/?api=1&destination={{ post[i][5] }},{{ post[i][6] }}"><button id="direction"><i class="fas fa-directions"> Directions to Incident Place</i></button></a>
             {% endfor %}
+            <br>
+            <br>
         </div>
-        <br><br><br><br>
     </div>
+    <br><br><br>
 
 
-
-    <button id="scroll-top"><a href="#to-top"><i class="fas fa-arrow-up" style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5dbabd7d4a605919"></script>
+    <button id="scroll-top"><a href="#to-top"><i class="fas fa-arrow-up"
+                style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
     <script src="/app.js"></script>
 </body>
+
 </html>

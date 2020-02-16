@@ -329,10 +329,11 @@
                         //infoWindow.setContent('You are here !');
                         var marker = new google.maps.Marker({
                             position: pos,
-                            map: map,
+                            map: map
                         });
                         infoWindow.open(map, marker);
                         map.setCenter(pos);
+                        map.setZoom(16);
                     }, function () {
                         handleLocationError(true, infoWindow, map.getCenter());
                     });
@@ -375,7 +376,7 @@
             // adding list of markers
             function addMarker(props) {
                 var infoWindow = new google.maps.InfoWindow({
-                    content: '<a href="/report/' + props.id + '/"><h5>' + props.category + '</h5><p>view details</p></a>'
+                    content: '<a href="/report/' + props.id + '\"><h5>' + props.category + '</h5><p>view details</p></a>'
                 });
                 var marker = new google.maps.Marker({
                     position: props.coords,
