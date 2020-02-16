@@ -1,7 +1,7 @@
 from flask import Flask,render_template,redirect,request,url_for,session,flash,jsonify
 import csv
 #import delete as dlt
-import loginDB,postDB,blogDB,msgDB,mapDB,commentDB
+import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB
 import smtplib
 import os
 
@@ -308,10 +308,23 @@ def comment(pid):
         username = session['username']
         comment = request.form.get("commentBox")
         commentDB.addComment(pid,username,comment)
-        redirectUrl = '/post/' + str(pid)
+        redirectUrl = '/post/'+str(pid)
+        flash('comment posted',"success")
         return redirect(redirectUrl)
     else:
         return redirect(url_for('login'))
+
+
+@app.route("/post/<int:pid>/comment/<int:cid>/delete",methods=["POST","GET"])
+def deleteComment(pid,cid):
+    if 'username' in session:
+        commentDB.deleteComment(pid,cid)
+        redirectUrl = '/post/'+str(pid)
+        flash('comment deleted',"warning")
+        return redirect(redirectUrl)
+    else:
+        return redirect(url_for('login'))
+
 
 @app.route("/post/<int:pid>/delete", methods=["GET","POST"])
 def deletePost(pid):
@@ -334,11 +347,46 @@ def viewMedia(img):
 def blog():
     if 'username' in session:
         post = blogDB.getAllPost()
-
-        #return render_template("index.html", post=post)
-        return render_template("blog.html", post=post)
+        user = session['username']
+        return render_template("blog.html", post=post,user=user)
     else:
         return redirect(url_for('login'))
+
+
+@app.route("/blog/<int:pid>/comment",methods=["POST","GET"])
+def blogComment(pid):
+    if 'username' in session:
+        username = session['username']
+        comment = request.form.get("commentBox")
+        blogCommentDB.addblogComment(pid,username,comment)
+        redirectUrl = '/blog/'+str(pid)
+        flash('comment posted',"success")
+        return redirect(redirectUrl)
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route("/blog/<int:pid>/comment/<int:cid>/delete",methods=["POST","GET"])
+def deleteblogComment(pid,cid):
+    if 'username' in session:
+        blogCommentDB.deleteblogComment(pid,cid)
+        redirectUrl = '/blog/'+str(pid)
+        flash('comment deleted',"warning")
+        return redirect(redirectUrl)
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route("/blog/<int:pid>/delete", methods=["GET","POST"])
+def deleteblogPost(pid):
+    if 'username' in session:
+        blogDB.deletePost(pid)
+        flash('Post is deleted !',"success")
+        return redirect(url_for('blog'))
+    else:
+        return redirect(url_for('login'))
+
+
 
 @app.route("/postBlog", methods=["POST"])
 def postBlog():
@@ -361,11 +409,17 @@ def postBlog():
 def blogPost(pid):
     if 'username' in session:
         post = blogDB.getPost(pid)
+        comments = blogCommentDB.getblogComments(pid)
+        user = session['username']
+        postid = post[0][5]
         firstname = post[0][1]
         lastname = post[0][2]
-        return render_template("blogPost.html", post=post, firstname=firstname, lastname=lastname)
+        return render_template("blogPost.html", post=post, firstname=firstname, lastname=lastname,user=user,postid=postid,comments=comments)
     else:
-        return redirect(url_for('login'))
+        post = blogDB.getPost(pid)
+        firstname = post[0][1]
+        lastname = post[0][2]
+        return render_template("blogPost2.html", post=post, firstname=firstname, lastname=lastname)
 
 
 

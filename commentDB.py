@@ -26,7 +26,9 @@ def getComments(pid):
     comments = db.fetchall()
     return comments
 
-
+def deleteComment(pid,cid):
+    db.execute("DELETE FROM comment WHERE id=(?) AND pid=(?)",(cid,pid))
+    con.commit()
 
 
 

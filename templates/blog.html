@@ -294,6 +294,12 @@
         <div>
             {% for i in range(post|length) | reverse %}
             <div class="container" id="postContainer">
+                {% if (user==post[i][3]) %}
+                <div>
+                    <a href="/blog/{{ post[i][5] }}/delete"><i id="delete" class="fas fa-trash"
+                        style="color: rgba(255, 0, 0, 0.863); margin-left: 80%; margin-top: 5%;"></i></a>
+                </div>
+                {% endif %}
                 <a href="/account/{{ post[i][3] }}">
                     <div>
                         <img src="/images/profilePics/{{ post[i][0] }}" alt="dp" id="postDp" align="left"
@@ -311,7 +317,7 @@
                     </div>
                 </a>
                 <hr>
-                <div class="container row">
+                <!--<div class="container row">
                     <div class="col-sm-6 col-xs-6 container">
                         <i class="far fa-thumbs-up" style="color: blueviolet;"> Like</i>
                     </div>
@@ -319,8 +325,11 @@
                         <a href="/blog/{{ post[i][5] }}"><i class="far fa-comments" style="color: blueviolet;"> Comment</i></a>
                     </div>
                 </div>
-                <hr>
-
+                <hr>-->
+                <div class="container row">
+                    <a href="/blog/{{ post[i][5] }}"><p style="color: blueviolet;">view full post -></p></a>
+                </div>
+                <br>
             </div>
             <br>
             {% endfor %}

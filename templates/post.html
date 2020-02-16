@@ -256,7 +256,19 @@
                     GangPayee</i></a>
         </div>
     </nav>
-
+    <br>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+        <span>{{ message }}</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     <div class="container" id="maindiv">
         <br>
         <div>
@@ -324,6 +336,11 @@
             {% for i in range(comments|length) %}
             {% if (user == comments[i][2]) %}
             <div class="container" id="oneMsg">
+                <div>
+                    <a href="/post/{{ comments[i][1] }}/comment/{{ comments[i][0] }}/delete"><i id="delete"
+                            class="fas fa-trash"
+                            style="color: rgba(255, 0, 0, 0.863); margin-left: 80%; margin-top: 5%;"></i></a>
+                </div>
                 <img src="/images/profilePics/{{ comments[i][6] }}" alt="dp" class="avatar" align="left">
                 <h4 align="left" style="padding-left: 20%; padding-top: 0%;">{{ comments[i][4] }}
                     {{ comments[i][5] }}</h4><br>
@@ -339,7 +356,6 @@
             {% endif %}
             {% endfor %}
         </div>
-        
     </div>
     <br><br><br><br>
     <div id="bottom"></div>
