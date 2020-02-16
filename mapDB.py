@@ -25,7 +25,7 @@ def createPost(username,lat,lng,category,desc,media):
     con.commit()
 
 def getAllPosts():
-    db.execute("id,username,lat,lng,category FROM map")
+    db.execute("SELECT id,lat,lng,category FROM map")
     posts = db.fetchall()
     return posts
 

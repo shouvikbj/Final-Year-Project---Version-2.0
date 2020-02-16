@@ -113,9 +113,26 @@
             -webkit-border-radius: 20px;
             border-radius: 20px;
             border: none;
-            background-color: rgba(0, 0, 255, 0.336);
+            background-color: white;
             color: black;
             float: right;
+            box-shadow: 0px 1px 5px 0px slateblue;
+        }
+
+        #showReports{
+            margin: 10px;
+            height: 50px;
+            width: 30%;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            border: none;
+            background-color: white;
+            color: black;
+            float: left;
+            box-shadow: 0px 1px 5px 0px slateblue;
+            font-weight: bold;
         }
 
         #locationLat,
@@ -212,18 +229,37 @@
     </div>
 
     <div class="container" id="maindiv">
+        <!--{% for i in range(posts|length) %}
+        <p onload="addMarker({coords:{lat:'{{ posts[i][1] }}', lng:'{{ posts[i][2] }}'}, id:'{{ posts[i][0] }}' });"></p>
+
+        <input type="hidden" id="pid" value="{{ posts[i][0] }}">
+        <input type="hidden" id="lat" value="{{ posts[i][1] }}">
+        <input type="hidden" id="lng" value="{{ posts[i][2] }}">
+        <p type="hidden" onload="addMarker({ coords: { lat: $(" #lat").val(), lng: $("#lng").val()}, id: $("#pid").val()
+            });"></p>
+
+        <script>
+            var latitude = $("#lat").val()
+            var longitude = $("#lng").val()
+            var pid = $("#pid").val()
+            addMarker({ coords: { lat: 'latitude', lng: 'longitude' }, id: 'pid' });
+        </script>
+
+
+        {% endfor %}-->
         <div id="map"></div>
         <div class="container">
-            <button id="findLocation"><i class="fas fa-map-pin"> </i> Get Location</button>
+            <button id="showReports"> Show Reports</button>
+            <button id="findLocation"><i class="fas fa-map-pin"> Get Location</i></button>
         </div>
         <div class="container">
             <h3>Report an Incident</h3>
             <p style="color: rgba(255, 0, 0, 0.678);">(* marked fields are required)</p><br>
             <form action="/report" id="upload-details" method="POST" enctype="multipart/form-data">
-                <input type="text" name="locationLat" id="locationLat" required
-                    placeholder="Latitude (click Get Location) *"><br><br>
-                <input type="text" name="locationLng" id="locationLng" required
-                    placeholder="Longitude (click Get Location) *"><br><br>
+                <input type="hidden" name="locationLat" id="locationLat" required
+                    placeholder="Latitude (click Get Location) *">
+                <input type="hidden" name="locationLng" id="locationLng" required
+                    placeholder="Longitude (click Get Location) *">
                 <input type="text" name="category" id="category" required
                     placeholder="category of the incident *"><br><br>
                 <input type="text" name="desc" id="desc" required placeholder="write about the incident *"><br><br>
@@ -263,10 +299,10 @@
     <script>
         function initMap() {
             // The location of pku
-            var pku = { lat: 22.3973, lng: 87.7386 };
+            var kolkata = { lat: 22.5726, lng: 88.3639 };
             // The map, centered at pku
             var map = new google.maps.Map(
-                document.getElementById('map'), { zoom: 16, center: pku, mapTypeId: google.maps.MapTypeId.ROADMAP });
+                document.getElementById('map'), { zoom: 5, center: kolkata });
 
             var iconBase =
                 'https://developers.google.com/maps/documentation/javascript/examples/full/images/';
@@ -276,7 +312,7 @@
                 map: map
             });*/
             var infoWindow = new google.maps.InfoWindow({
-                content: '<a href="#"><p>view details</p></a>'
+                content: 'you are here !'
             });
             $("#findLocation").click(function () {
                 if (navigator.geolocation) {
@@ -293,7 +329,7 @@
                         //infoWindow.setContent('You are here !');
                         var marker = new google.maps.Marker({
                             position: pos,
-                            map: map
+                            map: map,
                         });
                         infoWindow.open(map, marker);
                         map.setCenter(pos);
@@ -312,7 +348,45 @@
                     infoWindow.open(map);
                 }
             });
+
+            $("#showReports").on("click", function (e) {
+                $.ajax({
+                    method: "post",
+                    url: "/getMarkers"
+                }).done(function (res) {
+                    /*if (res != null){
+                        alert(res.length + " data returned!");
+                        console.log(res.value);
+                    }*/
+                    $.each(res, function (index, value) {
+                        /*var pid = value[0];
+                        var lat = value[1];
+                        var lng = value[2];
+                        var category = value[3];*/
+                        addMarker({ coords: { lat: parseInt(value[1], 10), lng: parseInt(value[2], 10) }, id: parseInt(value[0], 10), category: value[3] });
+                        
+                    });
+                });
+            });
+
+
+            //addMarker({ coords: { lat: 22.9867569, lng: 87.8549755 },id: 1 });
+            //addMarker({ coords: { lat: 22.3973, lng: 87.7386 },id: 2 });
+            // adding list of markers
+            function addMarker(props) {
+                var infoWindow = new google.maps.InfoWindow({
+                    content: '<a href="/report/' + props.id + '/"><h5>' + props.category + '</h5><p>view details</p></a>'
+                });
+                var marker = new google.maps.Marker({
+                    position: props.coords,
+                });
+                marker.setMap(map);
+                infoWindow.open(map, marker);
+            }
+
         }
+
+
 
     </script>
     <script async defer

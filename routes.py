@@ -359,6 +359,12 @@ def map():
     else:
         return redirect(url_for('login'))
 
+@app.route("/getMarkers", methods=["POST","GET"])
+def getMarkers():
+    posts = mapDB.getAllPosts()
+    return jsonify(posts)
+
+
 @app.route("/report", methods=["GET","POST"])
 def report():
     if 'username' in session:
