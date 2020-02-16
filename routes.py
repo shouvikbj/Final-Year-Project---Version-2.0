@@ -293,7 +293,10 @@ def post(pid):
         lastname = post[0][2]
         return render_template("post.html", post=post, firstname=firstname, lastname=lastname)
     else:
-        return redirect(url_for('login'))
+        post = postDB.getPost(pid)
+        firstname = post[0][1]
+        lastname = post[0][2]
+        return render_template("post2.html", post=post, firstname=firstname, lastname=lastname)
 
 @app.route("/post/<int:pid>/delete", methods=["GET","POST"])
 def deletePost(pid):
