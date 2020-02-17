@@ -365,7 +365,7 @@ def deleteComment(pid,cid):
 def deletePost(pid):
     if 'username' in session:
         username = session["username"]
-        likeDB.dislike(pid)
+        likeDB.dislikeAll(pid)
         commentDB.deleteAllComment(pid)
         postDB.deletePost(pid)
         flash('Post is deleted !',"success")

@@ -25,7 +25,7 @@ def dislike(pid,username):
     db.execute("DELETE FROM like WHERE pid=(?) AND username=(?)",(pid,username))
     con.commit()
 
-def dislike(pid):
+def dislikeAll(pid):
     db.execute("DELETE FROM like WHERE pid=(?)",(pid,))
     con.commit()
 
