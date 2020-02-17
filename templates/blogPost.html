@@ -334,10 +334,10 @@
             {% for i in range(comments|length) %}
             {% if (user == comments[i][2]) %}
             <div class="container" id="oneMsg">
-                <div>
+                <div id="deleteDiv">
                     <a href="/blog/{{ comments[i][1] }}/comment/{{ comments[i][0] }}/delete"><i id="delete"
                             class="fas fa-trash"
-                            style="color: rgba(255, 0, 0, 0.863); margin-left: 80%; margin-top: 5%;"></i></a>
+                            style="color: rgba(255, 0, 0, 0.863); float: left; margin-left: 4%;"></i></a><br><br>
                 </div>
                 <img src="/images/profilePics/{{ comments[i][6] }}" alt="dp" class="avatar" align="left">
                 <h4 align="left" style="padding-left: 20%; padding-top: 0%;">{{ comments[i][4] }}

@@ -36,7 +36,13 @@
         <br><br>
         <hr>
         <p style="color: white;">-- Image --</p>
+        {% if (loggedin) %}
         <p style="color: blanchedalmond;">{{ media }}</p>
+        {% else %}
+        <br>
+        <p style="color: white;">-- to  view image details --</p>
+        <p style="color: blanchedalmond;"><a href="/login"><span style="color:chartreuse;"> Login </span></a>  OR  <a href="/signup"><span style="color:chartreuse;"> SignUp </span></a></p>
+        {% endif %}
         <hr>
     </div>
 </body>

@@ -376,10 +376,12 @@ def deletePost(pid):
 @app.route("/media/<img>")
 def viewMedia(img):
     if 'username' in session:
+        loggedin = 1
+        media = img
+        return render_template("viewMedia.html", media=media, loggedin=loggedin)
+    else:
         media = img
         return render_template("viewMedia.html", media=media)
-    else:
-        return redirect(url_for('login'))
 
 @app.route("/dp/<img>")
 def viewDp(img):
@@ -521,7 +523,9 @@ def viewReport(pid):
         post = mapDB.getPost(pid)
         return render_template("viewReport.html",post=post,user=user)
     else:
-        return redirect(url_for('login'))
+        user = ""
+        post = mapDB.getPost(pid)
+        return render_template("viewReport.html",post=post,user=user)
 
 
 @app.route("/report/<int:pid>/delete", methods=["POST","GET"])
