@@ -1,7 +1,7 @@
 from flask import Flask,render_template,redirect,request,url_for,session,flash,jsonify
 import csv
 #import delete as dlt
-import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB
+import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB
 import smtplib
 import os
 
@@ -290,12 +290,21 @@ def post(pid):
     if 'username' in session:
         post = postDB.getPost(pid)
         comments = commentDB.getComments(pid)
+        likes = likeDB.getLikes(pid)
+        likedUsers = likeDB.usersLiked(pid)
+        no_likes = likes[0][0]
+        #print(likedUsers)
         #print(comments)
         user = session['username']
+        liked = 0
+        for i in range(len(likedUsers)):
+            if user in likedUsers[i][0]:
+                liked = 1
+
         postid = post[0][6]
         firstname = post[0][1]
         lastname = post[0][2]
-        return render_template("post.html", post=post, user=user, firstname=firstname, lastname=lastname, postid=postid, comments=comments)
+        return render_template("post.html", liked=liked, no_likes=no_likes, post=post, user=user, firstname=firstname, lastname=lastname, postid=postid, comments=comments)
     else:
         post = postDB.getPost(pid)
         firstname = post[0][1]
@@ -315,6 +324,32 @@ def comment(pid):
         return redirect(url_for('login'))
 
 
+
+@app.route("/post/<int:pid>/like")
+def like(pid):
+    if 'username' in session:
+        username = session["username"]
+        likeDB.like(pid,username)
+        redirectUrl = '/post/'+str(pid)
+        return redirect(redirectUrl)
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route("/post/<int:pid>/dislike")
+def dislike(pid):
+    if 'username' in session:
+        username = session["username"]
+        likeDB.dislike(pid,username)
+        redirectUrl = '/post/'+str(pid)
+        return redirect(redirectUrl)
+    else:
+        return redirect(url_for('login'))
+
+
+
+
+
 @app.route("/post/<int:pid>/comment/<int:cid>/delete",methods=["POST","GET"])
 def deleteComment(pid,cid):
     if 'username' in session:
@@ -329,6 +364,9 @@ def deleteComment(pid,cid):
 @app.route("/post/<int:pid>/delete", methods=["GET","POST"])
 def deletePost(pid):
     if 'username' in session:
+        username = session["username"]
+        likeDB.dislike(pid)
+        commentDB.deleteAllComment(pid)
         postDB.deletePost(pid)
         flash('Post is deleted !',"success")
         return redirect(url_for('account'))
@@ -340,6 +378,14 @@ def viewMedia(img):
     if 'username' in session:
         media = img
         return render_template("viewMedia.html", media=media)
+    else:
+        return redirect(url_for('login'))
+
+@app.route("/dp/<img>")
+def viewDp(img):
+    if 'username' in session:
+        media = img
+        return render_template("viewDp.html", media=media)
     else:
         return redirect(url_for('login'))
 

@@ -241,6 +241,15 @@
                 $("#confirmAction").hide();
                 $("#addPost").show();
             });
+            $("#liked").hide();
+            $("#like").click(function(){
+                $(this).hide();
+                $("#liked").show();
+            });
+            $("#liked").click(function(){
+                $(this).hide();
+                $("#like").show();
+            });
         });
     </script>
 </head>
@@ -289,7 +298,8 @@
                 <hr>
                 <div class="container row">
                     <div class="col-sm-6 col-xs-6 container">
-                        <i class="far fa-thumbs-up" style="color: black;"> Like</i>
+                        <i class="far fa-thumbs-up" style="color: black;" id="like"> Like</i>
+                        <i class="fas fa-thumbs-up" style="color: blue;" id="liked"> Liked</i>
                     </div>
                     <a href="#bottom">
                         <div class="col-sm-6 col-xs-6 container">

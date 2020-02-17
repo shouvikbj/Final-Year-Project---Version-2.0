@@ -139,7 +139,7 @@
     <div class="container" id="maindiv">
         <div>
             <br>
-            <img src="/images/profilePics/{{ image }}" alt="dp" class="avatar">
+            <a href="/dp/{{ image }}"><img src="/images/profilePics/{{ image }}" alt="dp" class="avatar"></a>
             <br>
             <h2 style="color: black;">{{ firstname }} {{ lastname }}</h2>
             <h4 style="color: rgba(0, 0, 0, 0.8);">( {{ username }} )</h4>
@@ -179,12 +179,13 @@
                 </a>
                 <hr>
                 <div class="container row">
-                    <div class="col-sm-6 col-xs-6 container">
+                    <!--<div class="col-sm-6 col-xs-6 container">
                         <i class="far fa-thumbs-up"> Like</i>
                     </div>
                     <div class="col-sm-6 col-xs-6 container">
                         <i class="far fa-comments"> Comment</i>
-                    </div>
+                    </div>-->
+                    <a href="/post/{{ userPost[i][6] }}"><p style="color: blueviolet;">view full post -></p></a>
                 </div>
                 <hr>
 

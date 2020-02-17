@@ -30,7 +30,9 @@ def deleteComment(pid,cid):
     db.execute("DELETE FROM comment WHERE id=(?) AND pid=(?)",(cid,pid))
     con.commit()
 
-
+def deleteAllComment(pid):
+    db.execute("DELETE FROM comment WHERE pid=(?)",(pid,))
+    con.commit()
 
 
 
