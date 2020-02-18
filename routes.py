@@ -480,6 +480,8 @@ def blogDislike(pid):
 @app.route("/blog/<int:pid>/delete", methods=["GET","POST"])
 def deleteblogPost(pid):
     if 'username' in session:
+        blogLikeDB.dislikeAll(pid)
+        blogCommentDB.deleteAllComment(pid)
         blogDB.deletePost(pid)
         flash('Post is deleted !',"success")
         return redirect(url_for('blog'))

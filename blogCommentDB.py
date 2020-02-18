@@ -30,7 +30,9 @@ def deleteblogComment(pid,cid):
     db.execute("DELETE FROM blogComment WHERE id=(?) AND pid=(?)",(cid,pid))
     con.commit()
 
-
+def deleteAllComment(pid):
+    db.execute("DELETE FROM blogComment WHERE pid=(?)",(pid,))
+    con.commit()
 
 
 
