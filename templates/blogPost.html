@@ -241,7 +241,7 @@
                 $("#confirmAction").hide();
                 $("#addPost").show();
             });
-            $("#liked").hide();
+            /*$("#liked").hide();
             $("#like").click(function(){
                 $(this).hide();
                 $("#liked").show();
@@ -249,7 +249,7 @@
             $("#liked").click(function(){
                 $(this).hide();
                 $("#like").show();
-            });
+            });*/
         });
     </script>
 </head>
@@ -257,7 +257,7 @@
 <body align="center">
     <div id="to-top"></div>
     <p style="margin: 4px;"></p>
-    <div class="preloader"></div>
+    <!--<div class="preloader"></div>-->
     <nav id="navbar">
         <div id="title" class="container">
             <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;">
@@ -295,11 +295,16 @@
                 {% if post[i][4]|length %}
                 <p style="font-size: 120%;" align="left">{{ post[i][4] }}</p>
                 {% endif %}
+                <br>
+                <p style="float: left;">{{ no_likes }} likes</p><br>
                 <hr>
                 <div class="container row">
                     <div class="col-sm-6 col-xs-6 container">
-                        <i class="far fa-thumbs-up" style="color: black;" id="like"> Like</i>
-                        <i class="fas fa-thumbs-up" style="color: blue;" id="liked"> Liked</i>
+                        {% if liked %}
+                        <a href="/blog/{{ post[i][5] }}/dislike"><i class="fas fa-thumbs-up" style="color: blue;" id="liked"> Liked</i></a>
+                        {% else %}
+                        <a href="/blog/{{ post[i][5] }}/like"><i class="far fa-thumbs-up" style="color: black;" id="like"> Like</i></a>
+                        {% endif %}
                     </div>
                     <a href="#bottom">
                         <div class="col-sm-6 col-xs-6 container">
@@ -340,8 +345,7 @@
                             style="color: rgba(255, 0, 0, 0.863); float: left; margin-left: 4%;"></i></a><br><br>
                 </div>
                 <img src="/images/profilePics/{{ comments[i][6] }}" alt="dp" class="avatar" align="left">
-                <h4 align="left" style="padding-left: 20%; padding-top: 0%;">{{ comments[i][4] }}
-                    {{ comments[i][5] }}</h4><br>
+                <h4 align="left" style="padding-left: 20%; padding-top: 0%;"> You </h4><br>
                 <p align="left" style="padding-left: 10%;">{{ comments[i][3] }}</p>
             </div>
             {% else %}

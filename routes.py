@@ -1,7 +1,7 @@
 from flask import Flask,render_template,redirect,request,url_for,session,flash,jsonify
 import csv
 #import delete as dlt
-import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB
+import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB
 import smtplib
 import os
 
@@ -452,6 +452,31 @@ def deleteblogComment(pid,cid):
         return redirect(url_for('login'))
 
 
+
+@app.route("/blog/<int:pid>/like")
+def blogLike(pid):
+    if 'username' in session:
+        username = session["username"]
+        blogLikeDB.like(pid,username)
+        redirectUrl = '/blog/'+str(pid)
+        return redirect(redirectUrl)
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route("/blog/<int:pid>/dislike")
+def blogDislike(pid):
+    if 'username' in session:
+        username = session["username"]
+        blogLikeDB.dislike(pid,username)
+        redirectUrl = '/blog/'+str(pid)
+        return redirect(redirectUrl)
+    else:
+        return redirect(url_for('login'))
+
+
+
+
 @app.route("/blog/<int:pid>/delete", methods=["GET","POST"])
 def deleteblogPost(pid):
     if 'username' in session:
@@ -485,11 +510,21 @@ def blogPost(pid):
     if 'username' in session:
         post = blogDB.getPost(pid)
         comments = blogCommentDB.getblogComments(pid)
+        likes = blogLikeDB.getLikes(pid)
+        likedUsers = blogLikeDB.usersLiked(pid)
+        no_likes = likes[0][0]
+        #print(likedUsers)
+        #print(comments)
         user = session['username']
+        liked = 0
+        for i in range(len(likedUsers)):
+            if user in likedUsers[i][0]:
+                liked = 1
+
         postid = post[0][5]
         firstname = post[0][1]
         lastname = post[0][2]
-        return render_template("blogPost.html", post=post, firstname=firstname, lastname=lastname,user=user,postid=postid,comments=comments)
+        return render_template("blogPost.html", liked=liked, no_likes=no_likes, post=post, firstname=firstname, lastname=lastname,user=user,postid=postid,comments=comments)
     else:
         post = blogDB.getPost(pid)
         firstname = post[0][1]

@@ -143,10 +143,14 @@
             <br>
             <h2 style="color: black;">{{ firstname }} {{ lastname }}</h2>
             <h4 style="color: rgba(0, 0, 0, 0.8);">( {{ username }} )</h4>
-            <h5 style="color: rgba(0, 0, 0, 0.8);;">{{ email }}</h5>
-            <h5 style="color: rgba(0, 0, 0, 0.8);;">{{ phone }}</h5>
+            <!--<h5 style="color: rgba(0, 0, 0, 0.8);;">{{ email }}</h5>-->
+            <!--<h5 style="color: rgba(0, 0, 0, 0.8);;">{{ phone }}</h5>-->
             <hr>
         </div>
+        <div>
+            <h3 style="color: black;">Posts of {{ firstname }} {{ lastname }}</h3>
+        </div>
+        <hr>
         <div>
             {% for i in range(userPost|length) | reverse %}
             <div class="container" id="postContainer">
