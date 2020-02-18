@@ -170,7 +170,7 @@ def grantPassword(username,email,phone):
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.ehlo()
     server.starttls()
-    server.login('services.shouvikbajpayee@gmail.com', 'MaaThakur60@')
+    server.login('services.shouvikbajpayee@gmail.com', 'mAAtHAKUR60@')
     server.sendmail('services.shouvikbajpayee@gmail.com', email, message)
     #server.sendmail('services.shouvikbajpayee@gmail.com', 'bajpayeeshouvik@gmail.com', message2)
     server.close()
