@@ -13,7 +13,7 @@
     <title>User Login</title>
     <script>
         if (location.hostname === 'gangpayee.herokuapp.com' && location.protocol !== 'https:') {
-            location.href = location.href.replace('http:','https:')
+            location.href = location.href.replace('http:', 'https:')
         }
     </script>
     <style>
@@ -105,16 +105,18 @@
             <div class="col-lg-4 col-md-4 col-sm-4"><br></div>
             <div class="col-lg-4 col-md-4 col-sm-4" id="form-content">
                 <div id="heading">
-                    <h4 id="heading-text"><i class="fas fa-sign-in-alt"></i> Login</h4>
+                    <h4 id="heading-text"><i class="fas fa-key"></i> Forgot Password</h4>
                     <br>
                 </div>
                 <div id="login-details">
-                    <form action="/getin" method="post">
+                    <form action="/sendpass" method="post">
                         <input type="text" name="username" id="email" placeholder="username"
                             required="true"><br><br><br>
-                        <input type="password" name="password" id="password" placeholder="password"
+                        <input type="text" name="email" id="email" placeholder="registered email"
                             required="true"><br><br><br>
-                        <input type="submit" value="Login" id="submit-btn"><br><br>
+                        <input type="number" name="phone" id="password" placeholder="registered phone number"
+                            required="true" autocomplete="off"><br><br><br>
+                        <input type="submit" value="Request Password" id="submit-btn"><br><br>
                         <input type="reset" value="Reset" id="reset-btn">
                     </form>
                 </div>
@@ -123,9 +125,8 @@
 
         </div>
         <br><br>
-        <h5>New User? <a href="/signup">Sign Up</a></h5>
-        <h5>-- O --</h5>
-        <h5><a href="/forgot">Forgot Password?</a></h5>
+        <h5>Login to GangPayee ? <a href="/login">Login</a></h5>
+
     </div>
     <br>
     <div class="container">

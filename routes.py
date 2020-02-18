@@ -125,31 +125,58 @@ def about():
 def forgot():
     return render_template("forgot.html")
 
-@app.route("/sendpass", methods = ["POST","GET"])
+@app.route("/sendpass", methods=["POST","GET"])
 def sendpassword():
     username = request.form.get("username")
     email = request.form.get("email")
-    pnumber = request.form.get("pnumber")
+    pnumber = request.form.get("phone")
     pswd = loginDB.getPassword(username)
+    if (len(pswd)==0):
+        flash('Wrong username. Try again with correct \'username\'',"warning")
+        return redirect(url_for('forgot'))
     phone = pswd[0][0]
     password = pswd[0][1]
-    msg = "\nLogin credentials for 'GangPayee' :: \nFor Username : '{}' \n Your 'Password' : {}"
-    message = msg.format(username,password)
-    msg2 = "\nAn user with 'Username' : {} \n Requested 'Password'. \nPlease Check."
-    message2 = msg2.format(username)
+    username1 = pswd[0][2]
+    email1 = pswd[0][3]
+    #msg = "\nLogin credentials for 'GangPayee' :: \nFor Username : '{}' \n Your 'Password' : {}"
+    #message = msg.format(username,password)
+    msg2 = "\nAn user with 'Username' : {} \nRequested 'Password'. \nTo confirm, click the link below:\nhttps://gangpayee.herokuapp.com/sendpass/{}/{}/{}/grant"
+    message2 = msg2.format(username,username,email,phone)
 
-    if(pnumber == phone):
+    if((pnumber==phone) and (email==email1)):
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.ehlo()
         server.starttls()
         server.login('services.shouvikbajpayee@gmail.com', 'MaaThakur60@')
-        server.sendmail('services.shouvikbajpayee@gmail.com', email, message)
+        #server.sendmail('services.shouvikbajpayee@gmail.com', email, message)
         server.sendmail('services.shouvikbajpayee@gmail.com', 'bajpayeeshouvik@gmail.com', message2)
         server.close()
-
+        flash('Password will be sent to your Registered Email after the varification of your request.',"success")
         return redirect(url_for('login'))
     else:
-        return render_template("invalid.html")
+        flash('Provided credentials didn\'t match ! Try again.',"warning")
+        return redirect(url_for('forgot'))
+
+@app.route("/sendpass/<username>/<email>/<phone>/grant")
+def grantPassword(username,email,phone):
+    username = username
+    email = email
+    pnumber = phone
+    pswd = loginDB.getPassword(username)
+    phone = pswd[0][0]
+    password = pswd[0][1]
+    msg = "\nLogin credentials for 'GangPayee' :: \nFor Username : '{}' \nYour 'Password' : {}"
+    message = msg.format(username,password)
+    server = smtplib.SMTP("smtp.gmail.com", 587)
+    server.ehlo()
+    server.starttls()
+    server.login('services.shouvikbajpayee@gmail.com', 'MaaThakur60@')
+    server.sendmail('services.shouvikbajpayee@gmail.com', email, message)
+    #server.sendmail('services.shouvikbajpayee@gmail.com', 'bajpayeeshouvik@gmail.com', message2)
+    server.close()
+    flash('Password is sent to user.',"success")
+    return redirect(url_for('login'))
+
 
 @app.route("/account")
 def account():

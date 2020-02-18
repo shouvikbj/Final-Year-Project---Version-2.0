@@ -45,7 +45,7 @@ def listProfilePics():
     return profilePics
 
 def getPassword(username):
-    db.execute("SELECT phone,password FROM users WHERE username = (?)",(username,))
+    db.execute("SELECT phone,password,username,email FROM users WHERE username = (?)",(username,))
     password = db.fetchall()
     return password
 
