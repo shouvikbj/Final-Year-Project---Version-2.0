@@ -41,7 +41,7 @@
         }
 
         .preloader {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -50,6 +50,19 @@
             background-image: url('/pwa_logo/loading.gif');
             background-repeat: no-repeat;
             background-color: none;
+            background-position: center;
+        }
+
+        .preloader2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background-image: url('/pwa_logo/loading5.gif');
+            background-repeat: no-repeat;
+            background-color: white;
             background-position: center;
         }
 
@@ -188,6 +201,7 @@
     </style>
     <script>
         $(document).ready(function () {
+            $(".preloader2").hide();
             $(window).ready(function () {
                 $(".preloader").fadeOut(500);
             });
@@ -207,6 +221,9 @@
     <div id="to-top"></div>
     <p style="margin: 4px;"></p>
     <div class="preloader"></div>
+    <div class="preloader2">
+        <h3 style="color: black; margin-top: 50%;">..reporting..</h3>
+    </div>
     <nav id="navbar">
         <div id="title" class="container">
             <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;">
@@ -266,7 +283,7 @@
                 <input type="text" name="desc" id="desc" required placeholder="write about the incident *" autocomplete="off"><br><br>
                 <h4>Image/Video *</h4>
                 <input type="file" name="media" id="media" accept="image/video/*" required><br><br>
-                <input type="submit" value="Report Incident" id="report"><br><br>
+                <a href="#to-top"><input type="submit" value="Report Incident" id="report"></a><br><br>
                 <input type="reset" value="Reset" id="reset">
             </form>
 
@@ -277,12 +294,12 @@
 
     <div class="footer container">
         <div class="row" id="menubar">
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/"><button style="background-color: white; border: none;"><i class="fas fa-home"></i></button></a></div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/"><button style="background-color: white; border: none;"><i class="fas fa-home"></i></button></a></div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/blog"><button style="background-color: white; border: none;"><i class="fas fa-atlas"></i></button></a></div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="#"><button style="background-color: white; border: none;"><i class="fas fa-street-view" style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></button></a></div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/msg"><button style="background-color: white; border: none;"><i class="fab fa-facebook-messenger"></i></button></a></div>
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/account"><button style="background-color: white; border: none;"><i class="fas fa-user-circle"></i></button></a></div>
-            <!--<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><i class="fas fa-home"></i></div>-->
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/account"><button style="background-color: white; border: none;"><i class="fas fa-user-circle"></i></button></a></div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/notification"><button style="background-color: white; border: none;"><i class="fas fa-bell"></i></button></a></div>
         </div>
     </div>
 
@@ -383,6 +400,13 @@
 
 
 
+    </script>
+    <script>
+        $("#report").click(function(){
+            if(($("#desc").val()!='') && ($("#media").val()!='') && ($("#category").val()!='')){
+                $(".preloader2").show();
+            }
+        });
     </script>
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgaGcRcdBLE0y1c4Uga2nJxLro7kJXXbs&callback=initMap">

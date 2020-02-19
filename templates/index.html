@@ -60,7 +60,7 @@
         }
 
         .preloader {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -69,6 +69,19 @@
             background-image: url('/pwa_logo/loading.gif');
             background-repeat: no-repeat;
             background-color: none;
+            background-position: center;
+        }
+
+        .preloader2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background-image: url('/pwa_logo/loading5.gif');
+            background-repeat: no-repeat;
+            background-color: white;
             background-position: center;
         }
 
@@ -240,6 +253,7 @@
     </style>
     <script>
         $(document).ready(function () {
+            $(".preloader2").hide();
             $(window).ready(function () {
                 $(".preloader").fadeOut(500);
             });
@@ -271,11 +285,14 @@
     <div id="to-top"></div>
     <p style="margin: 4px;"></p>
     <div class="preloader"></div>
+    <div class="preloader2">
+        <h3 style="color: black; margin-top: 50%;">..posting..</h3>
+    </div>
     <nav id="navbar">
         <div id="title" class="container">
             <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;">
                     GangPayee</i></a>
-            <a href="/account"><img src="/images/profilePics/{{ image }}" alt="Avatar" class="avatar"></a>
+            <a href="/account"><img data-src="/images/profilePics/{{ image }}" alt="Avatar" class="avatar"></a>
         </div>
     </nav>
     <br>
@@ -307,44 +324,46 @@
         <br>
         <div>
             {% for i in range(post|length) | reverse %}
-            <div class="container" id="postContainer">
-                <a href="/account/{{ post[i][3] }}">
-                    <div>
-                        <img src="/images/profilePics/{{ post[i][0] }}" alt="dp" id="postDp" align="left"
-                            style="margin-top: -2%; margin-right: -12%;">
-                        <h4 style="margin-top: 5%;">{{ post[i][1] }} {{ post[i][2] }}</h4>
-                        <p style="margin: -2%;">( {{ post[i][3] }} )</p>
+            <div id="eachPost">
+                <div class="container" id="postContainer">
+                    <a href="/account/{{ post[i][3] }}">
+                        <div>
+                            <img data-src="/images/profilePics/{{ post[i][0] }}" alt="dp" id="postDp" align="left"
+                                style="margin-top: -2%; margin-right: -12%;">
+                            <h4 style="margin-top: 5%;">{{ post[i][1] }} {{ post[i][2] }}</h4>
+                            <p style="margin: -2%;">( {{ post[i][3] }} )</p>
+                        </div>
+                    </a>
+                    <hr>
+                    <a href="/post/{{ post[i][6] }}">
+                        <div>
+                            {% if post[i][4]|length %}
+                            <p style="font-size: 120%; color: black;" align="left">{{ post[i][4] }}</p>
+                            {% endif %}
+                            {% if post[i][5]|length %}
+                            {% if ((".mp4" in post[i][5]) or (".ogg" in post[i][5])) %}
+                            <video data-src="/posts/postMedia/{{ post[i][5] }}" type="video/mp4" preload="auto" id="video" class="border" controls height="100%" width="100%" style="border-radius: 10px;">
+
+                            </video>
+                            {% else %}
+                            <img data-src="/posts/postMedia/{{ post[i][5] }}" alt="media" width="100%" height="100%"
+                                style="border-radius: 10px;">
+                            {% endif %}
+                            {% endif %}
+                        </div>
+                    </a>
+                    <hr>
+                    <div class="container row">
+                        <!--<div class="col-sm-6 col-xs-6 container">
+                            <i class="far fa-thumbs-up" style="color: blueviolet;"> Like</i>
+                        </div>
+                        <div class="col-sm-6 col-xs-6 container">
+                            <a href="/post/{{ post[i][6] }}"><i class="far fa-comments" style="color: blueviolet;"> Comment</i></a>
+                        </div>-->
+                        <a href="/post/{{ post[i][6] }}"><p style="color: blueviolet;">view full post -></p></a>
                     </div>
-                </a>
-                <hr>
-                <a href="/post/{{ post[i][6] }}">
-                    <div>
-                        {% if post[i][4]|length %}
-                        <p style="font-size: 120%; color: black;" align="left">{{ post[i][4] }}</p>
-                        {% endif %}
-                        {% if post[i][5]|length %}
-                        {% if ((".mp4" in post[i][5]) or (".ogg" in post[i][5])) %}
-                        <video id="video" class="border" controls height="100%" width="100%" style="border-radius: 10px;">
-                            <source src="/posts/postMedia/{{ post[i][5] }}" type="video/mp4" preload="auto">
-                        </video>
-                        {% else %}
-                        <img src="/posts/postMedia/{{ post[i][5] }}" alt="media" width="100%" height="100%"
-                            style="border-radius: 10px;">
-                        {% endif %}
-                        {% endif %}
-                    </div>
-                </a>
-                <hr>
-                <div class="container row">
-                    <!--<div class="col-sm-6 col-xs-6 container">
-                        <i class="far fa-thumbs-up" style="color: blueviolet;"> Like</i>
-                    </div>
-                    <div class="col-sm-6 col-xs-6 container">
-                        <a href="/post/{{ post[i][6] }}"><i class="far fa-comments" style="color: blueviolet;"> Comment</i></a>
-                    </div>-->
-                    <a href="/post/{{ post[i][6] }}"><p style="color: blueviolet;">view full post -></p></a>
+                    <br>
                 </div>
-                <br>
             </div>
             <br>
             {% endfor %}
@@ -367,12 +386,12 @@
 
     <div class="footer container">
         <div class="row" id="menubar">
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="#"><button style="background-color: white; border: none;"><i class="fas fa-home" style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></button></a></div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/"><button style="background-color: white; border: none;"><i class="fas fa-home" style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></button></a></div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/blog"><button style="background-color: white; border: none;"><i class="fas fa-atlas"></i></button></a></div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/map"><button style="background-color: white; border: none;"><i class="fas fa-street-view"></i></button></a></div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/msg"><button style="background-color: white; border: none;"><i class="fab fa-facebook-messenger"></i></button></a></div>
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/account"><button style="background-color: white; border: none;"><i class="fas fa-user-circle"></i></button></a></div>
-            <!--<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><i class="fas fa-home"></i></div>-->
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/account"><button style="background-color: white; border: none;"><i class="fas fa-user-circle"></i></button></a></div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/notification"><button style="background-color: white; border: none;"><i class="fas fa-bell"></i></button></a></div>
         </div>
     </div>
 
@@ -380,6 +399,50 @@
                 style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
     <i class="fas fa-plus-circle" id="addPost"></i>
     <i class="fas fa-times-circle" id="closeModal"></i>
+
+    <script>
+        var images = document.querySelectorAll('img');
+        var videos = document.querySelectorAll('video');
+
+        var observer = new IntersectionObserver(function(entries, observer){
+            entries.forEach(entry => {
+                if(entry.isIntersecting){
+                    var img = entry.target;
+                    img.setAttribute('src', img.getAttribute('data-src'));
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        images.forEach(img => {
+            observer.observe(img);
+        });
+
+        var observer = new IntersectionObserver(function(entries, observer){
+            entries.forEach(entry => {
+                if(entry.isIntersecting){
+                    var video = entry.target;
+                    video.setAttribute('src', video.getAttribute('data-src'));
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        videos.forEach(video => {
+            observer.observe(video);
+        });
+    </script>
+    <script>
+        $("#send-btn").click(function(){
+            if(($("#desc").val()!='') || ($("#file-picker").val()!='')){
+                $(".preloader2").show();
+            }
+        });
+    </script>
     <script src="/app.js"></script>
 </body>
 

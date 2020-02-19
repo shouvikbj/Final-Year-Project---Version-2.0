@@ -23,7 +23,6 @@ def home():
         user = loginDB.getUser(session['username'])
         image = user[0][6]
         post = postDB.getAllPost()
-
         #return render_template("index.html", post=post)
         return render_template("index.html", image=image,post=post)
     else:
@@ -585,11 +584,15 @@ def viewReport(pid):
     if 'username' in session:
         user = session['username']
         post = mapDB.getPost(pid)
-        return render_template("viewReport.html",post=post,user=user)
+        firstname = post[0][1]
+        lastname = post[0][2]
+        return render_template("viewReport.html",post=post,user=user,firstname=firstname,lastname=lastname)
     else:
         user = ""
         post = mapDB.getPost(pid)
-        return render_template("viewReport.html",post=post,user=user)
+        firstname = post[0][1]
+        lastname = post[0][2]
+        return render_template("viewReport.html",post=post,user=user,firstname=firstname,lastname=lastname)
 
 
 @app.route("/report/<int:pid>/delete", methods=["POST","GET"])
@@ -629,6 +632,14 @@ def sendMsg():
         return redirect(url_for('msgHome'))
     else:
         return redirect(url_for('login'))
+
+
+
+@app.route("/notification")
+def notification():
+    return render_template("notification.html")
+
+
 
 
 #@app.route("/customsearch")

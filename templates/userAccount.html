@@ -13,7 +13,7 @@
     <title>{{ firstname }} {{ lastname }}</title>
     <script>
         if (location.hostname === 'gangpayee.herokuapp.com' && location.protocol !== 'https:') {
-            location.href = location.href.replace('http:','https:')
+            location.href = location.href.replace('http:', 'https:')
         }
     </script>
     <style>
@@ -42,7 +42,7 @@
         }
 
         .preloader {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -139,7 +139,7 @@
     <div class="container" id="maindiv">
         <div>
             <br>
-            <a href="/dp/{{ image }}"><img src="/images/profilePics/{{ image }}" alt="dp" class="avatar"></a>
+            <a href="/dp/{{ image }}"><img data-src="/images/profilePics/{{ image }}" alt="dp" class="avatar"></a>
             <br>
             <h2 style="color: black;">{{ firstname }} {{ lastname }}</h2>
             <h4 style="color: rgba(0, 0, 0, 0.8);">( {{ username }} )</h4>
@@ -156,7 +156,7 @@
             <div class="container" id="postContainer">
 
                 <div style="color: black;">
-                    <img src="/images/profilePics/{{ userPost[i][0] }}" alt="dp" id="postDp" align="left"
+                    <img data-src="/images/profilePics/{{ userPost[i][0] }}" alt="dp" id="postDp" align="left"
                         style="margin-top: -2%; margin-right: -12%;">
                     <h4 style="margin-top: 5%;">{{ userPost[i][1] }} {{ userPost[i][2] }}</h4>
                     <p style="margin: -2%;">( {{ userPost[i][3] }} )</p>
@@ -172,10 +172,10 @@
                         {% if ((".mp4" in userPost[i][5]) or (".ogg" in userPost[i][5])) %}
                         <video id="video" class="border" controls height="100%" width="100%"
                             style="border-radius: 10px;">
-                            <source src="/posts/postMedia/{{ userPost[i][5] }}" type="video/mp4" preload="auto">
+                            <source data-src="/posts/postMedia/{{ userPost[i][5] }}" type="video/mp4" preload="auto">
                         </video>
                         {% else %}
-                        <img src="/posts/postMedia/{{ userPost[i][5] }}" alt="media" width="100%" height="100%"
+                        <img data-src="/posts/postMedia/{{ userPost[i][5] }}" alt="media" width="100%" height="100%"
                             style="border-radius: 10px;">
                         {% endif %}
                         {% endif %}
@@ -189,9 +189,11 @@
                     <div class="col-sm-6 col-xs-6 container">
                         <i class="far fa-comments"> Comment</i>
                     </div>-->
-                    <a href="/post/{{ userPost[i][6] }}"><p style="color: blueviolet;">view full post -></p></a>
+                    <a href="/post/{{ userPost[i][6] }}">
+                        <p style="color: blueviolet;">view full post -></p>
+                    </a>
                 </div>
-                <hr>
+                <br>
 
             </div>
             <br>
@@ -205,6 +207,50 @@
 
     <button id="scroll-top"><a href="#to-top"><i class="fas fa-arrow-up"
                 style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
+
+    <script>
+        var images = document.querySelectorAll('img');
+        var videos = document.querySelectorAll('video');
+
+        var observer = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    var img = entry.target;
+                    img.setAttribute('src', img.getAttribute('data-src'));
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        images.forEach(img => {
+            observer.observe(img);
+        });
+
+        var observer = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    var video = entry.target;
+                    video.setAttribute('src', video.getAttribute('data-src'));
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        videos.forEach(video => {
+            observer.observe(video);
+        });
+    </script>
+    <script>
+        $("#send-btn").click(function () {
+            if (($("#desc").val() != '') || ($("#file-picker").val() != '')) {
+                $(".preloader2").show();
+            }
+        });
+    </script>
     <script src="/app.js"></script>
 </body>
 

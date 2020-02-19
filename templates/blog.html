@@ -60,7 +60,7 @@
         }
 
         .preloader {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -69,6 +69,19 @@
             background-image: url('/pwa_logo/loading.gif');
             background-repeat: no-repeat;
             background-color: none;
+            background-position: center;
+        }
+
+        .preloader2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background-image: url('/pwa_logo/loading5.gif');
+            background-repeat: no-repeat;
+            background-color: white;
             background-position: center;
         }
 
@@ -228,6 +241,7 @@
     </style>
     <script>
         $(document).ready(function () {
+            $(".preloader2").hide();
             $(window).ready(function () {
                 $(".preloader").fadeOut(500);
             });
@@ -259,6 +273,9 @@
     <div id="to-top"></div>
     <p style="margin: 4px;"></p>
     <div class="preloader"></div>
+    <div class="preloader2">
+        <h3 style="color: black; margin-top: 50%;">..posting..</h3>
+    </div>
     <nav id="navbar">
         <div id="title" class="container">
             <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;">
@@ -350,12 +367,12 @@
 
     <div class="footer container">
         <div class="row" id="menubar">
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/"><button style="background-color: white; border: none;"><i class="fas fa-home"></i></button></a></div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/"><button style="background-color: white; border: none;"><i class="fas fa-home"></i></button></a></div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="#"><button style="background-color: white; border: none;"><i class="fas fa-atlas" style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></button></a></div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/map"><button style="background-color: white; border: none;"><i class="fas fa-street-view"></i></button></a></div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/msg"><button style="background-color: white; border: none;"><i class="fab fa-facebook-messenger"></i></button></a></div>
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><a href="/account"><button style="background-color: white; border: none;"><i class="fas fa-user-circle"></i></button></a></div>
-            <!--<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><i class="fas fa-home"></i></div>-->
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/account"><button style="background-color: white; border: none;"><i class="fas fa-user-circle"></i></button></a></div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/notification"><button style="background-color: white; border: none;"><i class="fas fa-bell"></i></button></a></div>
         </div>
     </div>
     
@@ -364,30 +381,14 @@
                 style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
     <i class="fas fa-plus-circle" id="addPost"></i>
     <i class="fas fa-times-circle" id="closeModal"></i>
+    <script>
+        $("#send-btn").click(function(){
+            if(($("#desc").val()!='')){
+                $(".preloader2").show();
+            }
+        });
+    </script>
     <script src="/app.js"></script>
 </body>
-
-<!--<script>
-    $(document).ready(function(){
-        $("#livesearch").on("input",function(e){
-            //textinsearchbox = $("#livesearch").val();
-            $("#userlist").empty();
-            $.ajax({
-                method:"post",
-                url:"/livesearch",
-                data:{text:$("#livesearch").val()},
-                success:function(res){
-                    var data = "<ul>";
-                    $.each(res,function(index,value){
-                        data += "<a href=\"/account\">"+"<li>"+value[1] +" "+ value[2]+"</li>"+"</a>"
-                    });
-                    data += "</ul>";
-                    $("#userlist").html(data);
-                    //$("#userlist").empty();
-                }
-            })
-        });
-    })
-</script>-->
 
 </html>
