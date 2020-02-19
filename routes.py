@@ -150,7 +150,7 @@ def sendpassword():
         #server.sendmail('services.shouvikbajpayee@gmail.com', email, message)
         server.sendmail('services.shouvikbajpayee@gmail.com', 'bajpayeeshouvik@gmail.com', message2)
         server.close()
-        flash('Password will be sent to your Registered Email after the varification of your request.',"success")
+        flash('Password will be sent to your Registered Email after the verification of your request.',"success")
         return redirect(url_for('login'))
     else:
         flash('Provided credentials didn\'t match ! Try again.',"warning")
