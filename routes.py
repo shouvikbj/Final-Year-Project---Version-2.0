@@ -50,13 +50,33 @@ def getin():
     username = request.form.get("username")
     password = request.form.get("password")
     details = loginDB.login(username)
-    if(username==details[0][0] and password==details[0][1]):
-        session['username'] = username
-        flash('Successfully logged in !', "success")
-        return redirect(url_for('index'))
+    if(len(details)):
+        if(username==details[0][0] and password==details[0][1]):
+            session['username'] = username
+            flash('Successfully logged in !', "success")
+            return redirect(url_for('index'))
+        else:
+            flash('Wrong \"username\" or \"password\"..\nTry again..', "danger")
+            return redirect(url_for('login'))
+    elif(username=="admin" and password=="gangpayee@gcetts"):
+        session['username'] = "Admin"
+        return redirect(url_for('admin'))
+    
     else:
-        flash('Wrong \"username\" or \"password\"..\nTry again..', "danger")
-        return render_template("login.html")
+            flash('Wrong \"username\" or \"password\"..\nTry again..', "danger")
+            return redirect(url_for('login'))
+
+@app.route('/admin')
+def admin():
+    if 'username' in session:
+        if (session['username']=="Admin"):
+            users = loginDB.getAll()
+            return render_template("admin.html",users=users)
+        else:
+            flash("Admin access needed.","warning")
+            return redirect(url_for('login'))
+    else:
+        return redirect(url_for('login'))
 
 @app.route("/signup")
 def signup():
@@ -96,22 +116,22 @@ def register():
         return  render_template("signup.html")
     
     else:
-        writer.writerow((username,firstname,lastname,email,phone,password,img))
-        loginDB.createUser(username,firstname,lastname,email,phone,password,img)
-
-        file.close()
-
-        message = "To Login into \"GangPayee\" WebApp \n\nUSERNAME : {}.\n\nRegards from, \nTeam \"GangPayee\""
+        message = "To Login into \"GangPayee\" WebApp \n\nUSERNAME : {}\n\nRegards from, \nTeam \"GangPayee\""
         message1 = message.format(username)
-        message2 = "A new User just registered. \nCheckout."
+        message2 = "A new User just registered. \nCheckout :\nhttps://gangpayee.herokuapp.com/admin"
 
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.ehlo()
         server.starttls()
-        server.login('services.shouvikbajpayee@gmail.com', 'MaaThakur60@')
+        server.login('services.shouvikbajpayee@gmail.com', 'mAAtHAKUR60@')
         server.sendmail('services.shouvikbajpayee@gmail.com', email, message1)
         server.sendmail('services.shouvikbajpayee@gmail.com', 'bajpayeeshouvik@gmail.com', message2)
         server.close()
+
+        writer.writerow((username,firstname,lastname,email,phone,password,img))
+        loginDB.createUser(username,firstname,lastname,email,phone,password,img)
+
+        file.close()
 
         flash('Your \"Username\" is sent to your registered Email !', "success")
         return redirect(url_for('login'))
@@ -212,6 +232,18 @@ def userAccount(un):
             image = user[0][6]
             userPost = postDB.getUserPost(un)
             return render_template("userAccount.html",username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,image=image,password=password,userPost=userPost)
+    else:
+        return redirect(url_for('login'))
+
+@app.route("/account/<un>/delete")
+def deleteUser(un):
+    if 'username' in session:
+        if (session['username'] == "Admin"):
+            loginDB.deleteUser(un)
+            return redirect(url_for('admin'))
+        else:
+            flash('Admin access needed to perform this operation.!\nUnauthorised access reported to Admins..',"danger")
+            return redirect(url_for('logout'))
     else:
         return redirect(url_for('login'))
 

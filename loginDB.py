@@ -64,6 +64,15 @@ def getAllUsers():
     allUsers = db.fetchall()
     return allUsers
 
+def getAll():
+    db.execute("SELECT * FROM users")
+    users = db.fetchall()
+    return users
+
+def deleteUser(username):
+    db.execute("DELETE FROM users WHERE username=(?)",(username,))
+    con.commit()
+
 #createTable()
 #createUser("abc","shouvik","bajpayee","sBajpayee@GangPayee.com","9734282057","abc12345")
 
