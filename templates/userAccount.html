@@ -170,9 +170,8 @@
                         {% endif %}
                         {% if userPost[i][5]|length %}
                         {% if ((".mp4" in userPost[i][5]) or (".ogg" in userPost[i][5])) %}
-                        <video id="video" class="border" controls height="100%" width="100%"
+                        <video data-src="/posts/postMedia/{{ userPost[i][5] }}" type="video/mp4" preload="auto" id="video" class="border" controls height="100%" width="100%"
                             style="border-radius: 10px;">
-                            <source data-src="/posts/postMedia/{{ userPost[i][5] }}" type="video/mp4" preload="auto">
                         </video>
                         {% else %}
                         <img data-src="/posts/postMedia/{{ userPost[i][5] }}" alt="media" width="100%" height="100%"

@@ -319,7 +319,7 @@
                 {% endif %}
                 <a href="/account/{{ post[i][3] }}">
                     <div>
-                        <img src="/images/profilePics/{{ post[i][0] }}" alt="dp" id="postDp" align="left"
+                        <img data-src="/images/profilePics/{{ post[i][0] }}" alt="dp" id="postDp" align="left"
                             style="margin-top: -2%; margin-right: -12%;">
                         <h4 style="margin-top: 5%;">{{ post[i][1] }} {{ post[i][2] }}</h4>
                         <p style="margin: -2%;">( {{ post[i][3] }} )</p>
@@ -350,6 +350,7 @@
             </div>
             <br>
             {% endfor %}
+            <p style="color: slategrey;">no more posts</p>
         </div>
         <br><br><br><br>
 
@@ -381,6 +382,49 @@
                 style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
     <i class="fas fa-plus-circle" id="addPost"></i>
     <i class="fas fa-times-circle" id="closeModal"></i>
+    <script>
+        var images = document.querySelectorAll('img');
+        //var videos = document.querySelectorAll('video');
+
+        var observer = new IntersectionObserver(function(entries, observer){
+            entries.forEach(entry => {
+                if(entry.isIntersecting){
+                    var img = entry.target;
+                    img.setAttribute('src', img.getAttribute('data-src'));
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '0px 0px -75px 0px'
+        });
+
+        images.forEach(img => {
+            observer.observe(img);
+        });
+
+        /*var observer = new IntersectionObserver(function(entries, observer){
+            entries.forEach(entry => {
+                if(entry.isIntersecting){
+                    var video = entry.target;
+                    video.setAttribute('src', video.getAttribute('data-src'));
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        videos.forEach(video => {
+            observer.observe(video);
+        });*/
+    </script>
+    <script>
+        $("#send-btn").click(function(){
+            if(($("#desc").val()!='') || ($("#file-picker").val()!='')){
+                $(".preloader2").show();
+            }
+        });
+    </script>
     <script>
         $("#send-btn").click(function(){
             if(($("#desc").val()!='')){
