@@ -242,6 +242,7 @@
     <script>
         $(document).ready(function () {
             $(".preloader2").hide();
+            $("#processing").hide();
             $(window).ready(function () {
                 $(".preloader").fadeOut(500);
             });
@@ -273,9 +274,9 @@
     <div id="to-top"></div>
     <p style="margin: 4px;"></p>
     <div class="preloader"></div>
-    <div class="preloader2">
-        <!--<h3 style="color: black; margin-top: 50%;">..posting..</h3>-->
-    </div>
+    <!--<div class="preloader2">
+        <h3 style="color: black; margin-top: 50%;">..posting..</h3>
+    </div>-->
     <nav id="navbar">
         <div id="title" class="container">
             <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;">
@@ -306,6 +307,10 @@
         </div>-->
         <div>
             <h3 style="font-family: sans-serif;">Share Your Thoughts</h3>
+        </div>
+        <div class="contaienr" id="processing">
+            <img data-src="/pwa_logo/loading6.gif" alt="loader" style="height: 15%; width: 15%;">
+            <p>posting..</p>
         </div>
         <br>
         <div>
@@ -428,7 +433,10 @@
     <script>
         $("#send-btn").click(function(){
             if(($("#desc").val()!='')){
-                $(".preloader2").show();
+                $("#processing").show();
+                $("#write-cmnt").hide();
+                $("#closeModal").hide();
+                $("#addPost").show();
             }
         });
     </script>

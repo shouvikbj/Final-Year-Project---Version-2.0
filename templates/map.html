@@ -202,6 +202,7 @@
     <script>
         $(document).ready(function () {
             $(".preloader2").hide();
+            $("#processing").hide();
             $(window).ready(function () {
                 $(".preloader").fadeOut(500);
             });
@@ -221,9 +222,9 @@
     <div id="to-top"></div>
     <p style="margin: 4px;"></p>
     <div class="preloader"></div>
-    <div class="preloader2">
-        <!--<h3 style="color: black; margin-top: 50%;">..reporting..</h3>-->
-    </div>
+    <!--<div class="preloader2">
+        <h3 style="color: black; margin-top: 50%;">..reporting..</h3>
+    </div>-->
     <nav id="navbar">
         <div id="title" class="container">
             <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;">
@@ -244,6 +245,11 @@
         {% endfor %}
         {% endif %}
         {% endwith %}
+    </div>
+    
+    <div class="contaienr" id="processing">
+        <img src="/pwa_logo/loading6.gif" alt="loader" style="height: 15%; width: 15%;">
+        <p>reporting..</p>
     </div>
 
     <div class="container" id="maindiv">
@@ -283,7 +289,7 @@
                 <input type="text" name="desc" id="desc" required placeholder="write about the incident *" autocomplete="off"><br><br>
                 <h4>Image/Video *</h4>
                 <input type="file" name="media" id="media" accept="image/video/*" required><br><br>
-                <a href="#to-top"><input type="submit" value="Report Incident" id="report"></a><br><br>
+                <input type="submit" value="Report Incident" id="report" onclick="scrollToTop()"><br><br>
                 <input type="reset" value="Reset" id="reset">
             </form>
 
@@ -404,9 +410,14 @@
     <script>
         $("#report").click(function(){
             if(($("#desc").val()!='') && ($("#media").val()!='') && ($("#category").val()!='')){
-                $(".preloader2").show();
+                $("#processing").show();
             }
         });
+    </script>
+    <script>
+        function scrollToTop(){
+            window.scrollTo(0,0);
+        }
     </script>
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgaGcRcdBLE0y1c4Uga2nJxLro7kJXXbs&callback=initMap">

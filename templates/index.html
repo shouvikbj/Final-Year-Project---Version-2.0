@@ -254,6 +254,7 @@
     <script>
         $(document).ready(function () {
             $(".preloader2").hide();
+            $("#processing").hide();
             $(window).ready(function () {
                 $(".preloader").fadeOut(500);
             });
@@ -285,9 +286,9 @@
     <div id="to-top"></div>
     <p style="margin: 4px;"></p>
     <div class="preloader"></div>
-    <div class="preloader2">
-        <!--<h3 style="color: black; margin-top: 50%;">..posting..</h3>-->
-    </div>
+    <!--<div class="preloader2">
+        <h3 style="color: black; margin-top: 50%;">..posting..</h3>
+    </div>-->
     <nav id="navbar">
         <div id="title" class="container">
             <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;">
@@ -321,6 +322,10 @@
             <a href="/searchUser"><button id="searchBtn"><i class="fas fa-search" style="color: black;"></i></button></a>
         </div>
         <br><br>
+        <div class="contaienr" id="processing">
+            <img data-src="/pwa_logo/loading6.gif" alt="loader" style="height: 15%; width: 15%;">
+            <p>posting..</p>
+        </div>
         <br>
         <div>
             {% for i in range(post|length) | reverse %}
@@ -377,7 +382,7 @@
                 <textarea name="desc" id="desc" placeholder="What's on your mind?" autocomplete="off"></textarea><br>
                 <h5 id="q-desc" style="color: slategray; font-size: 120%;">Image/Video</h5>
                 <input id="file-picker" type="file" name="media" accept="image/video/*"><br><br>
-                <input type="submit" value="Post" id="send-btn"><br><br>
+                <input type="submit" value="Post" id="send-btn" onclick="scrollToTop()"><br><br>
                 <input type="reset" value="Reset" id="reset-btn">
                 <br><br>
             </form>
@@ -440,9 +445,17 @@
     <script>
         $("#send-btn").click(function(){
             if(($("#desc").val()!='') || ($("#file-picker").val()!='')){
-                $(".preloader2").show();
+                $("#processing").show();
+                $("#write-cmnt").hide();
+                $("#closeModal").hide();
+                $("#addPost").show();
             }
         });
+    </script>
+    <script>
+        function scrollToTop(){
+            window.scrollTo(0,0);
+        }
     </script>
     <script src="/app.js"></script>
 </body>
