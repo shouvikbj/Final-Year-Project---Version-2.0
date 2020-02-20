@@ -23,7 +23,7 @@
 
         #scroll-top {
             position: fixed;
-            bottom: 110px;
+            bottom: 80px;
             right: 15px;
             z-index: 99;
             font-size: 110%;
@@ -234,13 +234,13 @@
                 }
             });
             $("#confirmAction").hide();
-            $("#addPost").click(function () {
+            $("#comment").click(function () {
                 $(this).hide();
                 $("#confirmAction").show();
             });
             $("#cancel").click(function () {
                 $("#confirmAction").hide();
-                $("#addPost").show();
+                $("#comment").show();
             });
             //$("#liked").hide();
             /*$("#like").click(function(){
@@ -321,7 +321,7 @@
 
                     </div>
                     <a href="#bottom">
-                        <div class="col-sm-6 col-xs-6 container">
+                        <div class="col-sm-6 col-xs-6 container" id="comment">
                             <i class="far fa-comments" style="color: black;"> Comment</i>
                         </div>
                     </a>
@@ -379,7 +379,7 @@
 
     <button id="scroll-top"><a href="#to-top"><i class="fas fa-arrow-up"
                 style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
-    <i class="fas fa-plus-circle" id="addPost"></i>
+    <!--<i class="fas fa-plus-circle" id="addPost"></i>-->
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5dbabd7d4a605919"></script>
     <script src="/app.js"></script>
 </body>
