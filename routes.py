@@ -286,7 +286,7 @@ def updateDetails():
             flash('Changes successfully saved !',"success")
             return redirect(url_for('account'))
         else:
-            flash('Password is changed. Login again !',"warning")
+            flash('Changes saved successfully.\nPassword is changed. Login again !',"warning")
             return redirect(url_for('logout'))
     else:
         return redirect(url_for('login'))
