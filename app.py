@@ -1,4 +1,4 @@
-from flask import Flask,render_template,redirect,request,url_for,session,flash,jsonify
+from flask import Flask,render_template,redirect,request,url_for,session,flash,jsonify,make_response
 import csv
 #import delete as dlt
 import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB
@@ -12,19 +12,25 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 @app.route("/")
 def index():
-    if 'username' in session:
+    #if ('username' in session):
+    #    return redirect(url_for('home'))
+    if request.cookies.get('username'):
         return redirect(url_for('home'))
     else:
         return render_template("login.html")
 
 @app.route("/home")
 def home():
-    if 'username' in session:
-        user = loginDB.getUser(session['username'])
+    #if 'username' in session:
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        user = loginDB.getUser(request.cookies.get('username'))
         image = user[0][6]
         post = postDB.getAllPost()
+        resp = make_response(render_template("index.html", image=image,post=post))
         #return render_template("index.html", post=post)
-        return render_template("index.html", image=image,post=post)
+        #return render_template("index.html", image=image,post=post)
+        return resp
     else:
         return redirect(url_for('login'))
 
@@ -52,9 +58,12 @@ def getin():
     details = loginDB.login(username)
     if(len(details)):
         if(username==details[0][0] and password==details[0][1]):
-            session['username'] = username
+            resp = make_response(redirect(url_for('index')))
+            resp.set_cookie('username', username, max_age=60*60*24*365*2)
+            #session['username'] = username
             flash('Successfully logged in !', "success")
-            return redirect(url_for('index'))
+            #return redirect(url_for('index'))
+            return resp
         else:
             flash('Wrong \"username\" or \"password\"..\nTry again..', "danger")
             return redirect(url_for('login'))
@@ -159,7 +168,7 @@ def sendpassword():
     email1 = pswd[0][3]
     #msg = "\nLogin credentials for 'GangPayee' :: \nFor Username : '{}' \n Your 'Password' : {}"
     #message = msg.format(username,password)
-    msg2 = "\nAn user with 'Username' : {} \nRequested 'Password'. \nTo confirm, click the link below:\nhttps://gangpayee.herokuapp.com/sendpass/{}/{}/{}/grant"
+    msg2 = "\nAn user with 'Username' : {} \nRequested 'Password'. \nTo confirm, click the link below:\nhttps://gangpayee.pythonanywhere.com/sendpass/{}/{}/{}/grant"
     message2 = msg2.format(username,username,email,phone)
 
     if((pnumber==phone) and (email==email1)):
@@ -199,8 +208,9 @@ def grantPassword(username,email,phone):
 
 @app.route("/account")
 def account():
-    if 'username' in session:
-        user = loginDB.getUser(session['username'])
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        user = loginDB.getUser(request.cookies.get('username'))
         #image = "defaultProfileImage.png"
         username = user[0][0]
         firstname = user[0][1]
@@ -216,8 +226,9 @@ def account():
 
 @app.route("/account/<un>")
 def userAccount(un):
-    if 'username' in session:
-        username = session['username']
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        username = request.cookies.get('username')
         if username == un:
             return redirect(url_for('account'))
         else:
@@ -249,8 +260,9 @@ def deleteUser(un):
 
 @app.route("/account/update")
 def updateInfo():
-    if 'username' in session:
-        user = loginDB.getUser(session['username'])
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        user = loginDB.getUser(request.cookies.get('username'))
         #image = "defaultProfileImage.png"
         username = user[0][0]
         firstname = user[0][1]
@@ -265,9 +277,11 @@ def updateInfo():
 
 @app.route("/account/updateDetails", methods = ["POST","GET"])
 def updateDetails():
-    if 'username' in session:
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
         target = APP_ROOT+'/static/images/profilePics'
-        username = session['username']
+        username = request.cookies.get('username')
+        #username = session['username']
         firstname = request.form.get("firstname")
         lastname = request.form.get("lastname")
         phone = request.form.get("phone")
@@ -281,7 +295,7 @@ def updateDetails():
             destination = "/".join([target,filename])
             file.save(destination)
 
-            loginDB.updateProfilePic(session['username'], filename)
+            loginDB.updateProfilePic(request.cookies.get('username'), filename)
         if(password == oldpass[0][1]):
             flash('Changes successfully saved !',"success")
             return redirect(url_for('account'))
@@ -317,8 +331,9 @@ def updateDetails():
 
 @app.route("/postPost", methods=["POST"])
 def postQuestion():
-    if 'username' in session:
-        username = session['username']
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        username = request.cookies.get('username')
         target = APP_ROOT+'/static/posts/postMedia'
 
         desc = request.form.get("desc")
@@ -345,7 +360,9 @@ def postQuestion():
 
 @app.route("/post/<int:pid>")
 def post(pid):
-    if 'username' in session:
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        user = request.cookies.get('username')
         post = postDB.getPost(pid)
         comments = commentDB.getComments(pid)
         likes = likeDB.getLikes(pid)
@@ -353,7 +370,7 @@ def post(pid):
         no_likes = likes[0][0]
         #print(likedUsers)
         #print(comments)
-        user = session['username']
+        #user = session['username']
         liked = 0
         for i in range(len(likedUsers)):
             if user in likedUsers[i][0]:
@@ -371,8 +388,9 @@ def post(pid):
 
 @app.route("/post/<int:pid>/comment",methods=["POST","GET"])
 def comment(pid):
-    if 'username' in session:
-        username = session['username']
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        username = request.cookies.get('username')
         comment = request.form.get("commentBox")
         commentDB.addComment(pid,username,comment)
         redirectUrl = '/post/'+str(pid)
@@ -385,8 +403,9 @@ def comment(pid):
 
 @app.route("/post/<int:pid>/like")
 def like(pid):
-    if 'username' in session:
-        username = session["username"]
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        username = request.cookies.get('username')
         likeDB.like(pid,username)
         redirectUrl = '/post/'+str(pid)
         return redirect(redirectUrl)
@@ -396,8 +415,9 @@ def like(pid):
 
 @app.route("/post/<int:pid>/dislike")
 def dislike(pid):
-    if 'username' in session:
-        username = session["username"]
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        username = request.cookies.get('username')
         likeDB.dislike(pid,username)
         redirectUrl = '/post/'+str(pid)
         return redirect(redirectUrl)
@@ -410,7 +430,9 @@ def dislike(pid):
 
 @app.route("/post/<int:pid>/comment/<int:cid>/delete",methods=["POST","GET"])
 def deleteComment(pid,cid):
-    if 'username' in session:
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        #username = loginDB.getUser(request.cookies.get('username'))
         commentDB.deleteComment(pid,cid)
         redirectUrl = '/post/'+str(pid)
         flash('comment deleted',"warning")
@@ -421,8 +443,9 @@ def deleteComment(pid,cid):
 
 @app.route("/post/<int:pid>/delete", methods=["GET","POST"])
 def deletePost(pid):
-    if 'username' in session:
-        username = session["username"]
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        username = request.cookies.get('username')
         likeDB.dislikeAll(pid)
         commentDB.deleteAllComment(pid)
         postDB.deletePost(pid)
@@ -433,7 +456,9 @@ def deletePost(pid):
 
 @app.route("/media/<img>")
 def viewMedia(img):
-    if 'username' in session:
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        #username = loginDB.getUser(request.cookies.get('username'))
         loggedin = 1
         media = img
         return render_template("viewMedia.html", media=media, loggedin=loggedin)
@@ -443,7 +468,9 @@ def viewMedia(img):
 
 @app.route("/dp/<img>")
 def viewDp(img):
-    if 'username' in session:
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        #username = loginDB.getUser(request.cookies.get('username'))
         media = img
         return render_template("viewDp.html", media=media)
     else:
@@ -451,9 +478,11 @@ def viewDp(img):
 
 @app.route("/blog")
 def blog():
-    if 'username' in session:
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        user = request.cookies.get('username')
         post = blogDB.getAllPost()
-        user = session['username']
+        #user = session['username']
         return render_template("blog.html", post=post,user=user)
     else:
         return redirect(url_for('login'))
@@ -461,8 +490,9 @@ def blog():
 
 @app.route("/blog/<int:pid>/comment",methods=["POST","GET"])
 def blogComment(pid):
-    if 'username' in session:
-        username = session['username']
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        username = request.cookies.get('username')
         comment = request.form.get("commentBox")
         blogCommentDB.addblogComment(pid,username,comment)
         redirectUrl = '/blog/'+str(pid)
@@ -474,7 +504,9 @@ def blogComment(pid):
 
 @app.route("/blog/<int:pid>/comment/<int:cid>/delete",methods=["POST","GET"])
 def deleteblogComment(pid,cid):
-    if 'username' in session:
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        #username = loginDB.getUser(request.cookies.get('username'))
         blogCommentDB.deleteblogComment(pid,cid)
         redirectUrl = '/blog/'+str(pid)
         flash('comment deleted',"warning")
@@ -486,8 +518,9 @@ def deleteblogComment(pid,cid):
 
 @app.route("/blog/<int:pid>/like")
 def blogLike(pid):
-    if 'username' in session:
-        username = session["username"]
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        username = request.cookies.get('username')
         blogLikeDB.like(pid,username)
         redirectUrl = '/blog/'+str(pid)
         return redirect(redirectUrl)
@@ -497,8 +530,9 @@ def blogLike(pid):
 
 @app.route("/blog/<int:pid>/dislike")
 def blogDislike(pid):
-    if 'username' in session:
-        username = session["username"]
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        username = request.cookies.get('username')
         blogLikeDB.dislike(pid,username)
         redirectUrl = '/blog/'+str(pid)
         return redirect(redirectUrl)
@@ -510,7 +544,9 @@ def blogDislike(pid):
 
 @app.route("/blog/<int:pid>/delete", methods=["GET","POST"])
 def deleteblogPost(pid):
-    if 'username' in session:
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        #username = loginDB.getUser(request.cookies.get('username'))
         blogLikeDB.dislikeAll(pid)
         blogCommentDB.deleteAllComment(pid)
         blogDB.deletePost(pid)
@@ -523,8 +559,9 @@ def deleteblogPost(pid):
 
 @app.route("/postBlog", methods=["POST"])
 def postBlog():
-    if 'username' in session:
-        username = session['username']
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        username = request.cookies.get('username')
         desc = request.form.get("desc")
         
         if (desc == ""):
@@ -540,7 +577,9 @@ def postBlog():
 
 @app.route("/blog/<int:pid>")
 def blogPost(pid):
-    if 'username' in session:
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        user = request.cookies.get('username')
         post = blogDB.getPost(pid)
         comments = blogCommentDB.getblogComments(pid)
         likes = blogLikeDB.getLikes(pid)
@@ -548,7 +587,7 @@ def blogPost(pid):
         no_likes = likes[0][0]
         #print(likedUsers)
         #print(comments)
-        user = session['username']
+        #user = session['username']
         liked = 0
         for i in range(len(likedUsers)):
             if user in likedUsers[i][0]:
@@ -569,7 +608,9 @@ def blogPost(pid):
 
 @app.route("/map")
 def map():
-    if 'username' in session:
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        #username = loginDB.getUser(request.cookies.get('username'))
         return render_template("map.html")
     else:
         return redirect(url_for('login'))
@@ -582,10 +623,12 @@ def getMarkers():
 
 @app.route("/report", methods=["GET","POST"])
 def report():
-    if 'username' in session:
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
         target = APP_ROOT + '/static/posts/postMedia'
+        username = request.cookies.get('username')
 
-        username = session['username']
+        #username = session['username']
         lat = request.form.get("locationLat")
         lng = request.form.get("locationLng")
         category = request.form.get("category")
@@ -613,8 +656,9 @@ def report():
 
 @app.route("/report/<int:pid>")
 def viewReport(pid):
-    if 'username' in session:
-        user = session['username']
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        username = request.cookies.get('username')
         post = mapDB.getPost(pid)
         firstname = post[0][1]
         lastname = post[0][2]
@@ -629,7 +673,9 @@ def viewReport(pid):
 
 @app.route("/report/<int:pid>/delete", methods=["POST","GET"])
 def deleteReport(pid):
-    if 'username' in session:
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        #username = loginDB.getUser(request.cookies.get('username'))
         mapDB.deleteReport(pid)
         flash('Incident Report deleted !',"success")
         return redirect(url_for('map'))
@@ -640,7 +686,9 @@ def deleteReport(pid):
 
 @app.route("/searchUserforMsg")
 def searchUserforMsg():
-    if 'username' in session:
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        #username = loginDB.getUser(request.cookies.get('username'))
         return render_template("searchUserforMsg.html")
     else:
         return redirect(url_for('login'))
@@ -648,8 +696,9 @@ def searchUserforMsg():
 
 @app.route("/msg")
 def msgHome():
-    if 'username' in session:
-        user = session['username']
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        username = request.cookies.get('username')
         msgs = msgDB.getMsgs()
         return render_template("msgHome.html",user=user,msgs=msgs)
     else:
@@ -657,8 +706,9 @@ def msgHome():
 
 @app.route("/sendMsg", methods=["POST","GET"])
 def sendMsg():
-    if 'username' in session:
-        user = session['username']
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        username = request.cookies.get('username')
         msg = request.form.get("msg")
         msgDB.msgEntry(user,msg)
         return redirect(url_for('msgHome'))
@@ -669,7 +719,12 @@ def sendMsg():
 
 @app.route("/notification")
 def notification():
-    return render_template("notification.html")
+    if request.cookies.get('username'):
+        #user = loginDB.getUser(session['username'])
+        #username = loginDB.getUser(request.cookies.get('username'))
+        return render_template("notification.html")
+    else:
+        return redirect(url_for('login'))
 
 
 
@@ -683,9 +738,14 @@ def notification():
 
 @app.route("/logout")
 def logout():
-    session.pop('username', None)
-    flash('Successfully logged out !', "success")
-    return render_template("login.html")
+    #session.pop('username', None)
+    #flash('Successfully logged out !', "success")
+    #return render_template("login.html")
+    username = loginDB.getUser(request.cookies.get('username'))
+    resp = make_response(render_template("login.html"))
+    resp.set_cookie('username', expires=0)
+    #resp.delete_cookie('username', path='/login', domain='127.0.0.1:5002')
+    return resp
     
     
 
