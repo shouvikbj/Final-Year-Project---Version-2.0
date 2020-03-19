@@ -42,7 +42,7 @@ def livesearch():
 
 @app.route("/searchUser")
 def searchUser():
-    if 'username' in session:
+    if request.cookies.get('username'):
         return render_template("searchUser.html")
     else:
         return redirect(url_for('login'))
