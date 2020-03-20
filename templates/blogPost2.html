@@ -9,7 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <link rel="manifest" href="/manifest.json">
-    <title>Post by {{ firstname }} {{ lastname }}</title>
+    <title>Blog by {{ firstname }} {{ lastname }}</title>
     <script>
         if (location.hostname === 'gangpayee.herokuapp.com' && location.protocol !== 'https:') {
             location.href = location.href.replace('http:','https:')
@@ -100,6 +100,33 @@
             padding-top: 6px;
             /*box-shadow: 1px 1px 5px 0px slategray;*/
         }
+
+
+        #email,
+        select {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            height: 40px;
+            width: 95%;
+        }
+
+        #password,
+        select {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            height: 40px;
+            width: 95%;
+        }
     </style>
     <script>
         $(document).ready(function(){
@@ -130,6 +157,21 @@
     <div class="container" id="maindiv">
         <br>
         <div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                <span>{{ message }}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+        <br>
+        <div>
             {% for i in range(post|length) %}
             <div class="container" id="postContainer">
                 <a href="/account/{{ post[i][3] }}">
@@ -156,13 +198,43 @@
                 <hr>
                 <div class="container" id="commentSection">
                     <p style="color: black;">To view comments on this post</p>
-                    <p><a href="/login"><span style="font-weight: bold;">Login</span></a>  OR  <a href="/signup"><span style="font-weight: bold;">SignUp</span></a></p>
+                    <p><a><span style="font-weight: bold;" data-toggle="modal" data-target="#myModal">Login</span></a>  OR  <a href="/signup"><span style="font-weight: bold;">SignUp</span></a></p>
                 </div>
                 <br>
             </div>
             {% endfor %}
         </div>
         <br><br><br><br>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+        
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">User Login</h4>
+            </div>
+            <div class="modal-body">
+                <div id="login-details">
+                    <form action="/getin3/{{ postid }}" method="post">
+                        <br>
+                        <input type="text" name="username" id="email" placeholder="username"
+                            required="true"><br><br><br>
+                        <input type="password" name="password" id="password" placeholder="password"
+                            required="true"><br><br>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-default" style="margin-right: 15%;">Login</button>
+                <button type="reset" class="btn btn-default" style="float: left; margin-left: 15%;">Reset</button>
+            </div>
+                    </form>
+        </div>
+        
+        </div>
     </div>
 
 

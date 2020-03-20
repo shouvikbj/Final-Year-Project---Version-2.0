@@ -72,8 +72,61 @@ def getin():
         return redirect(url_for('admin'))
     
     else:
+        flash('Wrong \"username\" or \"password\"..\nTry again..', "danger")
+        return redirect(url_for('login'))
+
+@app.route("/getin2/<int:pid>", methods = ["POST","GET"])
+def getin2(pid):
+    username = request.form.get("username")
+    password = request.form.get("password")
+    details = loginDB.login(username)
+    redirectUrl = '/post/' + str(pid)
+    if(len(details)):
+        if(username==details[0][0] and password==details[0][1]):
+            #redirectUrl = '/post/' + str(pid)
+            resp = make_response(redirect(redirectUrl))
+            resp.set_cookie('username', username, max_age=60*60*24*365*2)
+            #session['username'] = username
+            #flash('Successfully logged in !', "success")
+            #return redirect(url_for('index'))
+            return resp
+        else:
             flash('Wrong \"username\" or \"password\"..\nTry again..', "danger")
-            return redirect(url_for('login'))
+            return redirect(redirectUrl)
+    #elif(username=="admin" and password=="gangpayee@gcetts"):
+    #    session['username'] = "Admin"
+    #    return redirect(url_for('admin'))
+    
+    else:
+        flash('Wrong \"username\" or \"password\"..\nTry again..', "danger")
+        return redirect(url_for('login'))
+
+@app.route("/getin3/<int:pid>", methods = ["POST","GET"])
+def getin3(pid):
+    username = request.form.get("username")
+    password = request.form.get("password")
+    details = loginDB.login(username)
+    redirectUrl = '/blog/' + str(pid)
+    if(len(details)):
+        if(username==details[0][0] and password==details[0][1]):
+            #redirectUrl = '/blog/' + str(pid)
+            resp = make_response(redirect(redirectUrl))
+            resp.set_cookie('username', username, max_age=60*60*24*365*2)
+            #session['username'] = username
+            #flash('Successfully logged in !', "success")
+            #return redirect(url_for('index'))
+            return resp
+        else:
+            flash('Wrong \"username\" or \"password\"..\nTry again..', "danger")
+            return redirect(redirectUrl)
+    #elif(username=="admin" and password=="gangpayee@gcetts"):
+    #    session['username'] = "Admin"
+    #    return redirect(url_for('admin'))
+    
+    else:
+        flash('Wrong \"username\" or \"password\"..\nTry again..', "danger")
+        return redirect(url_for('login'))
+
 
 @app.route('/admin')
 def admin():
@@ -384,7 +437,8 @@ def post(pid):
         post = postDB.getPost(pid)
         firstname = post[0][1]
         lastname = post[0][2]
-        return render_template("post2.html", post=post, firstname=firstname, lastname=lastname)
+        postid = post[0][6]
+        return render_template("post2.html", post=post, firstname=firstname, lastname=lastname, postid=postid)
 
 @app.route("/post/<int:pid>/comment",methods=["POST","GET"])
 def comment(pid):
@@ -601,7 +655,8 @@ def blogPost(pid):
         post = blogDB.getPost(pid)
         firstname = post[0][1]
         lastname = post[0][2]
-        return render_template("blogPost2.html", post=post, firstname=firstname, lastname=lastname)
+        postid = post[0][5]
+        return render_template("blogPost2.html", post=post, firstname=firstname, lastname=lastname, postid=postid)
 
 
 

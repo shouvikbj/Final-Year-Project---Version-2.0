@@ -100,6 +100,32 @@
             padding-top: 6px;
             /*box-shadow: 1px 1px 5px 0px slategray;*/
         }
+
+        #email,
+        select {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            height: 40px;
+            width: 95%;
+        }
+
+        #password,
+        select {
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            border-bottom: 2px solid rgba(112, 128, 144, 0.219);
+            height: 40px;
+            width: 95%;
+        }
     </style>
     <script>
         $(document).ready(function(){
@@ -128,6 +154,21 @@
     </nav>
     
     <div class="container" id="maindiv">
+        <br>
+        <div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                <span>{{ message }}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
         <br>
         <div>
             {% for i in range(post|length) %}
@@ -168,7 +209,7 @@
                 <hr>
                 <div class="container" id="commentSection">
                     <p style="color: black;">To view comments on this post</p>
-                    <p><a href="/login"><span style="font-weight: bold;">Login</span></a>  OR  <a href="/signup"><span style="font-weight: bold;">SignUp</span></a></p>
+                    <p><a><span style="font-weight: bold;" data-toggle="modal" data-target="#myModal">Login</span></a>  OR  <a href="/signup"><span style="font-weight: bold;">SignUp</span></a></p>
                 </div>
                 <br>
             </div>
@@ -176,7 +217,36 @@
         </div>
         <br><br><br><br>
     </div>
-
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+        
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">User Login</h4>
+            </div>
+            <div class="modal-body">
+                <div id="login-details">
+                    <form action="/getin2/{{ postid }}" method="post">
+                        <br>
+                        <input type="text" name="username" id="email" placeholder="username"
+                            required="true"><br><br><br>
+                        <input type="password" name="password" id="password" placeholder="password"
+                            required="true"><br><br>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-default" style="margin-right: 15%;">Login</button>
+                <button type="reset" class="btn btn-default" style="float: left; margin-left: 15%;">Reset</button>
+            </div>
+                    </form>
+        </div>
+        
+        </div>
+    </div>
 
 
     <button id="scroll-top"><a href="#to-top"><i class="fas fa-arrow-up" style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
