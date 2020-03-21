@@ -782,6 +782,12 @@ def notification():
         return redirect(url_for('login'))
 
 
+@app.route("/game")
+def game():
+    if request.cookies.get('username'):
+        return render_template("game.html")
+    else:
+        return redirect(url_for('login'))
 
 
 #@app.route("/customsearch")

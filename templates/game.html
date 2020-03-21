@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="manifest" href="/manifest.json">
+    <title>Chat Room</title>
+    <script>
+        if (location.hostname === 'gangpayee.herokuapp.com' && location.protocol !== 'https:') {
+            location.href = location.href.replace('http:', 'https:')
+        }
+    </script>
+    <style>
+        body{
+            background-color: black;
+        }
+        iframe{
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            border: none;
+        }
+        #mainDiv{
+            height: 95vh;
+            width: 100%;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $(window).ready(function () {
+                $(".preloader").fadeOut(500);
+            });
+            $("#scroll-top").hide();
+            /*$(window).scroll(function () {
+                if ($(this).scrollTop() > 0) {
+                    $('#scroll-top').fadeIn();
+                } else {
+                    $('#scroll-top').fadeOut();
+                }
+            });*/
+            $(document).scrollTop($(document).height());
+            /*setInterval(function(){
+                $("#allMsgs").load(location.href+" #allMsgs>*","");
+            },100);*/
+        });
+    </script>
+</head>
+
+<body align="center">
+    <br>
+    <div class="container" id="mainDiv">
+        <iframe src="https://proxx.app" style="height: 100%; width: 100%;"></iframe>
+    </div>
+
+
+    <script src="/app.js"></script>
+</body>
+
+</html>
