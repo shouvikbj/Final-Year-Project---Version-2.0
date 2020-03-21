@@ -166,7 +166,7 @@
             <p>{{ post[i][8] }}</p><br>
             {% if post[i][9]|length %}
             {% if ((".mp4" in post[i][9]) or (".ogg" in post[i][9])) %}
-            <video id="video" class="border" controls height="100%" width="100%" style="border-radius: 10px;">
+            <video id="video" class="border" controls height="100%" width="100%" style="border-radius: 10px;" preload="auto">
                 <source src="/posts/postMedia/{{ post[i][9] }}" type="video/mp4" preload="auto">
             </video>
             {% else %}

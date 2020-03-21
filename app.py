@@ -713,7 +713,7 @@ def report():
 def viewReport(pid):
     if request.cookies.get('username'):
         #user = loginDB.getUser(session['username'])
-        username = request.cookies.get('username')
+        user = request.cookies.get('username')
         post = mapDB.getPost(pid)
         firstname = post[0][1]
         lastname = post[0][2]
