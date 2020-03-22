@@ -163,10 +163,20 @@
 
         #locationLat,
         #locationLng,
-        #category,
-        #desc {
+        #category {
             width: 100%;
             height: 40px;
+            text-align: center;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            border: 1px solid slateblue;
+            padding: 2%;
+        }
+
+        #desc{
+            width: 100%;
             text-align: center;
             text-decoration: none;
             -moz-border-radius: 20px;
@@ -299,7 +309,7 @@
                     placeholder="Longitude (click Get Location) *">
                 <input type="text" name="category" id="category" required
                     placeholder="category of the incident *" autocomplete="off"><br><br>
-                <input type="text" name="desc" id="desc" required placeholder="write about the incident *" autocomplete="off"><br><br>
+                <textarea type="text" name="desc" id="desc" rows="6" required placeholder="write about the incident *" autocomplete="off"></textarea><br><br>
                 <h4>Image/Video *</h4>
                 <input type="file" name="media" id="media" accept="image/video/*" required><br><br>
                 <input type="submit" value="Report Incident" id="report" onclick="scrollToTop()"><br><br>
