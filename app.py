@@ -753,7 +753,7 @@ def searchUserforMsg():
 def msgHome():
     if request.cookies.get('username'):
         #user = loginDB.getUser(session['username'])
-        username = request.cookies.get('username')
+        user = request.cookies.get('username')
         msgs = msgDB.getMsgs()
         return render_template("msgHome.html",user=user,msgs=msgs)
     else:
@@ -788,6 +788,16 @@ def game():
         return render_template("game.html")
     else:
         return redirect(url_for('login'))
+
+
+@app.route("/messanger")
+def messanger():
+    if request.cookies.get('username'):
+        users = loginDB.getAllUsers()
+        return render_template("messanger.html", users=users)
+    else:
+        return redirect(url_for('login'))
+
 
 
 #@app.route("/customsearch")

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="manifest" href="/manifest.json">
+    <title>GangPayee Messanger</title>
+    <style>
+        #header {
+            padding: 5%;
+            box-shadow: 0px 0px 5px 0px slategray;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            background-color: white;
+        }
+
+        #livesearch {
+            height: 40px;
+            width: 88%;
+            float: left;
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            background-color: rgba(112, 128, 144, 0.13);
+            padding: 2%;
+            color: black;
+        }
+
+        .avatar {
+            vertical-align: middle;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            /*position: absolute;*/
+            /*margin-left: 40%;*/
+            margin-top: -3.5%;
+            align-content: left;
+        }
+
+        #avatar {
+            vertical-align: middle;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            /*position: absolute;*/
+            /*margin-left: 40%;*/
+            margin-top: -3.5%;
+            align-content: left;
+        }
+
+        #userlist1 {
+            color: black;
+            font-weight: bold;
+            background-color: rgba(222, 184, 135, 0.514);
+            padding: 9%;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            height: 80px;
+            width: 100%;
+            margin: 5px;
+            margin-left: -5%;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        #namecards {
+            padding: 2%;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $("#searchicon").hide();
+            $("#home").hide();
+            $("#title").hide();
+            $("#livesearch").hide();
+            $("#closeicon").hide();
+            $("#searchicon").show(1000);
+            $("#home").show(1000);
+            $("#title").fadeIn();
+            $("#searchicon").click(function () {
+                $(this).hide();
+                $("#title").hide();
+                $("#home").hide();
+                $("#livesearch").slideDown();
+                $("#closeicon").show();
+            });
+            $("#closeicon").click(function () {
+                $(this).hide();
+                $("#userlist").empty();
+                $("#livesearch").hide();
+                $("#searchicon").show();
+                $("#title").show();
+                $("#home").show();
+                $("#livesearch").val() = '';
+            });
+        });
+    </script>
+</head>
+
+<body align="center">
+    <div>
+        <div class="container" id="header">
+            <a href="/"><i class="fas fa-home fa-2x" style="color: black; float: left;" id="home"></i></a>
+            <i class="far fa-comment-dots fa-2x" style="color: blue; font-weight: bold;" id="title"> Gp Chats</i>
+            <input type="text" name="searchbox" id="livesearch" placeholder="search user" onfocus="this.value=''">
+            <i class="fas fa-search fa-2x" style="float: right;" id="searchicon"></i>
+            <i class="fas fa-times fa-3x" style="color: black; float: right;" id="closeicon"></i>
+            <p id="userlist"></p>
+        </div>
+        <br><br><br><br><br>
+        {% for i in range(users|length) %}
+        <a href="#">
+            <div class="container">
+                <div class="container">
+
+                    <div class="container" id="namecards">
+                        <img style="float: left;" src="/images/profilePics/{{ users[i][3] }}" alt="dp" class="avatar">
+                        <p style="float: left; margin-left: 4%; color: black; font-weight: bold; font-size: large;">{{ users[i][1] }} {{ users[i][2] }}</p>
+                    </div>
+                    <hr>
+
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+
+
+    <script src="/app.js"></script>
+</body>
+
+<script>
+    $(document).ready(function () {
+        $("#livesearch").on("input", function (e) {
+            //textinsearchbox = $("#livesearch").val();
+            $("#userlist").empty();
+            $.ajax({
+                method: "post",
+                url: "/livesearch",
+                data: { text: $("#livesearch").val() },
+                success: function (res) {
+                    var data = "<ul><br><br><br>";
+                    $.each(res, function (index, value) {
+                        data += "<a href=\"/account/" + value[0] + "\">" + "<li id=\"userlist1\"><img align=\"left\" id=\"avatar\" src=\"/images/profilePics/" + value[3] + "\">" + value[1] + " " + value[2] +/*" "+"( "+value[0]+" )"+*/"</li>" + "</a>"
+                    });
+                    data += "</ul>";
+                    $("#userlist").html(data);
+                    //$("#userlist").empty();
+                    if ($("#livesearch").val() == "") {
+                        $("#userlist").empty();
+                    }
+                }
+            })
+        });
+    })
+</script>
+
+</html>
