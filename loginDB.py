@@ -73,6 +73,11 @@ def deleteUser(username):
     db.execute("DELETE FROM users WHERE username=(?)",(username,))
     con.commit()
 
+def getUserForChat(username):
+    db.execute("SELECT username, firstname, lastname, phone, image FROM users WHERE username=(?)", (username,))
+    user = db.fetchall()
+    return user
+
 #createTable()
 #createUser("abc","shouvik","bajpayee","sBajpayee@GangPayee.com","9734282057","abc12345")
 

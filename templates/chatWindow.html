@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="manifest" href="/manifest.json">
+    <title>GangPayee Chats</title>
+    <style>
+        #header {
+            padding: 2%;
+            box-shadow: 0px 0px 5px 0px slategray;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            background-color: white;
+        }
+
+        #livesearch {
+            height: 40px;
+            width: 88%;
+            float: left;
+            text-decoration: none;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            border: none;
+            background-color: rgba(112, 128, 144, 0.13);
+            padding: 2%;
+            color: black;
+        }
+
+        .avatar {
+            vertical-align: middle;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            /*position: absolute;*/
+            /*margin-left: 40%;*/
+            float: left;
+        }
+
+        #avatar {
+            vertical-align: middle;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            /*position: absolute;*/
+            /*margin-left: 40%;*/
+            float: left;
+        }
+
+        #userlist1 {
+            color: black;
+            font-weight: bold;
+            background-color: rgba(222, 184, 135, 0.514);
+            padding: 9%;
+            -moz-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            border-radius: 30px;
+            height: 80px;
+            width: 100%;
+            margin: 5px;
+            margin-left: -5%;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        #namecards {
+            padding-top: 3%;
+        }
+
+        #goback {
+            float: left;
+            margin-top: 3%;
+            margin-right: 4%;
+            color: black;
+        }
+
+        #sendMsgContainer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            background-color: white;
+        }
+
+        #msg {
+            height: 40px;
+            align-content: left;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            margin-right: 5px;
+            padding: 2%;
+            width: 75%;
+            border: 1px solid orchid;
+            margin-top: 8px;
+            background-color: rgba(112, 128, 144, 0.144);
+        }
+
+        body {
+            background-image: url('/images/bgimg2.jpeg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        #oneMsg {
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            padding: 2%;
+            padding-top: 4%;
+            padding-right: 4%;
+            /*border: 1px solid black;*/
+            margin: 2%;
+            width: 60%;
+            float: right;
+            background-color: rgba(255, 217, 0, 0.836);
+            color: black;
+            font-weight: bold;
+        }
+
+        #twoMsg {
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            padding: 2%;
+            padding-top: 4%;
+            padding-right: 4%;
+            /*border: 1px solid black;*/
+            margin: 2%;
+            width: 60%;
+            float: left;
+            background-color: rgba(255, 255, 255, 0.836);
+            color: black;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $("#call").hide();
+            $("#call").fadeIn(1000);
+            $("#sync").click(function(){
+                window.location.reload(false);
+            });
+            // $("#goback").click(function () {
+            //     window.history.back();
+            // });
+            $(document).scrollTop($(document).height());
+        });
+    </script>
+</head>
+
+<body align="center">
+    <div>
+        <div class="container" id="header">
+            {% for i in range(receiver|length) %}
+            <div class="container">
+                <a href="/messanger"><i id="goback" class="far fa-arrow-alt-circle-left fa-2x"></i></a>
+                <a href="/account/{{ receiver[i][0] }}"><img id="avatar" src="/images/profilePics/{{ receiver[i][4] }}"
+                        alt="dp"></a>
+                <h4 id="name" style="float: left; margin-top: 4.5%; margin-left: 4%;">{{ receiver[i][1] }}
+                    {{ receiver[i][2] }}</h4>
+                <a href="tel:{{ receiver[i][3] }}"><i id="call" class="fas fa-phone-alt fa-lg"
+                        style="float: right; margin-top: 5.5%; margin-right: 4%; color: black;"></i></a>
+            </div>
+            {% endfor %}
+        </div>
+        <br><br><br><br>
+        <div class="container">
+            {% if (chats|length) %}
+            {% for i in range(chats|length) %}
+            {% if (sender == chats[i][1]) %}
+            <div class="container" id="oneMsg">
+                <p align="left" style="padding-left: 10%;">{{ chats[i][3] }}</p>
+            </div>
+            {% else %}
+            <div class="container" id="twoMsg">
+                <p align="left" style="padding-left: 10%;">{{ chats[i][3] }}</p>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </div>
+        <br><br><br>
+    </div>
+
+
+
+    <div>
+        <div class="container" id="sendMsgContainer">
+            <i id="sync" class="fas fa-sync-alt fa-lg" style="float: left; margin-top: 5.5%; margin-left: 2%; margin-right: 2%;"></i>
+            <form action="/messanger/{{ sender }}/{{ receiver[0][0] }}/sendChat" method="post">
+                <input type="text" name="msg" id="msg" placeholder="start typing" align="left" required
+                    autocomplete="off">
+                <button type="submit" style="background-color: white;border: none;"><i type="submit"
+                        class="fas fa-paper-plane fa-lg" style="color: rgb(24, 145, 0);"></i></button>
+            </form>
+        </div>
+    </div>
+    <script src="/app.js"></script>
+</body>
+
+
+</html>

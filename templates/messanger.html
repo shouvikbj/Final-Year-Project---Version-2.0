@@ -10,7 +10,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <link rel="manifest" href="/manifest.json">
-    <title>GangPayee Messanger</title>
+    <title>GangPayee Chats</title>
     <style>
         #header {
             padding: 5%;
@@ -77,7 +77,7 @@
         }
 
         #namecards {
-            padding: 2%;
+            padding-top: 3%;
         }
     </style>
     <script>
@@ -120,21 +120,25 @@
             <i class="fas fa-times fa-3x" style="color: black; float: right;" id="closeicon"></i>
             <p id="userlist"></p>
         </div>
-        <br><br><br><br><br>
+        <br><br><br><br><br><br>
         {% for i in range(users|length) %}
-        <a href="#">
+        {% if (users[i][0]!=sender) %}
+        <a href="/messanger/{{ sender }}/{{ users[i][0] }}">
             <div class="container">
                 <div class="container">
 
                     <div class="container" id="namecards">
-                        <img style="float: left;" src="/images/profilePics/{{ users[i][3] }}" alt="dp" class="avatar">
-                        <p style="float: left; margin-left: 4%; color: black; font-weight: bold; font-size: large;">{{ users[i][1] }} {{ users[i][2] }}</p>
+                        <img style="float: left;" data-src="/images/profilePics/{{ users[i][3] }}" alt="dp"
+                            class="avatar">
+                        <p style="float: left; margin-left: 4%; color: black; font-weight: bold; font-size: large;">
+                            {{ users[i][1] }} {{ users[i][2] }}</p>
                     </div>
                     <hr>
 
                 </div>
             </div>
         </a>
+        {% endif %}
         {% endfor %}
     </div>
 
@@ -142,7 +146,24 @@
 
     <script src="/app.js"></script>
 </body>
+<script>
+    var images = document.querySelectorAll('img');
+    var observer = new IntersectionObserver(function (entries, observer) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                var img = entry.target;
+                img.setAttribute('src', img.getAttribute('data-src'));
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        rootMargin: '0px 0px -50px 0px'
+    });
 
+    images.forEach(img => {
+        observer.observe(img);
+    });
+</script>
 <script>
     $(document).ready(function () {
         $("#livesearch").on("input", function (e) {
@@ -150,12 +171,12 @@
             $("#userlist").empty();
             $.ajax({
                 method: "post",
-                url: "/livesearch",
+                url: "/livesearch2",
                 data: { text: $("#livesearch").val() },
                 success: function (res) {
                     var data = "<ul><br><br><br>";
                     $.each(res, function (index, value) {
-                        data += "<a href=\"/account/" + value[0] + "\">" + "<li id=\"userlist1\"><img align=\"left\" id=\"avatar\" src=\"/images/profilePics/" + value[3] + "\">" + value[1] + " " + value[2] +/*" "+"( "+value[0]+" )"+*/"</li>" + "</a>"
+                        data += "<a href=\"/messanger/" + value[0] + "\">" + "<li id=\"userlist1\"><img align=\"left\" id=\"avatar\" src=\"/images/profilePics/" + value[3] + "\">" + value[1] + " " + value[2] +/*" "+"( "+value[0]+" )"+*/"</li>" + "</a>"
                     });
                     data += "</ul>";
                     $("#userlist").html(data);

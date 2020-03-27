@@ -1,7 +1,7 @@
 from flask import Flask,render_template,redirect,request,url_for,session,flash,jsonify,make_response
 import csv
 #import delete as dlt
-import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB
+import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB,messangerDB
 import smtplib
 import os
 
@@ -180,7 +180,7 @@ def register():
     else:
         message = "To Login into \"GangPayee\" WebApp \n\nUSERNAME : {}\n\nRegards from, \nTeam \"GangPayee\""
         message1 = message.format(username)
-        message2 = "A new User just registered. \nCheckout :\nhttps://gangpayee.herokuapp.com/admin"
+        message2 = "A new User just registered. \nCheckout :\nhttps://gangpayee.pythonanywhere.com/admin"
 
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.ehlo()
@@ -256,7 +256,7 @@ def grantPassword(username,email,phone):
     #server.sendmail('services.shouvikbajpayee@gmail.com', 'bajpayeeshouvik@gmail.com', message2)
     server.close()
     flash('Password is sent to user.',"success")
-    return redirect(url_for('login'))
+    return redirect('/')
 
 
 @app.route("/account")
@@ -793,10 +793,51 @@ def game():
 @app.route("/messanger")
 def messanger():
     if request.cookies.get('username'):
+        sender = request.cookies.get('username')
         users = loginDB.getAllUsers()
-        return render_template("messanger.html", users=users)
+        return render_template("messanger.html", sender=sender, users=users)
     else:
         return redirect(url_for('login'))
+
+@app.route("/livesearch2",methods=["POST","GET"])
+def livesearch2():
+    sender = request.cookies.get('username')
+    searchbox = request.form.get("text")
+    userList = loginDB.getUsers(searchbox)
+    return jsonify(userList)
+
+@app.route("/messanger/<sender>/<receiver>")
+def chatModule(sender,receiver):
+    if request.cookies.get('username'):
+        sender = sender
+        receiver_username = receiver
+        receiver = loginDB.getUserForChat(receiver_username)
+        chats = messangerDB.getMsg(sender,receiver_username)
+        #print(chats)
+        #receiver_username = receiver[0][0]
+        return render_template("chatWindow.html", sender=sender, receiver=receiver, chats=chats)
+    else:
+        return redirect(url_for('login'))
+
+@app.route("/messanger/<receiver>")
+def redirectChat(receiver):
+    if request.cookies.get('username'):
+        sender = request.cookies.get('username')
+        redirectUrl = '/messanger/'+sender+'/'+receiver
+        return redirect(redirectUrl)
+    else:
+        return redirect(url_for('login'))
+
+@app.route("/messanger/<sender>/<receiver>/sendChat", methods=["GET","POST"])
+def sendChat(sender,receiver):
+    if request.cookies.get('username'):
+        msg = request.form.get("msg")
+        messangerDB.putMsg(sender,receiver,msg)
+        redirectUrl = '/messanger/'+sender+'/'+receiver
+        return redirect(redirectUrl)
+    else:
+        return redirect(url_for('login'))
+    
 
 
 
