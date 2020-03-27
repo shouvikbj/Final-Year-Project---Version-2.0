@@ -763,7 +763,7 @@ def msgHome():
 def sendMsg():
     if request.cookies.get('username'):
         #user = loginDB.getUser(session['username'])
-        username = request.cookies.get('username')
+        user = request.cookies.get('username')
         msg = request.form.get("msg")
         msgDB.msgEntry(user,msg)
         return redirect(url_for('msgHome'))

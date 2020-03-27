@@ -153,7 +153,8 @@
             border: 1px solid orchid;
             margin-top: 4px;
         }
-        #oneMsg{
+
+        #oneMsg {
             text-decoration: none;
             -moz-border-radius: 20px;
             -webkit-border-radius: 20px;
@@ -165,7 +166,8 @@
             float: right;
             background-color: rgba(0, 100, 182, 0.075);
         }
-        #twoMsg{
+
+        #twoMsg {
             text-decoration: none;
             -moz-border-radius: 20px;
             -webkit-border-radius: 20px;
@@ -239,20 +241,20 @@
         <div id="allMsgs">
             {% for i in range(msgs|length) %}
             {% if (user == msgs[i][0]) %}
-                <div class="container" id="oneMsg">
-                    <img src="/images/profilePics/{{ msgs[i][3] }}" alt="dp" class="avatar" align="left">
-                    <h4 align="left" style="padding-left: 20%; padding-top: 0%;">{{ msgs[i][1] }} {{ msgs[i][2] }}</h4><br>
-                    <p align="left" style="padding-left: 10%;">{{ msgs[i][4] }}</p>
-                </div>
+            <div class="container" id="oneMsg">
+                <img data-src="/images/profilePics/{{ msgs[i][3] }}" alt="dp" class="avatar" align="left">
+                <h4 align="left" style="padding-left: 20%; padding-top: 0%;">{{ msgs[i][1] }} {{ msgs[i][2] }}</h4><br>
+                <p align="left" style="padding-left: 10%;">{{ msgs[i][4] }}</p>
+            </div>
             {% else %}
-                <div class="container" id="twoMsg">
-                    <img src="/images/profilePics/{{ msgs[i][3] }}" alt="dp" class="avatar" align="left">
-                    <h4 align="left" style="padding-left: 20%; padding-top: 0%;">{{ msgs[i][1] }} {{ msgs[i][2] }}</h4><br>
-                    <p align="left" style="padding-left: 10%;">{{ msgs[i][4] }}</p>
-                </div>
+            <div class="container" id="twoMsg">
+                <img data-src="/images/profilePics/{{ msgs[i][3] }}" alt="dp" class="avatar" align="left">
+                <h4 align="left" style="padding-left: 20%; padding-top: 0%;">{{ msgs[i][1] }} {{ msgs[i][2] }}</h4><br>
+                <p align="left" style="padding-left: 10%;">{{ msgs[i][4] }}</p>
+            </div>
             {% endif %}
             {% endfor %}
-            
+
         </div>
 
     </div>
@@ -263,20 +265,55 @@
         <div>
             <div class="container" id="sendMsgContainer">
                 <form action="/sendMsg" method="post">
-                    <input type="text" name="msg" id="msg" placeholder="write here" align="left" required autocomplete="off">
-                    <button type="submit" style="background-color: white;border: none;"><i type="submit" class="fas fa-paper-plane" style="color: rgb(24, 145, 0);"></i></button>
+                    <input type="text" name="msg" id="msg" placeholder="write here" align="left" required
+                        autocomplete="off">
+                    <button type="submit" style="background-color: white;border: none;"><i type="submit"
+                            class="fas fa-paper-plane" style="color: rgb(24, 145, 0);"></i></button>
                 </form>
             </div>
             <div class="row" id="menubar">
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/"><button style="background-color: white; border: none;"><i class="fas fa-home fa-lg"></i></button></a></div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/blog"><button style="background-color: white; border: none;"><i class="fas fa-atlas fa-lg"></i></button></a></div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/map"><button style="background-color: white; border: none;"><i class="fas fa-street-view fa-lg"></i></button></a></div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="#"><button style="background-color: white; border: none;"><i class="fab fa-facebook-messenger fa-lg" style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></button></a></div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/notification"><button style="background-color: white; border: none;"><i class="fas fa-bell fa-lg"></i></button></a></div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/account"><button style="background-color: white; border: none;"><i class="fas fa-user-circle fa-lg"></i></button></a></div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/"><button
+                            style="background-color: white; border: none;"><i
+                                class="fas fa-home fa-lg"></i></button></a></div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/blog"><button
+                            style="background-color: white; border: none;"><i
+                                class="fas fa-atlas fa-lg"></i></button></a></div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/map"><button
+                            style="background-color: white; border: none;"><i
+                                class="fas fa-street-view fa-lg"></i></button></a></div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="#"><button
+                            style="background-color: white; border: none;"><i class="fab fa-facebook-messenger fa-lg"
+                                style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></button></a></div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/notification"><button
+                            style="background-color: white; border: none;"><i
+                                class="fas fa-bell fa-lg"></i></button></a></div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/account"><button
+                            style="background-color: white; border: none;"><i
+                                class="fas fa-user-circle fa-lg"></i></button></a></div>
             </div>
         </div>
     </div>
+
+
+    <script>
+        var images = document.querySelectorAll('img');
+
+        var observer = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    var img = entry.target;
+                    img.setAttribute('src', img.getAttribute('data-src'));
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        images.forEach(img => {
+            observer.observe(img);
+        });
+    </script>
 
     <button id="scroll-top"><a href="#to-top"><i class="fas fa-arrow-up"
                 style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
