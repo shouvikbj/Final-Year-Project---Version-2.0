@@ -284,11 +284,10 @@
             {% for i in range(post|length) %}
             <div class="container" id="postContainer">
                 <a href="/account/{{ post[i][3] }}">
-                    <div>
-                        <img src="/images/profilePics/{{ post[i][0] }}" alt="dp" id="postDp" align="left"
-                            style="margin-top: -2%; margin-right: -12%;">
-                        <h4 style="margin-top: 5%;">{{ post[i][1] }} {{ post[i][2] }}</h4>
-                        <p style="margin: -2%;">( {{ post[i][3] }} )</p>
+                    <div class="container" style="margin-bottom: -3%; padding-top: 1%;">
+                        <img src="/images/profilePics/{{ post[i][0] }}" alt="dp" id="postDp" style="float: left;">
+                        <h4 style="color: black; float: left; margin-left: 3%; padding-top: 2%;">{{ post[i][1] }} {{ post[i][2] }}</h4>
+                        <!--<p style="margin: -2%;">( {{ post[i][3] }} )</p>-->
                     </div>
                 </a>
                 <hr>

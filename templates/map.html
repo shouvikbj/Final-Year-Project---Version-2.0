@@ -205,9 +205,10 @@
             -moz-border-radius: 20px;
             -webkit-border-radius: 20px;
             border-radius: 20px;
-            background-color: rgba(0, 0, 255, 0.5);
+            background-color: rgb(0, 0, 255);
             color: white;
             border: none;
+            font-weight: bold;
         }
 
         #reset {
@@ -217,9 +218,17 @@
             -moz-border-radius: 20px;
             -webkit-border-radius: 20px;
             border-radius: 20px;
-            background-color: rgba(255, 0, 0, 0.5);
+            background-color: rgb(255, 0, 0);
             color: white;
             border: none;
+            font-weight: bold;
+        }
+        body {
+            background-image: url('/images/bg.jpeg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
         }
     </style>
     <script>
@@ -301,7 +310,7 @@
         </div>
         <div class="container">
             <h3>Report an Incident</h3>
-            <p style="color: rgba(255, 0, 0, 0.678);">(* marked fields are required)</p><br>
+            <p style="color: rgb(0, 0, 0);">(* marked fields are required)</p><br>
             <form action="/report" id="upload-details" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="locationLat" id="locationLat" required
                     placeholder="Latitude (click Get Location) *">
@@ -311,7 +320,7 @@
                     placeholder="category of the incident *" autocomplete="off"><br><br>
                 <textarea type="text" name="desc" id="desc" rows="6" required placeholder="write about the incident *" autocomplete="off"></textarea><br><br>
                 <h4>Image/Video *</h4>
-                <input type="file" name="media" id="media" accept="image/video/*" required><br><br>
+                <input type="file" name="media" id="media" style="background-color: white;" accept="image/video/*" required><br><br>
                 <input type="submit" value="Report Incident" id="report" onclick="scrollToTop()"><br><br>
                 <input type="reset" value="Reset" id="reset">
             </form>

@@ -210,8 +210,13 @@
         #postContainer {
             border-radius: 10px;
             padding-top: 6px;
-            box-shadow: 1px 1px 5px 0px slategray;
+            /*box-shadow: 1px 1px 5px 0px slategray;*/
+            background-color: white;
+            /*margin: 10px;*/
         }
+        /*div#postContainer:hover {
+            background-color: rgba(112, 128, 144, 0.322);
+        }*/
         #livesearch{
             width: 100%;
             height: 35px;
@@ -238,6 +243,13 @@
             color: rgba(105, 90, 205, 0.719);
             margin-left: 80%;
         } 
+        body {
+            background-image: url('/images/bg.jpeg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -279,7 +291,7 @@
     </div>-->
     <nav id="navbar">
         <div id="title" class="container">
-            <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;">
+            <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); float: left; padding-top: 1%;">
                     GangPayee</i></a>
         </div>
     </nav>
@@ -306,7 +318,7 @@
             <p id="userlist"></p>
         </div>-->
         <div>
-            <h3 style="font-family: sans-serif;">Share Your Thoughts</h3>
+            <h3 style="font-family: sans-serif; margin-top: 0%; font-weight: bold; color: black;">Share Your Ideas</h3>
         </div>
         <div class="contaienr" id="processing">
             <img data-src="/pwa_logo/loading6.gif" alt="loader" style="height: 15%; width: 15%;">
@@ -323,16 +335,15 @@
                 </div>
                 {% endif %}
                 <a href="/account/{{ post[i][3] }}">
-                    <div>
-                        <img data-src="/images/profilePics/{{ post[i][0] }}" alt="dp" id="postDp" align="left"
-                            style="margin-top: -2%; margin-right: -12%;">
-                        <h4 style="margin-top: 5%;">{{ post[i][1] }} {{ post[i][2] }}</h4>
-                        <p style="margin: -2%;">( {{ post[i][3] }} )</p>
+                    <div class="container" style="margin-bottom: -3%; padding-top: 1%;">
+                        <img data-src="/images/profilePics/{{ post[i][0] }}" alt="dp" id="postDp" style="float: left;">
+                        <h4 style="color: black; float: left; margin-left: 3%; padding-top: 2%;">{{ post[i][1] }} {{ post[i][2] }}</h4>
+                        <!--<p style="margin: -2%;">( {{ post[i][3] }} )</p>-->
                     </div>
                 </a>
                 <hr>
                 <a href="/blog/{{ post[i][5] }}">
-                    <div>
+                    <div class="container">
                         {% if post[i][4]|length %}
                         <p style="font-size: 120%; color: black;" align="left">{{ post[i][4] }}</p>
                         {% endif %}
@@ -355,6 +366,7 @@
             </div>
             <br>
             {% endfor %}
+            <br>
             <p style="color: slategrey;">no more posts</p>
         </div>
         <br><br><br><br>

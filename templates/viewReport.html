@@ -78,7 +78,6 @@
             height: 40px;
             border-radius: 50%;
             float: left;
-            margin-left: 5%;
         }
 
         .footer {
@@ -102,6 +101,8 @@
             -moz-border-radius: 10px;
             -webkit-border-radius: 10px;
             border-radius: 10px;
+            background-color: white;
+            margin: 4px;
         }
 
         #direction {
@@ -113,6 +114,14 @@
             -moz-border-radius: 20px;
             -webkit-border-radius: 20px;
             border-radius: 20px;
+        }
+
+        body {
+            background-image: url('/images/bg.jpeg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
         }
     </style>
     <script>
@@ -143,7 +152,7 @@
         </div>
     </nav>
     <br>
-    <div class="container" id="maindiv">
+    <div class="" id="maindiv">
         <div class="container" id="postContainer">
             {% for i in range(post|length) %}
             {% if (user == post[i][4]) %}
@@ -156,7 +165,7 @@
             <a href="/account/{{ post[i][4] }}">
                 <div class="container">
                     <img src="/images/profilePics/{{ post[i][0] }}" alt="dp" class="avatar">
-                    <h4>{{ post[i][1] }} {{ post[i][2] }}</h4>
+                    <h4 style="float: left; margin-left: 3%; color: black;">{{ post[i][1] }} {{ post[i][2] }}</h4>
                 </div>
             </a>
             <hr>
@@ -166,7 +175,8 @@
             <p>{{ post[i][8] }}</p><br>
             {% if post[i][9]|length %}
             {% if ((".mp4" in post[i][9]) or (".ogg" in post[i][9])) %}
-            <video id="video" class="border" controls height="100%" width="100%" style="border-radius: 10px;" preload="auto">
+            <video id="video" class="border" controls height="100%" width="100%" style="border-radius: 10px;"
+                preload="auto">
                 <source src="/posts/postMedia/{{ post[i][9] }}" type="video/mp4" preload="auto">
             </video>
             {% else %}
@@ -188,7 +198,7 @@
 
     <button id="scroll-top"><a href="#to-top"><i class="fas fa-arrow-up"
                 style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
-                <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5dbabd7d4a605919"></script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5dbabd7d4a605919"></script>
     <script src="/app.js"></script>
 </body>
 

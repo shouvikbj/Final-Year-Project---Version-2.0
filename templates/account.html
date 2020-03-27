@@ -106,6 +106,7 @@
             border-radius: 10px;
             padding-top: 6px;
             box-shadow: 1px 1px 5px 0px slategray;
+            margin: 6px;
         }
 
         #confirmAction {
@@ -147,6 +148,14 @@
             background-color: rgba(255, 0, 0, 0.548);
             color: white;
         }
+
+        body {
+            background-image: url('/images/bg.jpeg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -179,9 +188,10 @@
     <p style="margin: 4px;"></p>
     <div class="preloader"></div>
     <nav id="navbar">
-        <div id="title" class="container">
-            <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); margin-left: -55%;">
+        <div id="title" class="container" style="padding-top: 4%;">
+            <a href="/"><i class="fas fa-home" style="color: rgba(0, 0, 255, 0.664); float: left;">
                     GangPayee</i></a>
+            <a href="/logout"><i class="fas fa-sign-out-alt" style="color: tomato; float: right;"> Logout</i></a>
         </div>
     </nav>
     <br>
@@ -199,23 +209,23 @@
         {% endif %}
         {% endwith %}
     </div>
-    <div class="container" id="maindiv">
-        <div style="padding-top: 2%;">
-            <a href="/game"><i class="fas fa-gamepad fa-lg" style="color: blue; float: left;"> Game Center</i></a>
-            <a href="/logout"><i class="fas fa-sign-out-alt fa-lg" style="color: tomato; float: right;"> Logout</i></a>
+    <div class="" id="maindiv">
+        <div class="container" style="padding-top: 2%; margin-bottom: -3%;">
+            <a href="/game"><i class="fas fa-gamepad fa-lg" style="color: black; float: right;"> Game Center</i></a>
+            <!--<a href="/logout"><i class="fas fa-sign-out-alt fa-lg" style="color: tomato; float: right;"> Logout</i></a>-->
         </div>
         <br>
         <hr>
         <div>
             <div align="right" style="padding-right: 5%;">
-                <a href="/account/update"><i class="fas fa-user-edit" style="color: darkgreen;"></i></a>
+                <a href="/account/update"><i class="fas fa-user-edit fa-lg" style="color: black;"></i></a>
             </div>
             <a href="/dp/{{ image }}"><img data-src="/images/profilePics/{{ image }}" alt="dp" class="avatar"></a>
             <br>
             <h2 style="color: black;">{{ firstname }} {{ lastname }}</h2>
-            <h4 style="color: rgba(0, 0, 0, 0.8);">( {{ username }} )</h4>
-            <h5 style="color: rgba(0, 0, 0, 0.8);;">{{ email }}</h5>
-            <h5 style="color: rgba(0, 0, 0, 0.8);;">{{ phone }}</h5>
+            <h4 style="color: black;">( {{ username }} )</h4>
+            <h5 style="color: black;">{{ email }}</h5>
+            <h5 style="color: black;">{{ phone }}</h5>
             <hr>
         </div>
         <div>
@@ -224,7 +234,7 @@
         <hr>
         <div>
             {% for i in range(userPost|length) | reverse %}
-            <div class="container" id="postContainer">
+            <div class="container" id="postContainer" style="background-color: white;">
                 <div>
                     <a href="/post/{{ userPost[i][6] }}/delete"><i id="delete" class="fas fa-trash"
                             style="color: rgba(255, 0, 0, 0.863); margin-top: 5%; float: left; margin-left: 4%;"></i></a><br>
@@ -277,7 +287,7 @@
                 <br>
 
             </div>
-            <br>
+
             {% endfor %}
 
             <br>
@@ -289,17 +299,21 @@
     <div class="footer container">
         <div class="row" id="menubar">
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/"><button
-                        style="background-color: white; border: none;"><i class="fas fa-home fa-lg"></i></button></a></div>
+                        style="background-color: white; border: none;"><i class="fas fa-home fa-lg"></i></button></a>
+            </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/blog"><button
-                        style="background-color: white; border: none;"><i class="fas fa-atlas fa-lg"></i></button></a></div>
+                        style="background-color: white; border: none;"><i class="fas fa-atlas fa-lg"></i></button></a>
+            </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/map"><button
-                        style="background-color: white; border: none;"><i class="fas fa-street-view fa-lg"></i></button></a>
+                        style="background-color: white; border: none;"><i
+                            class="fas fa-street-view fa-lg"></i></button></a>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/msg"><button
                         style="background-color: white; border: none;"><i
                             class="fab fa-facebook-messenger fa-lg"></i></button></a></div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/notification"><button
-                        style="background-color: white; border: none;"><i class="fas fa-bell fa-lg"></i></button></a></div>
+                        style="background-color: white; border: none;"><i class="fas fa-bell fa-lg"></i></button></a>
+            </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="#"><button
                         style="background-color: white; border: none;"><i class="fas fa-user-circle fa-lg"
                             style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></button></a></div>
