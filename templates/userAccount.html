@@ -106,6 +106,14 @@
             border-radius: 10px;
             padding-top: 6px;
             box-shadow: 1px 1px 5px 0px slategray;
+            margin: 6px;
+        }
+        body {
+            background-image: url('/images/bg.jpeg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
         }
     </style>
     <script>
@@ -136,7 +144,7 @@
         </div>
     </nav>
 
-    <div class="container" id="maindiv">
+    <div class="" id="maindiv">
         <div>
             <br>
             <a href="/dp/{{ image }}"><img data-src="/images/profilePics/{{ image }}" alt="dp" class="avatar"></a>
@@ -153,7 +161,7 @@
         <hr>
         <div>
             {% for i in range(userPost|length) | reverse %}
-            <div class="container" id="postContainer">
+            <div class="container" id="postContainer" style="background-color: white;">
 
                 <div style="color: black;">
                     <img data-src="/images/profilePics/{{ userPost[i][0] }}" alt="dp" id="postDp" align="left"
@@ -195,12 +203,11 @@
                 <br>
 
             </div>
-            <br>
             {% endfor %}
-            <br>
+            <br><br>
             <p style="color: gray;">no more posts available</p>
         </div>
-        <br><br><br><br>
+        <br><br>
     </div>
 
 
