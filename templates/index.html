@@ -13,7 +13,7 @@
     <title>Home</title>
     <script>
         if (location.hostname === 'gangpayee.herokuapp.com' && location.protocol !== 'https:') {
-            location.href = location.href.replace('http:','https:')
+            location.href = location.href.replace('http:', 'https:')
         }
     </script>
     <style>
@@ -215,6 +215,7 @@
             background-color: white;
             margin: 6px;
         }
+
         /*#livesearch{
             width: 100%;
             height: 35px;
@@ -241,7 +242,7 @@
             color: rgba(105, 90, 205, 0.719);
             margin-left: 80%;
         } */
-        #searchBtn{
+        #searchBtn {
             text-decoration: none;
             -moz-border-radius: 30px;
             -webkit-border-radius: 30px;
@@ -253,7 +254,8 @@
             background-color: white;
             float: right;
         }
-        #msgBtn{
+
+        #msgBtn {
             text-decoration: none;
             -moz-border-radius: 30px;
             -webkit-border-radius: 30px;
@@ -265,6 +267,7 @@
             background-color: white;
             float: left;
         }
+
         body {
             background-image: url('/images/bg.jpeg');
             background-position: center;
@@ -313,7 +316,8 @@
     </div>-->
     <nav id="navbar">
         <div id="title" class="container">
-            <a href="/"><i class="fas fa-home fa-lg" style="color: rgba(0, 0, 255, 0.664); float: left; padding-top: 3%;">
+            <a href="/"><i class="fas fa-home fa-lg"
+                    style="color: rgba(0, 0, 255, 0.664); float: left; padding-top: 3%;">
                     GangPayee</i></a>
             <a href="/account"><img data-src="/images/profilePics/{{ image }}" alt="Avatar" class="avatar"></a>
         </div>
@@ -341,8 +345,10 @@
             <p id="userlist"></p>
         </div>-->
         <div class="container-fluid" id="search" style="margin-bottom: -12%;">
-            <a href="/messanger"><button id="msgBtn"><i class="far fa-comment-dots fa-2x" style="color: black;"></i></button></a>
-            <a href="/searchUser"><button id="searchBtn"><i class="fas fa-search fa-2x" style="color: black;"></i></button></a>
+            <a href="/messanger"><button id="msgBtn"><i class="far fa-comment-dots fa-2x"
+                        style="color: black;"></i></button></a>
+            <a href="/searchUser"><button id="searchBtn"><i class="fas fa-search fa-2x"
+                        style="color: black;"></i></button></a>
         </div>
         <br><br>
         <div class="contaienr" id="processing">
@@ -356,8 +362,10 @@
                 <div class="container" id="postContainer">
                     <a href="/account/{{ post[i][3] }}">
                         <div class="container" style="margin-bottom: -3%; padding-top: 1%;">
-                            <img data-src="/images/profilePics/{{ post[i][0] }}" alt="dp" id="postDp" style="float: left;">
-                            <h4 style="color: black; float: left; margin-left: 3%; padding-top: 2%;">{{ post[i][1] }} {{ post[i][2] }}</h4>
+                            <img data-src="/images/profilePics/{{ post[i][0] }}" alt="dp" id="postDp"
+                                style="float: left;">
+                            <h4 style="color: black; float: left; margin-left: 3%; padding-top: 2%;">{{ post[i][1] }}
+                                {{ post[i][2] }}</h4>
                             <!--<p style="margin: -2%;">( {{ post[i][3] }} )</p>-->
                         </div>
                     </a>
@@ -369,9 +377,16 @@
                             {% endif %}
                             {% if post[i][5]|length %}
                             {% if ((".mp4" in post[i][5]) or (".ogg" in post[i][5])) %}
-                            <video data-src="/posts/postMedia/{{ post[i][5] }}" type="video/mp4" preload="auto" id="video" class="border" controls height="100%" width="100%" style="border-radius: 10px;">
+                            <video data-src="/posts/postMedia/{{ post[i][5] }}" type="video/mp4" preload="auto"
+                                id="video" class="border" controls height="100%" width="100%"
+                                style="border-radius: 10px;">
 
                             </video>
+                            {% elif ((".mp3" in post[i][5]) or (".ogg" in post[i][5])) %}
+                            <audio controls>
+                                <source src="/posts/postMedia/{{ post[i][5] }}" type="audio/ogg">
+                                <source src="/posts/postMedia/{{ post[i][5] }}" type="audio/mpeg">
+                            </audio>
                             {% else %}
                             <img data-src="/posts/postMedia/{{ post[i][5] }}" alt="media" width="100%" height="100%"
                                 style="border-radius: 10px;">
@@ -387,7 +402,9 @@
                         <div class="col-sm-6 col-xs-6 container">
                             <a href="/post/{{ post[i][6] }}"><i class="far fa-comments" style="color: blueviolet;"> Comment</i></a>
                         </div>-->
-                        <a href="/post/{{ post[i][6] }}"><p style="color: blueviolet;">view full post -></p></a>
+                        <a href="/post/{{ post[i][6] }}">
+                            <p style="color: blueviolet;">view full post -></p>
+                        </a>
                     </div>
                     <br>
                 </div>
@@ -402,8 +419,9 @@
             <form action="/postPost" method="post" enctype="multipart/form-data">
                 <h4 style="color: rgb(9, 121, 111);">Create Post</h4>
                 <textarea name="desc" id="desc" placeholder="What's on your mind?" autocomplete="off"></textarea><br>
-                <h5 id="q-desc" style="color: slategray; font-size: 120%;">Image/Video</h5>
-                <input id="file-picker" type="file" name="media" accept="image/video/*"><br><br>
+                <h5 id="q-desc" style="color: slategray; font-size: 120%;">Image/Video/Audio</h5>
+                <p style="color: tomato;">*(only '.mp3' audio files are accepted)</p>
+                <input id="file-picker" type="file" name="media" accept="image/video/audio/*"><br><br>
                 <input type="submit" value="Post" id="send-btn" onclick="scrollToTop()"><br><br>
                 <input type="reset" value="Reset" id="reset-btn">
                 <br><br>
@@ -414,12 +432,24 @@
 
     <div class="footer container">
         <div class="row" id="menubar">
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/"><button style="background-color: white; border: none;"><i class="fas fa-home fa-lg" style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></button></a></div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/blog"><button style="background-color: white; border: none;"><i class="fas fa-atlas fa-lg"></i></button></a></div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/map"><button style="background-color: white; border: none;"><i class="fas fa-street-view fa-lg"></i></button></a></div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/msg"><button style="background-color: white; border: none;"><i class="fab fa-facebook-messenger fa-lg"></i></button></a></div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/notification"><button style="background-color: white; border: none;"><i class="fas fa-bell fa-lg"></i></button></a></div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/account"><button style="background-color: white; border: none;"><i class="fas fa-user-circle fa-lg"></i></button></a></div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/"><button
+                        style="background-color: white; border: none;"><i class="fas fa-home fa-lg"
+                            style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></button></a></div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/blog"><button
+                        style="background-color: white; border: none;"><i class="fas fa-atlas fa-lg"></i></button></a>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/map"><button
+                        style="background-color: white; border: none;"><i
+                            class="fas fa-street-view fa-lg"></i></button></a></div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/msg"><button
+                        style="background-color: white; border: none;"><i
+                            class="fab fa-facebook-messenger fa-lg"></i></button></a></div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/notification"><button
+                        style="background-color: white; border: none;"><i class="fas fa-bell fa-lg"></i></button></a>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/account"><button
+                        style="background-color: white; border: none;"><i
+                            class="fas fa-user-circle fa-lg"></i></button></a></div>
         </div>
     </div>
 
@@ -431,10 +461,11 @@
     <script>
         var images = document.querySelectorAll('img');
         var videos = document.querySelectorAll('video');
+        var audios = document.querySelectorAll('audio');
 
-        var observer = new IntersectionObserver(function(entries, observer){
+        var observer = new IntersectionObserver(function (entries, observer) {
             entries.forEach(entry => {
-                if(entry.isIntersecting){
+                if (entry.isIntersecting) {
                     var img = entry.target;
                     img.setAttribute('src', img.getAttribute('data-src'));
                     observer.unobserve(entry.target);
@@ -448,9 +479,9 @@
             observer.observe(img);
         });
 
-        var observer = new IntersectionObserver(function(entries, observer){
+        var observer = new IntersectionObserver(function (entries, observer) {
             entries.forEach(entry => {
-                if(entry.isIntersecting){
+                if (entry.isIntersecting) {
                     var video = entry.target;
                     video.setAttribute('src', video.getAttribute('data-src'));
                     observer.unobserve(entry.target);
@@ -465,8 +496,8 @@
         });
     </script>
     <script>
-        $("#send-btn").click(function(){
-            if(($("#desc").val()!='') || ($("#file-picker").val()!='')){
+        $("#send-btn").click(function () {
+            if (($("#desc").val() != '') || ($("#file-picker").val() != '')) {
                 $("#processing").show();
                 $("#write-cmnt").hide();
                 $("#closeModal").hide();
@@ -475,8 +506,8 @@
         });
     </script>
     <script>
-        function scrollToTop(){
-            window.scrollTo(0,0);
+        function scrollToTop() {
+            window.scrollTo(0, 0);
         }
     </script>
     <script src="/app.js"></script>

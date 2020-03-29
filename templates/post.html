@@ -286,7 +286,8 @@
                 <a href="/account/{{ post[i][3] }}">
                     <div class="container" style="margin-bottom: -3%; padding-top: 1%;">
                         <img src="/images/profilePics/{{ post[i][0] }}" alt="dp" id="postDp" style="float: left;">
-                        <h4 style="color: black; float: left; margin-left: 3%; padding-top: 2%;">{{ post[i][1] }} {{ post[i][2] }}</h4>
+                        <h4 style="color: black; float: left; margin-left: 3%; padding-top: 2%;">{{ post[i][1] }}
+                            {{ post[i][2] }}</h4>
                         <!--<p style="margin: -2%;">( {{ post[i][3] }} )</p>-->
                     </div>
                 </a>
@@ -299,6 +300,11 @@
                 <video id="video" class="border" controls height="100%" width="100%" style="border-radius: 10px;">
                     <source src="/posts/postMedia/{{ post[i][5] }}" type="video/mp4" preload="auto">
                 </video>
+                {% elif ((".mp3" in post[i][5]) or (".ogg" in post[i][5])) %}
+                <audio controls>
+                    <source src="/posts/postMedia/{{ post[i][5] }}" type="audio/ogg">
+                    <source src="/posts/postMedia/{{ post[i][5] }}" type="audio/mpeg">
+                </audio>
                 {% else %}
                 <a href="/media/{{ post[i][5] }}">
                     <img src="/posts/postMedia/{{ post[i][5] }}" alt="media" width="100%" height="100%"
@@ -311,11 +317,13 @@
                 <hr>
                 <div class="container row">
                     <div class="col-sm-6 col-xs-6 container">
-                        
+
                         {% if liked %}
-                        <a href="/post/{{ post[i][6] }}/dislike"><i class="fas fa-thumbs-up" style="color: blue;" id="liked"> Liked</i></a>
+                        <a href="/post/{{ post[i][6] }}/dislike"><i class="fas fa-thumbs-up" style="color: blue;"
+                                id="liked"> Liked</i></a>
                         {% else %}
-                        <a href="/post/{{ post[i][6] }}/like"><i class="far fa-thumbs-up" style="color: black;" id="like"> Like</i></a>
+                        <a href="/post/{{ post[i][6] }}/like"><i class="far fa-thumbs-up" style="color: black;"
+                                id="like"> Like</i></a>
                         {% endif %}
 
                     </div>
