@@ -45,4 +45,11 @@ def deletePost(pid):
     db.execute("DELETE FROM blog WHERE id=(?)",(pid,))
     con.commit()
 
+def getPosts():
+    db.execute("SELECT u.image,u.firstname,u.lastname,p.desc,p.id FROM users AS u INNER JOIN blog AS p ON (p.username=u.username)")
+    posts = db.fetchall()
+    return posts
+
+
+
 createTable()

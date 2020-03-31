@@ -775,9 +775,10 @@ def sendMsg():
 @app.route("/notification")
 def notification():
     if request.cookies.get('username'):
-        #user = loginDB.getUser(session['username'])
-        #username = loginDB.getUser(request.cookies.get('username'))
-        return render_template("notification.html")
+        posts = postDB.getPosts()
+        blogs = blogDB.getPosts()
+        reports = mapDB.getPosts()
+        return render_template("notification.html", posts=posts,blogs=blogs,reports=reports)
     else:
         return redirect(url_for('login'))
 

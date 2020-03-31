@@ -40,7 +40,10 @@ def deleteReport(pid):
     db.execute("DELETE FROM map WHERE id=(?)",(pid,))
     con.commit()
 
-
+def getPosts():
+    db.execute("SELECT id,category FROM map")
+    posts = db.fetchall()
+    return posts
 
 
 
