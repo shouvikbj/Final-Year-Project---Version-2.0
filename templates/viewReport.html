@@ -123,6 +123,70 @@
             background-size: cover;
             background-attachment: fixed;
         }
+        #confirmAction {
+            position: fixed;
+            bottom: 40%;
+            right: 10%;
+            z-index: 99;
+            background-color: whitesmoke;
+            /*border: 1px solid black;*/
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 10px;
+            padding: 5%;
+            width: 80%;
+            box-shadow: 0px 0px 10px 1px slategray;
+        }
+
+        #yes {
+            width: 45%;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 30px;
+            border: none;
+            height: 40px;
+            background-color: rgba(0, 4, 255, 0.548);
+            color: white;
+        }
+
+        #cancel {
+            width: 45%;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 30px;
+            border: none;
+            height: 40px;
+            background-color: rgba(255, 0, 0, 0.548);
+            color: white;
+        }
+
+        #commentBox {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            padding: 2%;
+            border: none;
+            background-color: rgba(112, 128, 144, 0.178);
+        }
+
+        #commentBox:hover {
+            border-bottom: 1px solid rgb(0, 0, 167);
+        }
+
+        #twoMsg {
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            padding: 5%;
+            /*border: 1px solid black;*/
+            margin: 2%;
+            width: 95%;
+            background-color: white;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -136,6 +200,15 @@
                 } else {
                     $('#scroll-top').fadeOut();
                 }
+            });
+            $("#confirmAction").hide();
+            $("#comment").click(function () {
+                $(this).hide();
+                $("#confirmAction").show();
+            });
+            $("#cancel").click(function () {
+                $("#confirmAction").hide();
+                $("#comment").show();
             });
         });
     </script>
@@ -189,8 +262,35 @@
             <a href="https://www.google.com/maps/dir/?api=1&destination={{ post[i][5] }},{{ post[i][6] }}"><button
                     id="direction"><i class="fas fa-directions"> Directions to Incident Place</i></button></a>
             {% endfor %}
-            <br>
-            <br>
+            <hr>
+            <a href="#bottom">
+                <div class="container" id="comment" align="center">
+                    <i class="far fa-comments fa-lg" style="color: black;"> Comment</i>
+                </div>
+            </a>
+            <hr>
+            <div class="container" id="confirmAction">
+                <h4 style="color: black;">Write comment</h4>
+                <form action="/report/{{ reportid }}/comment" method="POST">
+                    <input type="text" name="commentBox" id="commentBox" required placeholder="write here"
+                        autocomplete="off"><br><br>
+                    <button id="cancel">cancel</button>
+                    <button id="yes" type="submit">comment</button>
+                </form>
+            </div>
+            
+        </div>
+        <div class="container" id="allMsgs">
+            <h3 style="color: black;">Comments</h3><br>
+            {% for i in range(comments|length) %}
+            <div class="container" id="twoMsg">
+                <!--<img src="/images/profilePics/defaultProfileImage.png" alt="dp" class="avatar" align="left">-->
+                <h4 style="float:left;">{{ comments[i][2] }}</h4><br><br>
+                <p style="float:left;">{{ comments[i][3] }}</p>
+            </div>
+            {% endfor %}
+            <br><br>
+            <p style="color: white;">no more comments</p>
         </div>
     </div>
     <br><br><br>

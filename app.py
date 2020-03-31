@@ -1,7 +1,7 @@
 from flask import Flask,render_template,redirect,request,url_for,session,flash,jsonify,make_response
 import csv
 #import delete as dlt
-import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB,messangerDB
+import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB,messangerDB,reportCommentDB
 import smtplib
 import os
 
@@ -717,13 +717,17 @@ def viewReport(pid):
         post = mapDB.getPost(pid)
         firstname = post[0][1]
         lastname = post[0][2]
-        return render_template("viewReport.html",post=post,user=user,firstname=firstname,lastname=lastname)
+        reportid = post[0][3]
+        comments = reportCommentDB.getReportComments(pid)
+        return render_template("viewReport.html",reportid=reportid,post=post,user=user,firstname=firstname,lastname=lastname,comments=comments)
     else:
-        user = ""
+        user = "Unknown User"
         post = mapDB.getPost(pid)
         firstname = post[0][1]
         lastname = post[0][2]
-        return render_template("viewReport.html",post=post,user=user,firstname=firstname,lastname=lastname)
+        reportid = post[0][3]
+        comments = reportCommentDB.getReportComments(pid)
+        return render_template("viewReport.html",reportid=reportid,post=post,user=user,firstname=firstname,lastname=lastname,comments=comments)
 
 
 @app.route("/report/<int:pid>/delete", methods=["POST","GET"])
@@ -737,6 +741,24 @@ def deleteReport(pid):
     else:
         return redirect(url_for('login'))
 
+@app.route("/report/<int:pid>/comment", methods=["POST","GET"])
+def commentOnReport(pid):
+    if request.cookies.get('username'):
+        username = request.cookies.get('username')
+        user = loginDB.getUser(username)
+        firstname = user[0][1]
+        lastname = user[0][2]
+        name = firstname + " " + lastname
+        cmnt = request.form.get("commentBox")
+        reportCommentDB.addReportComment(pid,name,cmnt)
+        redirectUrl = '/report/'+str(pid)
+        return redirect(redirectUrl)
+    else:
+        name = "Unknown User"
+        cmnt = request.form.get("commentBox")
+        reportCommentDB.addReportComment(pid,name,cmnt)
+        redirectUrl = '/report/'+str(pid)
+        return redirect(redirectUrl)
 
 
 @app.route("/searchUserforMsg")
