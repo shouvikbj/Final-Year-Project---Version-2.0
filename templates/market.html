@@ -109,7 +109,7 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            float: left;  
+            float: left;
             margin-bottom: 4%;
         }
 
@@ -173,7 +173,7 @@
             padding: 1.1%;
         }
 
-        #phone{
+        #phone {
             text-align: center;
             width: 100%;
             border: 1px solid rgba(112, 128, 144, 0.602);
@@ -286,7 +286,7 @@
             background-attachment: fixed;
         }
 
-        #adDiv{
+        #adDiv {
             background-color: white;
             text-decoration: none;
             -moz-border-radius: 20px;
@@ -295,13 +295,14 @@
             padding: 4%;
         }
 
-        #adMedia{
+        #adMedia {
             text-decoration: none;
             -moz-border-radius: 10px;
             -webkit-border-radius: 10px;
             border-radius: 10px;
         }
-        #call{
+
+        #call {
             text-decoration: none;
             -moz-border-radius: 50px;
             -webkit-border-radius: 50px;
@@ -312,7 +313,8 @@
             float: left;
             margin-left: 15%;
         }
-        #msg{
+
+        #msg {
             text-decoration: none;
             -moz-border-radius: 50px;
             -webkit-border-radius: 50px;
@@ -323,7 +325,8 @@
             float: right;
             margin-right: 15%;
         }
-        #maindiv{
+
+        #maindiv {
             margin: 2%;
         }
     </style>
@@ -386,7 +389,7 @@
         {% endif %}
         {% endwith %}
     </div>
-
+    <h3 style="color: black;">GP Market Place</h3>
     <div class="" id="maindiv">
         <div class="contaienr" id="processing">
             <img data-src="/pwa_logo/loading6.gif" alt="loader" style="height: 15%; width: 15%;">
@@ -398,7 +401,8 @@
             <div class="">
                 <a href="/account/{{ ads[i][3] }}">
                     <img class="avatar" data-src="/images/profilePics/{{ ads[i][0] }}" alt="dp">
-                    <h4 style="color: black; float: left; margin-left: 4%; margin-top: 5%;">{{ ads[i][1] }} {{ ads[i][2] }}</h4>
+                    <h4 style="color: black; float: left; margin-left: 4%; margin-top: 5%;">{{ ads[i][1] }}
+                        {{ ads[i][2] }}</h4>
                     {% if (username == ads[i][3]) %}
                     <a href="/market/ad/{{ ads[i][4] }}/delete">
                         <i class="far fa-trash-alt fa-lg" style="color: red; float: right; margin: 6%;"></i>
@@ -409,7 +413,14 @@
                 <div>
                     <p style="color: black; float: left;">{{ ads[i][5] }}</p>
                     <a target="_blank" href="/posts/postMedia/{{ ads[i][7] }}">
-                        <img data-src="/posts/postMedia/{{ ads[i][7] }}" alt="ad_media" style="width: 100%;" id="adMedia">
+                        {% if ((".mp4" in ads[i][7]) or (".ogg" in ads[i][7])) %}
+                        <video data-src="/posts/postMedia/{{ ads[i][7] }}" type="video/mp4" preload="auto" id="video"
+                            class="border" controls height="100%" width="100%" style="border-radius: 10px;">
+                        </video>
+                        {% else %}
+                        <img data-src="/posts/postMedia/{{ ads[i][7] }}" alt="ad_media" style="width: 100%;"
+                            id="adMedia">
+                        {% endif %}
                     </a>
                 </div>
             </div>
@@ -437,11 +448,13 @@
         <div id="write-cmnt" class="container">
             <form action="/postAd" method="post" enctype="multipart/form-data">
                 <h4 style="color: rgb(9, 121, 111);">Create Ad</h4>
-                <textarea name="desc" id="desc" placeholder="write about your product" autocomplete="off" required></textarea>
+                <textarea name="desc" id="desc" placeholder="write about your product" autocomplete="off"
+                    required></textarea>
                 <h4 id="q-desc" style="color: slategray; font-size: 120%;">Image/Video</h4>
                 <input id="file-picker" type="file" name="media" accept="image/video/*" required>
                 <h4 id="q-desc" style="color: slategray; font-size: 120%;">Contact Number</h4>
-                <input type="text" name="phone" id="phone" autocomplete="off" placeholder="phone number" required><br><br>
+                <input type="text" name="phone" id="phone" autocomplete="off" placeholder="phone number"
+                    required><br><br>
                 <input type="submit" value="Post Ad" id="send-btn" onclick="scrollToTop()"><br><br>
                 <input type="reset" value="Reset" id="reset-btn">
                 <br><br>
@@ -469,7 +482,7 @@
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/market"><button
                         style="background-color: white; border: none;"><i class="fas fa-store fa-lg"
-                        style="color: rgb(66, 207, 0);"></i></button></a>
+                            style="color: rgb(66, 207, 0);"></i></button></a>
             </div>
         </div>
     </div>
