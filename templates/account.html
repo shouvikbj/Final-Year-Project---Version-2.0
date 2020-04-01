@@ -265,6 +265,11 @@
                         <video data-src="/posts/postMedia/{{ userPost[i][5] }}" type="video/mp4" preload="auto"
                             id="video" class="border" controls height="100%" width="100%" style="border-radius: 10px;">
                         </video>
+                        {% elif ((".mp3" in userPost[i][5]) or (".ogg" in userPost[i][5])) %}
+                        <audio controls>
+                            <source src="/posts/postMedia/{{ userPost[i][5] }}" type="audio/ogg">
+                            <source src="/posts/postMedia/{{ userPost[i][5] }}" type="audio/mpeg">
+                        </audio>
                         {% else %}
                         <img data-src="/posts/postMedia/{{ userPost[i][5] }}" alt="media" width="100%" height="100%"
                             style="border-radius: 10px;">
@@ -314,9 +319,9 @@
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/notification"><button
                         style="background-color: white; border: none;"><i class="fas fa-bell fa-lg"></i></button></a>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="#"><button
-                        style="background-color: white; border: none;"><i class="fas fa-user-circle fa-lg"
-                            style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></button></a></div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/market"><button
+                        style="background-color: white; border: none;"><i class="fas fa-store fa-lg"></i></button></a>
+            </div>
         </div>
     </div>
 

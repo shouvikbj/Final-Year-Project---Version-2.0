@@ -231,7 +231,7 @@
             {% for i in range(reports|length) | reverse %}
             <a href="/report/{{ reports[i][0] }}">
                 <div class="container" style="color: black; margin: 4%; box-shadow: 0px 0px 10px 0px rgba(112, 128, 144, 0.445); padding: 4%; border-radius: 10px;">
-                    <!--<img src="/images/profilePics/{{ blogs[i][0] }}" alt="dp" class="avatar">-->
+                    
                     <h4 style="color: black; float: left; margin-left: 4%;">{{ reports[i][1] }}</h4><br><br>
                     <p style="color: slategray; float: left; margin-left: 4%;">Click to view..</p>
                 </div>
@@ -257,12 +257,11 @@
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/msg"><button
                         style="background-color: white; border: none;"><i
                             class="fab fa-facebook-messenger fa-lg"></i></button></a></div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="#"><button
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/notification"><button
                         style="background-color: white; border: none;"><i class="fas fa-bell fa-lg"
                             style="color: rgb(66, 207, 0); height: 200%; width: 100%;"></i></button></a></div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/account"><button
-                        style="background-color: white; border: none;"><i
-                            class="fas fa-user-circle fa-lg"></i></button></a>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><a href="/market"><button
+                        style="background-color: white; border: none;"><i class="fas fa-store fa-lg"></i></button></a>
             </div>
         </div>
     </div>

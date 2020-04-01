@@ -191,7 +191,7 @@
             margin: 2%;
             width: 80%;
             float: right;
-            background-color: rgba(0, 100, 182, 0.075);
+            background-color: white;
         }
 
         #twoMsg {
@@ -204,7 +204,7 @@
             margin: 2%;
             width: 80%;
             float: left;
-            background-color: rgba(153, 205, 50, 0.158);
+            background-color: white;
         }
 
         div.sticky {
@@ -218,6 +218,21 @@
             color: rgb(4, 0, 255);
             font-family: "Comic Sans MS", cursive, sans-serif;
             width: 100%;
+        }
+
+        body {
+            background-image: url('/images/bg.jpeg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        #maindiv{
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
         }
     </style>
     <script>
@@ -278,7 +293,7 @@
     {% endfor %}
     {% endif %}
     {% endwith %}
-    <div class="container" id="maindiv">
+    <div class="white" id="maindiv" style="background-color: white; margin: 1%;">
         <br>
         <div>
             {% for i in range(post|length) %}
@@ -380,13 +395,12 @@
             {% endfor %}
         </div>
     </div>
-    <br><br><br><br>
-    <div id="bottom"></div>
+    <br><br><br><br><br>
 
 
     <button id="scroll-top"><a href="#to-top"><i class="fas fa-arrow-up"
                 style="font-size:24px;color: rgb(255, 251, 0);"></i></a></button>
-    <!--<i class="fas fa-plus-circle" id="addPost"></i>-->
+    <div id="bottom"></div>
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5dbabd7d4a605919"></script>
     <script src="/app.js"></script>
 </body>

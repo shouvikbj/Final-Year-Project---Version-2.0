@@ -1,7 +1,7 @@
 from flask import Flask,render_template,redirect,request,url_for,session,flash,jsonify,make_response
 import csv
 #import delete as dlt
-import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB,messangerDB,reportCommentDB
+import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB,messangerDB,reportCommentDB,marketDB
 import smtplib
 import os
 
@@ -862,6 +862,45 @@ def sendChat(sender,receiver):
         return redirect(url_for('login'))
     
 
+@app.route("/market")
+def market():
+    if request.cookies.get('username'):
+        username = request.cookies.get('username')
+        user = loginDB.getUser(username)
+        user_name = user[0][0]
+        ads = marketDB.getAds()
+        return render_template("market.html",user_name=user_name,ads=ads,username=username)
+    else:
+        return redirect(url_for('login'))
+
+@app.route("/postAd", methods=["POST","GET"])
+def postAd():
+    if request.cookies.get('username'):
+        target = APP_ROOT+'/static/posts/postMedia'
+        username = request.cookies.get('username')
+        desc = request.form.get("desc")
+        phone = request.form.get("phone")
+        media = request.files.get("media")
+        media_filename = ""
+        if(media):
+            media_filename = media.filename
+            destination = "/".join([target,media_filename])
+            media.save(destination)
+
+        marketDB.createAd(username,desc,phone,media_filename)
+        flash("Ad posted successfully..","success")
+        return redirect(url_for('market'))
+    else:
+        flash("Login first..","warning")
+        return redirect(url_for('login'))
+
+@app.route("/market/ad/<pid>/delete")
+def deleteAd(pid):
+    if request.cookies.get('username'):
+        marketDB.deleteAd(pid)
+        return redirect(url_for('market'))
+    else:
+        return redirect(url_for('login'))
 
 
 #@app.route("/customsearch")

@@ -135,6 +135,22 @@
             height: 40px;
             width: 95%;
         }
+
+        body {
+            background-image: url('/images/bg.jpeg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        #maindiv{
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            margin: 1%;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -163,8 +179,8 @@
                     GangPayee</i></a>
         </div>
     </nav>
-
-    <div class="container" id="maindiv">
+    <br><br>
+    <div class="container" id="maindiv" style="background-color: white;">
         <br>
         <div>
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -232,7 +248,7 @@
             </div>
             {% endfor %}
         </div>
-        <br><br><br><br>
+        <br>
     </div>
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
