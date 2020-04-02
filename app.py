@@ -1,5 +1,6 @@
 from flask import Flask,render_template,redirect,request,url_for,session,flash,jsonify,make_response
 import csv
+import random
 #import delete as dlt
 import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB,messangerDB,reportCommentDB,marketDB
 import smtplib
@@ -23,10 +24,16 @@ def index():
 def home():
     #if 'username' in session:
     if request.cookies.get('username'):
+        post = []
         #user = loginDB.getUser(session['username'])
         user = loginDB.getUser(request.cookies.get('username'))
         image = user[0][6]
-        post = postDB.getAllPost()
+        post2 = postDB.getAllPost()
+        for i in range(len(post2)):
+            index2 = random.sample(range(0,len(post2)),len(post2))
+        for j in range(len(index2)):
+            index = index2[j]
+            post.append(post2[index])
         resp = make_response(render_template("index.html", image=image,post=post))
         #return render_template("index.html", post=post)
         #return render_template("index.html", image=image,post=post)
@@ -533,9 +540,15 @@ def viewDp(img):
 @app.route("/blog")
 def blog():
     if request.cookies.get('username'):
+        post = []
         #user = loginDB.getUser(session['username'])
         user = request.cookies.get('username')
-        post = blogDB.getAllPost()
+        post2 = blogDB.getAllPost()
+        for i in range(len(post2)):
+            index2 = random.sample(range(0,len(post2)),len(post2))
+        for j in range(len(index2)):
+            index = index2[j]
+            post.append(post2[index])
         #user = session['username']
         return render_template("blog.html", post=post,user=user)
     else:
@@ -865,10 +878,16 @@ def sendChat(sender,receiver):
 @app.route("/market")
 def market():
     if request.cookies.get('username'):
+        ads = []
         username = request.cookies.get('username')
         user = loginDB.getUser(username)
         user_name = user[0][0]
-        ads = marketDB.getAds()
+        ads2 = marketDB.getAds()
+        for i in range(len(ads2)):
+            index2 = random.sample(range(0,len(ads2)),len(ads2))
+        for j in range(len(index2)):
+            index = index2[j]
+            ads.append(ads2[index])
         return render_template("market.html",user_name=user_name,ads=ads,username=username)
     else:
         return redirect(url_for('login'))
