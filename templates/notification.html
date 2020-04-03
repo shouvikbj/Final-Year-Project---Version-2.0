@@ -199,7 +199,7 @@
             {% for i in range(posts|length) | reverse %}
             <a href="/post/{{ posts[i][4] }}">
                 <div class="container" style="color: black; margin: 4%; box-shadow: 0px 0px 10px 0px rgba(112, 128, 144, 0.445); padding: 4%; border-radius: 10px;">
-                    <img src="/images/profilePics/{{ posts[i][0] }}" alt="dp" class="avatar">
+                    <img data-src="/images/profilePics/{{ posts[i][0] }}" alt="dp" class="avatar">
                     <h4 style="color: black; float: left; margin-left: 4%;">{{ posts[i][1] }} {{ posts[i][2] }}</h4>
                     {% if (posts[i][3]|length) %}
                     <p style="color: slategray; float: left; white-space: nowrap; width: 60%; overflow: hidden; text-overflow: ellipsis; margin-left: 4%;">{{ posts[i][3] }}</p>
@@ -215,7 +215,7 @@
             {% for i in range(blogs|length) | reverse %}
             <a href="/blog/{{ blogs[i][4] }}">
                 <div class="container" style="color: black; margin: 4%; box-shadow: 0px 0px 10px 0px rgba(112, 128, 144, 0.445); padding: 4%; border-radius: 10px;">
-                    <img src="/images/profilePics/{{ blogs[i][0] }}" alt="dp" class="avatar">
+                    <img data-src="/images/profilePics/{{ blogs[i][0] }}" alt="dp" class="avatar">
                     <h4 style="color: black; float: left; margin-left: 4%;">{{ blogs[i][1] }} {{ blogs[i][2] }}</h4>
                     {% if (blogs[i][3]|length) %}
                     <p style="color: slategray; float: left; white-space: nowrap; width: 60%; overflow: hidden; text-overflow: ellipsis; margin-left: 4%;">{{ blogs[i][3] }}</p>
@@ -282,6 +282,25 @@
             document.getElementById(cityName).style.display = "block";
             evt.currentTarget.className += " active";
         }
+    </script>
+    <script>
+        var images = document.querySelectorAll('img');
+        
+        var observer = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    var img = entry.target;
+                    img.setAttribute('src', img.getAttribute('data-src'));
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        images.forEach(img => {
+            observer.observe(img);
+        });
     </script>
     <script src="/app.js"></script>
 </body>
