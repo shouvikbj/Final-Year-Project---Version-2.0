@@ -51,5 +51,9 @@ def getPosts():
     posts = db.fetchall()
     return posts
 
+def getPostForRepost(pid):
+    db.execute("SELECT desc,media FROM post WHERE id=(?)",(pid,))
+    post = db.fetchall()
+    return post
 
 #createTable()

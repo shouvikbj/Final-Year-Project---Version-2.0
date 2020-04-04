@@ -331,7 +331,7 @@
                 <p style="float: left;">{{ no_likes }} likes</p><br>
                 <hr>
                 <div class="container row">
-                    <div class="col-sm-6 col-xs-6 container">
+                    <div class="col-sm-4 col-xs-4 container">
 
                         {% if liked %}
                         <a href="/post/{{ post[i][6] }}/dislike"><i class="fas fa-thumbs-up" style="color: blue;"
@@ -343,8 +343,13 @@
 
                     </div>
                     <a href="#bottom">
-                        <div class="col-sm-6 col-xs-6 container" id="comment">
+                        <div class="col-sm-4 col-xs-4 container" id="comment">
                             <i class="far fa-comments" style="color: black;"> Comment</i>
+                        </div>
+                    </a>
+                    <a href="/post/{{ post[i][6] }}/repost">
+                        <div class="col-sm-4 col-xs-4 container" id="share">
+                            <i class="far fa-share-square" style="color: black;"> Repost</i>
                         </div>
                     </a>
                 </div>

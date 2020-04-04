@@ -447,6 +447,21 @@ def post(pid):
         postid = post[0][6]
         return render_template("post2.html", post=post, firstname=firstname, lastname=lastname, postid=postid)
 
+@app.route("/post/<pid>/repost")
+def rePost(pid):
+    if request.cookies.get('username'):
+        username = request.cookies.get('username')
+        post = postDB.getPostForRepost(pid)
+        newPostDesc = post[0][0]
+        newPostMedia = post[0][1]
+        postDB.createPost(username,newPostDesc,newPostMedia)
+        redirectUrl = '/post/'+str(pid)
+        flash("You shared this post !","success")
+        return redirect(redirectUrl)
+    else:
+        return redirect(url_for('login'))
+
+
 @app.route("/post/<int:pid>/comment",methods=["POST","GET"])
 def comment(pid):
     if request.cookies.get('username'):
@@ -671,6 +686,18 @@ def blogPost(pid):
         postid = post[0][5]
         return render_template("blogPost2.html", post=post, firstname=firstname, lastname=lastname, postid=postid)
 
+@app.route("/blog/<pid>/repost")
+def rePostBlog(pid):
+    if request.cookies.get('username'):
+        username = request.cookies.get('username')
+        post = blogDB.getPostForRepost(pid)
+        newPostDesc = post[0][0]
+        blogDB.createPost(username,newPostDesc)
+        redirectUrl = '/blog/'+str(pid)
+        flash("You shared this blog !","success")
+        return redirect(redirectUrl)
+    else:
+        return redirect(url_for('login'))
 
 
 

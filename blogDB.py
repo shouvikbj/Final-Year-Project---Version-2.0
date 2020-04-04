@@ -50,6 +50,10 @@ def getPosts():
     posts = db.fetchall()
     return posts
 
+def getPostForRepost(pid):
+    db.execute("SELECT desc FROM blog WHERE id=(?)",(pid,))
+    post = db.fetchall()
+    return post
 
 
 createTable()
