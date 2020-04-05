@@ -864,7 +864,9 @@ def sendMsg():
 @app.route("/notification")
 def notification():
     if request.cookies.get('username'):
+        sharedPosts = sharedDB.getSharedPost()
         posts = postDB.getPosts()
+        posts.extend(sharedPosts)
         blogs = blogDB.getPosts()
         reports = mapDB.getPosts()
         return render_template("notification.html", posts=posts,blogs=blogs,reports=reports)
