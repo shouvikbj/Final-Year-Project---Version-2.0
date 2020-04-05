@@ -165,12 +165,12 @@
         #locationLng,
         #category {
             width: 100%;
-            height: 40px;
+            height: 50px;
             text-align: center;
             text-decoration: none;
             -moz-border-radius: 20px;
             -webkit-border-radius: 20px;
-            border-radius: 20px;
+            border-radius: 10px;
             border: 1px solid slateblue;
             padding: 2%;
         }
@@ -181,7 +181,7 @@
             text-decoration: none;
             -moz-border-radius: 20px;
             -webkit-border-radius: 20px;
-            border-radius: 20px;
+            border-radius: 10px;
             border: 1px solid slateblue;
             padding: 2%;
         }
@@ -200,7 +200,7 @@
 
         #report {
             width: 100%;
-            height: 40px;
+            height: 50px;
             text-decoration: none;
             -moz-border-radius: 20px;
             -webkit-border-radius: 20px;
@@ -213,7 +213,7 @@
 
         #reset {
             width: 100%;
-            height: 40px;
+            height: 50px;
             text-decoration: none;
             -moz-border-radius: 20px;
             -webkit-border-radius: 20px;
@@ -310,7 +310,7 @@
         </div>
         <div class="container">
             <h3>Report an Incident</h3>
-            <p style="color: rgb(0, 0, 0);">(* marked fields are required)</p><br>
+            <p style="color: rgb(0, 0, 0);">(* marked fields are required)</p>
             <form action="/report" id="upload-details" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="locationLat" id="locationLat" required
                     placeholder="Latitude (click Get Location) *">
@@ -318,9 +318,9 @@
                     placeholder="Longitude (click Get Location) *">
                 <input type="text" name="category" id="category" required
                     placeholder="category of the incident *" autocomplete="off"><br><br>
-                <textarea type="text" name="desc" id="desc" rows="6" required placeholder="write about the incident *" autocomplete="off"></textarea><br><br>
+                <textarea type="text" name="desc" id="desc" rows="6" required placeholder="write about the incident *" autocomplete="off"></textarea><br>
                 <h4>Image/Video *</h4>
-                <input type="file" name="media" id="media" style="background-color: white;" accept="image/video/*" required><br><br>
+                <input type="file" name="media" id="media" style="background-color: white;" accept="image/video/*" required><br>
                 <input type="submit" value="Report Incident" id="report" onclick="scrollToTop()"><br><br>
                 <input type="reset" value="Reset" id="reset">
             </form>
