@@ -18,7 +18,7 @@
     </script>
     <style>
         html {
-            scroll-behavior: smooth;
+            /*scroll-behavior: smooth;*/
             font-family: "Comic Sans MS", cursive, sans-serif;
         }
 
@@ -275,6 +275,14 @@
             background-size: cover;
             background-attachment: fixed;
         }
+
+        #referedPost{
+            box-shadow: 0px 0px 15px -5px slategray;
+            border-radius: 6px;
+            background-color: white;
+            padding: 5%;
+            /*border: 0.8px solid rgba(112, 128, 144, 0.432);*/
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -357,7 +365,8 @@
         </div>
         <br>
         <div>
-            {% for i in range(post|length) | reverse %}
+            {% for i in range(post|length) %}
+            {% if ((post[i]|length) == 7) %}
             <div id="eachPost">
                 <div class="container" id="postContainer">
                     <a href="/account/{{ post[i][3] }}">
@@ -409,6 +418,40 @@
                     <br>
                 </div>
             </div>
+            {% else %}
+            <div id="eachPost">
+                <div class="container" id="postContainer">
+                    <a href="/account/{{ post[i][3] }}">
+                        <div class="container" style="margin-bottom: -3%; padding-top: 1%;">
+                            <img data-src="/images/profilePics/{{ post[i][3] }}" alt="dp" id="postDp"
+                                style="float: left;">
+                            <h4 style="color: black; float: left; margin-left: 3%; padding-top: 2%;">{{ post[i][2] }}</h4>
+                            <!--<p style="margin: -2%;">( {{ post[i][3] }} )</p>-->
+                        </div>
+                    </a>
+                    <hr>
+
+                    <div>
+                        {% if post[i][5]|length %}
+                        <p style="font-size: 120%; color: black;" align="left">{{ post[i][5] }}</p>
+                        {% endif %}
+                        <p style="float: left; color: rgba(112, 128, 144, 0.548);">shared post (tap to view)</p><br>
+                        <a href="/post/{{ post[i][4] }}">
+                            <div id="referedPost">
+                                <div>
+                                    <img data-src="/images/profilePics/{{ post[i][7] }}" alt="dp" class="avatar" style="float: left;">
+                                    <h4 style="float: left; margin-left: 4%;">{{ post[i][6] }}</h4>
+                                </div>
+                                <br><br><br>
+                                <p style="float: left;" align="left">{{ post[i][8] }} <br>.....</p>
+                                <br><br>
+                            </div>
+                        </a>
+                    </div>
+                    <br><br>
+                </div>
+            </div>
+            {% endif %}
             {% endfor %}
             <br>
             <p style="color: rgba(0, 0, 0, 0.445);">no more posts</p>

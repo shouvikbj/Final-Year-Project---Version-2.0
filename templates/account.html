@@ -156,6 +156,21 @@
             background-size: cover;
             background-attachment: fixed;
         }
+
+        #referedPost{
+            box-shadow: 0px 0px 15px -5px slategray;
+            border-radius: 6px;
+            background-color: white;
+            padding: 5%;
+            /*border: 0.8px solid rgba(112, 128, 144, 0.432);*/
+        }
+
+        #avatar {
+            vertical-align: middle;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -234,6 +249,7 @@
         <hr>
         <div>
             {% for i in range(userPost|length) | reverse %}
+            {% if ((userPost[i]|length) == 7) %}
             <div class="container" id="postContainer" style="background-color: white;">
                 <div>
                     <a href="/post/{{ userPost[i][6] }}/delete"><i id="delete" class="fas fa-trash"
@@ -292,6 +308,47 @@
                 <br>
 
             </div>
+            {% else %}
+            <div class="container" id="postContainer" style="background-color: white;">
+                <div>
+                    <a href="/sharedPost/{{ userPost[i][0] }}/delete"><i id="delete" class="fas fa-trash"
+                            style="color: rgba(255, 0, 0, 0.863); margin-top: 5%; float: left; margin-left: 4%;"></i></a><br>
+                </div>
+                <!--<div class="container" id="confirmAction">
+                    <h4 style="color: black;">Delete this post?</h4>
+                    <br>
+                    <button id="cancel">cancel</button>
+                    <a href="/post/{{ userPost[i][6] }}/delete"><button id="yes">yes</button></a>
+                </div>-->
+                <hr>
+
+                <div style="color: black;">
+                    <img data-src="/images/profilePics/{{ userPost[i][3] }}" alt="dp" id="postDp" align="left"
+                        style="margin-top: -2%; margin-right: -12%;">
+                    <h4 style="margin-top: 5%;">{{ userPost[i][2] }}</h4>
+                    <p style="margin: -2%;">( {{ userPost[i][1] }} )</p>
+                </div>
+                <hr>
+                <div>
+                    {% if userPost[i][5]|length %}
+                    <p style="font-size: 120%; color: black;" align="left">{{ userPost[i][5] }}</p>
+                    {% endif %}
+                    <p style="float: left; color: rgba(112, 128, 144, 0.548);">linked post (tap to view)</p><br>
+                    <a href="/post/{{ userPost[i][4] }}">
+                        <div id="referedPost">
+                            <div>
+                                <img data-src="/images/profilePics/{{ userPost[i][7] }}" alt="dp" id="avatar" style="float: left;">
+                                <h4 style="float: left; margin-left: 4%;">{{ userPost[i][6] }}</h4>
+                            </div>
+                            <br><br><br>
+                            <p style="float: left;" align="left">{{ userPost[i][8] }} <br>.....</p>
+                            <br><br><br>
+                        </div>
+                    </a>
+                </div>
+                <br><br>
+            </div>
+            {% endif %}
 
             {% endfor %}
 

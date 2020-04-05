@@ -2,7 +2,7 @@ from flask import Flask,render_template,redirect,request,url_for,session,flash,j
 import csv
 import random
 #import delete as dlt
-import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB,messangerDB,reportCommentDB,marketDB
+import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB,messangerDB,reportCommentDB,marketDB,sharedDB
 import smtplib
 import os
 
@@ -29,6 +29,8 @@ def home():
         user = loginDB.getUser(request.cookies.get('username'))
         image = user[0][6]
         post2 = postDB.getAllPost()
+        sharedPosts = sharedDB.getSharedPost()
+        post2.extend(sharedPosts)
         for i in range(len(post2)):
             index2 = random.sample(range(0,len(post2)),len(post2))
         for j in range(len(index2)):
@@ -271,6 +273,7 @@ def account():
     if request.cookies.get('username'):
         #user = loginDB.getUser(session['username'])
         user = loginDB.getUser(request.cookies.get('username'))
+        sharedPosts = sharedDB.getSharedPosts(request.cookies.get('username'))
         #image = "defaultProfileImage.png"
         username = user[0][0]
         firstname = user[0][1]
@@ -280,7 +283,16 @@ def account():
         password = user[0][5]
         image = user[0][6]
         userPost = postDB.getUserPost(username)
+        userPost.extend(sharedPosts)
         return render_template("account.html",username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,image=image,password=password,userPost=userPost)
+    else:
+        return redirect(url_for('login'))
+
+@app.route("/sharedPost/<pid>/delete")
+def deleteSharedPost(pid):
+    if request.cookies.get('username'):
+        sharedDB.deleteSharedPost(pid)
+        return redirect(url_for('account'))
     else:
         return redirect(url_for('login'))
 
@@ -294,6 +306,7 @@ def userAccount(un):
         else:
             user = loginDB.getUser(un)
             #image = "defaultProfileImage.png"
+            sharedPosts = sharedDB.getSharedPosts(un)
             username = user[0][0]
             firstname = user[0][1]
             lastname = user[0][2]
@@ -302,6 +315,7 @@ def userAccount(un):
             password = user[0][5]
             image = user[0][6]
             userPost = postDB.getUserPost(un)
+            userPost.extend(sharedPosts)
             return render_template("userAccount.html",username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,image=image,password=password,userPost=userPost)
     else:
         return redirect(url_for('login'))
@@ -439,7 +453,10 @@ def post(pid):
         postid = post[0][6]
         firstname = post[0][1]
         lastname = post[0][2]
-        return render_template("post.html", liked=liked, no_likes=no_likes, post=post, user=user, firstname=firstname, lastname=lastname, postid=postid, comments=comments)
+        desc = post[0][4]
+        image = post[0][0]
+        name = firstname +' '+ lastname
+        return render_template("post.html", liked=liked, no_likes=no_likes, post=post, user=user, firstname=firstname, lastname=lastname, postid=postid, comments=comments, desc=desc, image=image,name=name)
     else:
         post = postDB.getPost(pid)
         firstname = post[0][1]
@@ -447,15 +464,25 @@ def post(pid):
         postid = post[0][6]
         return render_template("post2.html", post=post, firstname=firstname, lastname=lastname, postid=postid)
 
-@app.route("/post/<pid>/repost")
-def rePost(pid):
+@app.route("/post/<pid>/<name>/<image>/<desc>/repost", methods=["POST"])
+def rePost(pid,name,image,desc):
     if request.cookies.get('username'):
         username = request.cookies.get('username')
+        userName = loginDB.getName(username)
+        user_name = userName[0][0]+' '+userName[0][1]
+        user_image = userName[0][2]
         post = postDB.getPostForRepost(pid)
         newPostDesc = post[0][0]
         newPostMedia = post[0][1]
-        postDB.createPost(username,newPostDesc,newPostMedia)
-        redirectUrl = '/post/'+str(pid)
+        text = request.form.get("repostWrite")
+
+        postid = pid
+        name = name
+        image = image
+        desc = desc
+        sharedDB.createSharedPost(username,user_name,user_image,postid,text,name,image,desc)
+        #postDB.createPost(username,newPostDesc,newPostMedia)
+        redirectUrl = '/post/'+str(postid)
         flash("You shared this post !","success")
         return redirect(redirectUrl)
     else:

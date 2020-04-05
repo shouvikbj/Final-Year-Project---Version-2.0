@@ -78,6 +78,11 @@ def getUserForChat(username):
     user = db.fetchall()
     return user
 
+def getName(username):
+    db.execute("SELECT firstname,lastname,image FROM users WHERE username=(?)",(username,))
+    user_name = db.fetchall()
+    return user_name
+
 #createTable()
 #createUser("abc","shouvik","bajpayee","sBajpayee@GangPayee.com","9734282057","abc12345")
 
