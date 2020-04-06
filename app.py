@@ -2,7 +2,7 @@ from flask import Flask,render_template,redirect,request,url_for,session,flash,j
 import csv
 import random
 #import delete as dlt
-import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB,messangerDB,reportCommentDB,marketDB,sharedDB
+import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB,messangerDB,reportCommentDB,marketDB,sharedDB,followDB
 import smtplib
 import os
 
@@ -275,6 +275,8 @@ def account():
         user = loginDB.getUser(request.cookies.get('username'))
         sharedPosts = sharedDB.getSharedPosts(request.cookies.get('username'))
         #image = "defaultProfileImage.png"
+        following = followDB.getFollowingNames(request.cookies.get('username'))
+        followers = followDB.getFollowerNames(request.cookies.get('username'))
         username = user[0][0]
         firstname = user[0][1]
         lastname = user[0][2]
@@ -284,7 +286,7 @@ def account():
         image = user[0][6]
         userPost = postDB.getUserPost(username)
         userPost.extend(sharedPosts)
-        return render_template("account.html",username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,image=image,password=password,userPost=userPost)
+        return render_template("account.html",following=following,followers=followers,username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,image=image,password=password,userPost=userPost)
     else:
         return redirect(url_for('login'))
 
@@ -304,9 +306,15 @@ def userAccount(un):
         if username == un:
             return redirect(url_for('account'))
         else:
+            follows = False
             user = loginDB.getUser(un)
             #image = "defaultProfileImage.png"
             sharedPosts = sharedDB.getSharedPosts(un)
+            user_name = request.cookies.get('username')
+            following = followDB.getFollowing(user_name)
+            for i in range(len(following)):
+                if(un == following[i][0]):
+                    follows = True
             username = user[0][0]
             firstname = user[0][1]
             lastname = user[0][2]
@@ -316,7 +324,29 @@ def userAccount(un):
             image = user[0][6]
             userPost = postDB.getUserPost(un)
             userPost.extend(sharedPosts)
-            return render_template("userAccount.html",username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,image=image,password=password,userPost=userPost)
+            return render_template("userAccount.html",follows=follows,user_name=user_name,username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,image=image,password=password,userPost=userPost)
+    else:
+        return redirect(url_for('login'))
+
+@app.route("/<un1>/<un2>/follow")
+def follow(un1,un2):
+    if request.cookies.get('username'):
+        username = un1
+        following = un2
+        followDB.entryData(username,following)
+        redirectUrl = '/account/'+str(un2)
+        return redirect(redirectUrl)
+    else:
+        return redirect(url_for('login'))
+
+@app.route("/<un1>/<un2>/unfollow")
+def unfollow(un1,un2):
+    if request.cookies.get('username'):
+        username = un1
+        following = un2
+        followDB.deleteData(username,following)
+        redirectUrl = '/account/'+str(un2)
+        return redirect(redirectUrl)
     else:
         return redirect(url_for('login'))
 

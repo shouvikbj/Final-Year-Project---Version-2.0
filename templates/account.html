@@ -157,7 +157,7 @@
             background-attachment: fixed;
         }
 
-        #referedPost{
+        #referedPost {
             box-shadow: 0px 0px 15px -5px slategray;
             border-radius: 6px;
             background-color: white;
@@ -170,6 +170,55 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
+        }
+
+        .dropbtn {
+            background-color: white;
+            color: black;
+            font-size: 16px;
+            border: none;
+            text-decoration: none;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            height: 40px;
+            padding-left: 20%;
+            padding-right: 20%;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: rgba(0, 0, 255, 0.356);
+            color: white;
         }
     </style>
     <script>
@@ -241,6 +290,25 @@
             <h4 style="color: black;">( {{ username }} )</h4>
             <h5 style="color: black;">{{ email }}</h5>
             <h5 style="color: black;">{{ phone }}</h5>
+            <hr>
+            <div class="container">
+                <div class="dropdown" style="margin-right: 15%;">
+                    <button class="dropbtn">Following</button>
+                    <div class="dropdown-content" align="left">
+                        {% for i in range(following|length) %}
+                        <a href="/account/{{ following[i][0] }}">{{ following[i][1] }} {{ following[i][2] }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="dropdown" style="">
+                    <button class="dropbtn">Followers</button>
+                    <div class="dropdown-content" align="left">
+                        {% for i in range(followers|length) %}
+                        <a href="/account/{{ followers[i][0] }}">{{ followers[i][1] }} {{ followers[i][2] }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
             <hr>
         </div>
         <div>
@@ -337,7 +405,8 @@
                     <a href="/post/{{ userPost[i][4] }}">
                         <div id="referedPost">
                             <div>
-                                <img data-src="/images/profilePics/{{ userPost[i][7] }}" alt="dp" id="avatar" style="float: left;">
+                                <img data-src="/images/profilePics/{{ userPost[i][7] }}" alt="dp" id="avatar"
+                                    style="float: left;">
                                 <h4 style="float: left; margin-left: 4%;">{{ userPost[i][6] }}</h4>
                             </div>
                             <br><br><br>

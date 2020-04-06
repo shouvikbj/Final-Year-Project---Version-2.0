@@ -128,6 +128,11 @@
             height: 40px;
             border-radius: 50%;
         }
+        #btns{
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -166,6 +171,21 @@
             <h4 style="color: rgba(0, 0, 0, 0.8);">( {{ username }} )</h4>
             <!--<h5 style="color: rgba(0, 0, 0, 0.8);;">{{ email }}</h5>-->
             <!--<h5 style="color: rgba(0, 0, 0, 0.8);;">{{ phone }}</h5>-->
+            <hr>
+            <div class="container" style="padding-right: 10%; padding-left: 10%;">
+                {% if (follows) %}
+                <a href="/{{ user_name }}/{{ username }}/unfollow">
+                    <button id="btns" class="btn btn-default" style="float: left;"><i class="fas fa-check-circle"></i> Following</button>
+                </a>
+                {% else %}
+                <a href="/{{ user_name }}/{{ username }}/follow">
+                    <button id="btns" class="btn btn-default" style="float: left;"><i class="fas fa-plus-circle"></i> Follow</button>
+                </a>
+                {% endif %}
+                <a href="/messanger/{{ username }}">
+                    <button id="btns" class="btn btn-default" style="float: right;"><i class="fas fa-comments"></i> Message</button>
+                </a>
+            </div>
             <hr>
         </div>
         <div>
