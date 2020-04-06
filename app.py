@@ -276,7 +276,9 @@ def account():
         sharedPosts = sharedDB.getSharedPosts(request.cookies.get('username'))
         #image = "defaultProfileImage.png"
         following = followDB.getFollowingNames(request.cookies.get('username'))
+        noOfFollowing = len(following)
         followers = followDB.getFollowerNames(request.cookies.get('username'))
+        noOfFollowers = len(followers)
         username = user[0][0]
         firstname = user[0][1]
         lastname = user[0][2]
@@ -286,7 +288,7 @@ def account():
         image = user[0][6]
         userPost = postDB.getUserPost(username)
         userPost.extend(sharedPosts)
-        return render_template("account.html",following=following,followers=followers,username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,image=image,password=password,userPost=userPost)
+        return render_template("account.html",noOfFollowers=noOfFollowers,noOfFollowing=noOfFollowing,following=following,followers=followers,username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,image=image,password=password,userPost=userPost)
     else:
         return redirect(url_for('login'))
 
@@ -581,6 +583,7 @@ def deletePost(pid):
         username = request.cookies.get('username')
         likeDB.dislikeAll(pid)
         commentDB.deleteAllComment(pid)
+        sharedDB.delete(pid)
         postDB.deletePost(pid)
         flash('Post is deleted !',"success")
         return redirect(url_for('account'))

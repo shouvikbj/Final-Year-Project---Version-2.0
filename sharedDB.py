@@ -40,6 +40,10 @@ def deleteSharedPost(pid):
     db.execute("DELETE FROM share WHERE id=(?)",(pid,))
     con.commit()
 
+def delete(pid):
+    db.execute("DELETE FROM share WHERE postid=(?)",(pid,))
+    con.commit()
+
 
 #createTable()
 

@@ -293,15 +293,15 @@
             <hr>
             <div class="container">
                 <div class="dropdown" style="margin-right: 15%;">
-                    <button class="dropbtn">Following</button>
+                    <button class="dropbtn">Following({{ noOfFollowing }})</button>
                     <div class="dropdown-content" align="left">
                         {% for i in range(following|length) %}
                         <a href="/account/{{ following[i][0] }}">{{ following[i][1] }} {{ following[i][2] }}</a>
                         {% endfor %}
                     </div>
                 </div>
-                <div class="dropdown" style="">
-                    <button class="dropbtn">Followers</button>
+                <div class="dropdown">
+                    <button class="dropbtn">Followers({{ noOfFollowers }})</button>
                     <div class="dropdown-content" align="left">
                         {% for i in range(followers|length) %}
                         <a href="/account/{{ followers[i][0] }}">{{ followers[i][1] }} {{ followers[i][2] }}</a>
