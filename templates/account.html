@@ -183,8 +183,6 @@
             border-radius: 30px;
             font-weight: bold;
             height: 40px;
-            padding-left: 20%;
-            padding-right: 20%;
         }
 
         .dropdown {
@@ -292,7 +290,7 @@
             <h5 style="color: black;">{{ phone }}</h5>
             <hr>
             <div class="container">
-                <div class="dropdown" style="margin-right: 15%;">
+                <div class="dropdown">
                     <button class="dropbtn">Following({{ noOfFollowing }})</button>
                     <div class="dropdown-content" align="left">
                         {% for i in range(following|length) %}
