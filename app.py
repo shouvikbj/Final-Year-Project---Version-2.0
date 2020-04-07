@@ -3,6 +3,7 @@ import csv
 import random
 #import delete as dlt
 import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB,messangerDB,reportCommentDB,marketDB,sharedDB,followDB
+import predict
 import smtplib
 import os
 
@@ -779,6 +780,7 @@ def getMarkers():
 @app.route("/report", methods=["GET","POST"])
 def report():
     if request.cookies.get('username'):
+        isSpam = False
         #user = loginDB.getUser(session['username'])
         target = APP_ROOT + '/static/posts/postMedia'
         username = request.cookies.get('username')
@@ -787,7 +789,13 @@ def report():
         lat = request.form.get("locationLat")
         lng = request.form.get("locationLng")
         category = request.form.get("category")
+        catPrediction = predict.predict(category)
         desc = request.form.get("desc")
+        descPrediction = predict.predict(desc)
+        if ((not(catPrediction)) or (not(descPrediction))):
+            isSpam = True
+            flash('Spam reports are not allowed !','danger')
+            return redirect(url_for('map'))
         media = request.files.get("media")
 
         if (lat == "") or (lng == ""):
