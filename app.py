@@ -2,7 +2,7 @@ from flask import Flask,render_template,redirect,request,url_for,session,flash,j
 import csv
 import random
 #import delete as dlt
-import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB,messangerDB,reportCommentDB,marketDB,sharedDB,followDB
+import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLikeDB,messangerDB,reportCommentDB,marketDB,sharedDB,followDB,momentsDB
 import predict
 import smtplib
 import os
@@ -289,7 +289,8 @@ def account():
         image = user[0][6]
         userPost = postDB.getUserPost(username)
         userPost.extend(sharedPosts)
-        return render_template("account.html",noOfFollowers=noOfFollowers,noOfFollowing=noOfFollowing,following=following,followers=followers,username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,image=image,password=password,userPost=userPost)
+        moments = momentsDB.getMomentsForAccount(request.cookies.get('username'))
+        return render_template("account.html",moments=moments,noOfFollowers=noOfFollowers,noOfFollowing=noOfFollowing,following=following,followers=followers,username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,image=image,password=password,userPost=userPost)
     else:
         return redirect(url_for('login'))
 
@@ -327,7 +328,8 @@ def userAccount(un):
             image = user[0][6]
             userPost = postDB.getUserPost(un)
             userPost.extend(sharedPosts)
-            return render_template("userAccount.html",follows=follows,user_name=user_name,username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,image=image,password=password,userPost=userPost)
+            moments = momentsDB.getMomentsForAccount(un)
+            return render_template("userAccount.html",moments=moments,follows=follows,user_name=user_name,username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,image=image,password=password,userPost=userPost)
     else:
         return redirect(url_for('login'))
 
@@ -1015,6 +1017,36 @@ def deleteAd(pid):
     if request.cookies.get('username'):
         marketDB.deleteAd(pid)
         return redirect(url_for('market'))
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route("/<user>/moments")
+def moments(user):
+    if (request.cookies.get('username')):
+        moments = momentsDB.getMoments(user)
+        user = user
+        return render_template("moments.html",user=user,moments=moments)
+    else:
+        return redirect(url_for('login'))
+
+@app.route("/<user>/moments/add",methods=["POST"])
+def addMoment(user):
+    if (request.cookies.get('username')):
+        target = APP_ROOT+'/static/images/moments'
+        username = user
+        text = request.form.get("desc")
+        if (len(text)==0):
+            text = ""
+        media = request.files.get("media")
+        media_filename = ""
+        if(media):
+            media_filename = media.filename
+            destination = "/".join([target,media_filename])
+            media.save(destination)
+        momentsDB.addMoment(username,text,media_filename)
+        redirectUrl = '/'+request.cookies.get('username')+'/moments'
+        return redirect(redirectUrl)
     else:
         return redirect(url_for('login'))
 

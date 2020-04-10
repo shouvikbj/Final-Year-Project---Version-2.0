@@ -50,7 +50,7 @@
             z-index: 9999;
             background-image: url('/pwa_logo/loading.gif');
             background-repeat: no-repeat;
-            background-color: none;
+            background-color: white;
             background-position: center;
         }
 
@@ -133,6 +133,12 @@
             -webkit-border-radius: 20px;
             border-radius: 20px;
         }
+        #moment {
+            vertical-align: middle;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -188,6 +194,23 @@
             </div>
             <hr>
         </div>
+        <p style="color: black; font-weight: bold;">Moments</p>
+        <a href="/{{ username }}/moments">
+            <div class="container">
+                {% if (moments|length) %}
+                {% for i in range(moments|length) | reverse %}
+                {% if (i!=4) %}
+                <img data-src="/images/moments/{{ moments[i][0] }}" alt="moment" id="moment">
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                <h4 style="color: black;">no moments yet</h4>
+                {% endif %}
+                <br><br>
+            </div>
+        </a>
+        <p style="color: rgba(0, 0, 0, 0.432);">click to view all moments</p>
+        <hr>
         <div>
             <h3 style="color: black;">Posts of {{ firstname }} {{ lastname }}</h3>
         </div>

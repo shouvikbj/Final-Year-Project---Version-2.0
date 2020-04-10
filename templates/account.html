@@ -50,7 +50,7 @@
             z-index: 9999;
             background-image: url('/pwa_logo/loading.gif');
             background-repeat: no-repeat;
-            background-color: none;
+            background-color: white;
             background-position: center;
         }
 
@@ -218,12 +218,45 @@
             background-color: rgba(0, 0, 255, 0.356);
             color: white;
         }
+
+        #moment {
+            vertical-align: middle;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        #rePostModal {
+            position: fixed;
+            bottom: 35%;
+            right: 5%;
+            z-index: 99;
+            background-color: whitesmoke;
+            /*border: 1px solid black;*/
+            text-decoration: none;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            padding: 5%;
+            width: 90%;
+            box-shadow: 0px 0px 10px 1px slategray;
+        }
+        #repostWrite{
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            padding: 2%;
+            border: none;
+            background-color: white;
+            border-radius: 10px;
+        }
     </style>
     <script>
         $(document).ready(function () {
             $(window).ready(function () {
                 $(".preloader").fadeOut(500);
             });
+            $("#rePostModal").hide();
             $("#scroll-top").hide();
             $(window).scroll(function () {
                 if ($(this).scrollTop() > 0) {
@@ -231,6 +264,12 @@
                 } else {
                     $('#scroll-top').fadeOut();
                 }
+            });
+            $("#addmoment").click(function(){
+                $("#rePostModal").show();
+            });
+            $("#reset").click(function(){
+                $("#rePostModal").hide();
             });
             /*$("#confirmAction").hide();
             $("#delete").click(function () {
@@ -308,6 +347,36 @@
                 </div>
             </div>
             <hr>
+        </div>
+        <p style="color: black; font-weight: bold;">Moments</p>
+        <a href="/{{ username }}/moments">
+            <div class="container">
+                {% if (moments|length) %}
+                {% for i in range(moments|length) | reverse %}
+                {% if (i!=4) %}
+                <img data-src="/images/moments/{{ moments[i][0] }}" alt="moment" id="moment">
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                <h4 style="color: black;">no moments yet</h4>
+                {% endif %}
+                <br><br>
+            </div>
+        </a>
+        <p style="color: rgba(0, 0, 0, 0.432);">click to view all moments</p>
+        <button class="btn btn-default" id="addmoment"><i class="far fa-window-restore fa-lg"></i> Add Moments</button>
+        <hr>
+        <div class="container" id="rePostModal">
+            <h4 style="color: black;">add moments</h4>
+            <form action="/{{ username }}/moments/add" method="POST"  enctype="multipart/form-data">
+                <input type="text" name="desc" id="repostWrite" placeholder="write about the moment"
+                    autocomplete="off"><br><br>
+                <input id="file-picker" type="file" name="media" accept="image/*">
+                <br><br>
+                <button type="submit" class="btn btn-default" style="float: right; margin-right: 15%;">Add</button>
+                <button type="reset" class="btn btn-default" style="float: left; margin-left: 15%;"
+                    id="reset">Close</button>
+            </form>
         </div>
         <div>
             <h3 style="color: black;">Posts of you</h3>
