@@ -14,16 +14,17 @@ def createTable():
             text VARCHAR2(1000000000000000000),
             name VARCHAR2(100000),
             image VARCHAR2(100000),
-            desc VARCHAR2(100000000000000000000000)
+            desc VARCHAR2(100000000000000000000000),
+            date VARCHAR2(1000)
         )
     """)
     db.execute("""
     CREATE TABLE IF NOT EXISTS shareBackUp AS SELECT * FROM share WHERE 1=1;
     """)
 
-def createSharedPost(username,user_name,user_image,postid,text,name,image,desc):
-    db.execute("INSERT INTO share VALUES (NULL,?,?,?,?,?,?,?,?)",(username,user_name,user_image,postid,text,name,image,desc))
-    db.execute("INSERT INTO shareBackUp VALUES (NULL,?,?,?,?,?,?,?,?)",(username,user_name,user_image,postid,text,name,image,desc))
+def createSharedPost(username,user_name,user_image,postid,text,name,image,desc,date):
+    db.execute("INSERT INTO share VALUES (NULL,?,?,?,?,?,?,?,?,?)",(username,user_name,user_image,postid,text,name,image,desc,date))
+    db.execute("INSERT INTO shareBackUp VALUES (NULL,?,?,?,?,?,?,?,?,?)",(username,user_name,user_image,postid,text,name,image,desc,date))
     con.commit()
 
 def getSharedPost():
@@ -45,5 +46,12 @@ def delete(pid):
     con.commit()
 
 
+
+
+def updateTable():
+    db.execute("ALTER TABLE share ADD date VARCHAR2(1000)")
+    db.execute("ALTER TABLE shareBackUp ADD date VARCHAR2(1000)")
+    con.commit()
 #createTable()
+#updateTable()
 

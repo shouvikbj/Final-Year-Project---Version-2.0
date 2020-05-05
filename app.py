@@ -6,6 +6,7 @@ import loginDB,postDB,blogDB,msgDB,mapDB,commentDB,blogCommentDB,likeDB,blogLike
 import predict
 import smtplib
 import os
+import datetime as dt
 
 app = Flask(__name__, static_url_path='')
 app.secret_key = 'this is a secret key'
@@ -195,9 +196,9 @@ def register():
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.ehlo()
         server.starttls()
-        server.login('services.shouvikbajpayee@gmail.com', 'mAAtHAKUR60@')
-        server.sendmail('services.shouvikbajpayee@gmail.com', email, message1)
-        server.sendmail('services.shouvikbajpayee@gmail.com', 'bajpayeeshouvik@gmail.com', message2)
+        server.login('#your email', '#your password')
+        server.sendmail('#your email', email, message1)
+        server.sendmail('#your email', '#your email', message2)
         server.close()
 
         writer.writerow((username,firstname,lastname,email,phone,password,img))
@@ -238,9 +239,9 @@ def sendpassword():
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.ehlo()
         server.starttls()
-        server.login('services.shouvikbajpayee@gmail.com', 'mAAtHAKUR60@')
-        #server.sendmail('services.shouvikbajpayee@gmail.com', email, message)
-        server.sendmail('services.shouvikbajpayee@gmail.com', 'bajpayeeshouvik@gmail.com', message2)
+        server.login('#your email', '#your password')
+        #server.sendmail('#your email', email, message)
+        server.sendmail('#your email', '#your email', message2)
         server.close()
         flash('Password will be sent to your Registered Email after the verification of your request.',"success")
         return redirect(url_for('login'))
@@ -261,8 +262,8 @@ def grantPassword(username,email,phone):
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.ehlo()
     server.starttls()
-    server.login('services.shouvikbajpayee@gmail.com', 'mAAtHAKUR60@')
-    server.sendmail('services.shouvikbajpayee@gmail.com', email, message)
+    server.login('#your email', '#your password')
+    server.sendmail('#your email', email, message)
     #server.sendmail('services.shouvikbajpayee@gmail.com', 'bajpayeeshouvik@gmail.com', message2)
     server.close()
     flash('Password is sent to user.',"success")
@@ -444,6 +445,12 @@ def postQuestion():
         #user = loginDB.getUser(session['username'])
         username = request.cookies.get('username')
         target = APP_ROOT+'/static/posts/postMedia'
+        
+        curDate = dt.datetime.now()
+        day = curDate.strftime("%d-%m-%Y")
+        time = curDate.strftime("%H:%M")
+
+        date = day+" "+time
 
         desc = request.form.get("desc")
 
@@ -460,7 +467,7 @@ def postQuestion():
             destination = "/".join([target,media_filename])
             media.save(destination)
 
-        postDB.createPost(username,desc,media_filename)
+        postDB.createPost(username,desc,media_filename,date)
         flash('Your post is created successfully !',"success")
         return redirect(url_for('home'))
 
@@ -490,8 +497,9 @@ def post(pid):
         lastname = post[0][2]
         desc = post[0][4]
         image = post[0][0]
+        date = post[0][7]
         name = firstname +' '+ lastname
-        return render_template("post.html", liked=liked, no_likes=no_likes, post=post, user=user, firstname=firstname, lastname=lastname, postid=postid, comments=comments, desc=desc, image=image,name=name)
+        return render_template("post.html", date=date,liked=liked, no_likes=no_likes, post=post, user=user, firstname=firstname, lastname=lastname, postid=postid, comments=comments, desc=desc, image=image,name=name)
     else:
         post = postDB.getPost(pid)
         firstname = post[0][1]
@@ -499,7 +507,7 @@ def post(pid):
         postid = post[0][6]
         return render_template("post2.html", post=post, firstname=firstname, lastname=lastname, postid=postid)
 
-@app.route("/post/<pid>/<name>/<image>/<desc>/repost", methods=["POST"])
+@app.route("/post/<pid>/<name>/<image>/<desc>/repost", methods=["POST","GET"])
 def rePost(pid,name,image,desc):
     if request.cookies.get('username'):
         username = request.cookies.get('username')
@@ -510,12 +518,14 @@ def rePost(pid,name,image,desc):
         newPostDesc = post[0][0]
         newPostMedia = post[0][1]
         text = request.form.get("repostWrite")
+        curDate = dt.datetime.now()
+        date = curDate.strftime("%d-%m-%y") +" "+curDate.strftime("%H:%M")
 
         postid = pid
         name = name
         image = image
         desc = desc
-        sharedDB.createSharedPost(username,user_name,user_image,postid,text,name,image,desc)
+        sharedDB.createSharedPost(username,user_name,user_image,postid,text,name,image,desc,date)
         #postDB.createPost(username,newPostDesc,newPostMedia)
         redirectUrl = '/post/'+str(postid)
         flash("You shared this post !","success")
@@ -782,6 +792,9 @@ def getMarkers():
 @app.route("/report", methods=["GET","POST"])
 def report():
     if request.cookies.get('username'):
+        curDate = dt.datetime.now()
+        date = curDate.strftime("%d-%m-%y")+" "+curDate.strftime("%H:%M")
+
         isSpam = False
         #user = loginDB.getUser(session['username'])
         target = APP_ROOT + '/static/posts/postMedia'
@@ -811,7 +824,7 @@ def report():
             destination = "/".join([target,media_filename])
             media.save(destination)
 
-        mapDB.createPost(username,lat,lng,category,desc,media_filename)
+        mapDB.createPost(username,lat,lng,category,desc,media_filename,date)
         flash('Incident reported successfully !',"success")
         return redirect(url_for('map'))
 

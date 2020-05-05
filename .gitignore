@@ -1,8 +1,9 @@
-__pycache__/
+/__pycache__
 f.txt
 gitPush.txt
 lnk_btstrp.txt
 maps_details.txt
-env
+/env
 users.csv
-gp.zip
+/.vscode
+users.db

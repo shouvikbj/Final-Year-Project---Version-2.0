@@ -9,35 +9,36 @@ def createTable():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username VARCHAR2(1000),
             desc VARCHAR2(1000000000000000000),
-            media VARCHAR2(1000)
+            media VARCHAR2(1000),
+            date VARCHAR2(1000)
         )
     """)
     db.execute("""
     CREATE TABLE IF NOT EXISTS postBackUp AS SELECT * FROM post WHERE 1=1;
     """)
 
-def createPost(username,desc,media):
-    db.execute("INSERT INTO post VALUES (NULL,?,?,?)",(username,desc,media))
-    db.execute("INSERT INTO postBackUp VALUES (NULL,?,?,?)",(username,desc,media))
+def createPost(username,desc,media,date):
+    db.execute("INSERT INTO post VALUES (NULL,?,?,?,?)",(username,desc,media,date))
+    db.execute("INSERT INTO postBackUp VALUES (NULL,?,?,?,?)",(username,desc,media,date))
     con.commit()
 
 def getAllPost():
     db.execute("""
-        SELECT u.image,u.firstname,u.lastname,p.username,p.desc,p.media,p.id FROM users AS u INNER JOIN post AS p ON (p.username=u.username)
+        SELECT u.image,u.firstname,u.lastname,p.username,p.desc,p.media,p.id,p.date FROM users AS u INNER JOIN post AS p ON (p.username=u.username)
     """)
     post = db.fetchall()
     return post
 
 def getPost(pid):
     db.execute("""
-        SELECT u.image,u.firstname,u.lastname,p.username,p.desc,p.media,p.id FROM users AS u INNER JOIN post AS p ON (p.username=u.username) WHERE p.id={}
+        SELECT u.image,u.firstname,u.lastname,p.username,p.desc,p.media,p.id,p.date FROM users AS u INNER JOIN post AS p ON (p.username=u.username) WHERE p.id={}
     """.format(pid))
     post = db.fetchall()
     return post
 
 def getUserPost(username):
     db.execute("""
-        SELECT u.image,u.firstname,u.lastname,p.username,p.desc,p.media,p.id FROM users AS u INNER JOIN post AS p ON (p.username=u.username) WHERE u.username=(?)
+        SELECT u.image,u.firstname,u.lastname,p.username,p.desc,p.media,p.id,p.date FROM users AS u INNER JOIN post AS p ON (p.username=u.username) WHERE u.username=(?)
     """,(username,))
     userPost = db.fetchall()
     return userPost
@@ -47,7 +48,7 @@ def deletePost(pid):
     con.commit()
 
 def getPosts():
-    db.execute("SELECT u.image,u.firstname,u.lastname,p.desc,p.id FROM users AS u INNER JOIN post AS p ON (p.username=u.username)")
+    db.execute("SELECT u.image,u.firstname,u.lastname,p.desc,p.id,p.date FROM users AS u INNER JOIN post AS p ON (p.username=u.username)")
     posts = db.fetchall()
     return posts
 
@@ -56,4 +57,13 @@ def getPostForRepost(pid):
     post = db.fetchall()
     return post
 
+
+
+
+
+def updateTable():
+    db.execute("ALTER TABLE post ADD date VARCHAR2(1000)")
+    db.execute("ALTER TABLE postBackUp ADD date VARCHAR2(1000)")
+    con.commit()
 #createTable()
+#updateTable()
